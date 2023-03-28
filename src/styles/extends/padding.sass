@@ -1,0 +1,46 @@
+$padding-value: 45px
+@media screen and ( max-width: 850px )
+  $padding-value: 25px
+@media screen and ( max-width: 500px )
+  $padding-value: 15px
+
+$padding-s-value: 25px
+@media screen and ( max-width: 850px )
+  $padding-s-value: 20px
+@media screen and ( max-width: 500px )
+  $padding-s-value: 15px
+
+$padding-xs-value: 15px
+@media screen and ( max-width: 850px )
+  $padding-xs-value: 10px
+@media screen and ( max-width: 500px )
+  $padding-xs-value: 5px
+
+%p-inline
+  padding-inline: $padding-value
+%p-inline-s
+  padding-inline: $padding-s-value
+%p-right
+  padding-right: $padding-value
+%p-left
+  padding-left: $padding-value
+%p-right-s
+  padding-right: $padding-s-value
+%p-left-s
+  padding-left: $padding-s-value
+%p-horizontal
+  padding-top: $padding-s-value
+  padding-bottom: $padding-s-value
+%p-horizontal-s
+  padding-top: $padding-xs-value
+  padding-bottom: $padding-xs-value
+// ? all padding
+%p
+  @extend %p-inline
+  @extend %p-horizontal
+%p-s
+  @extend %p-inline-s
+  @extend %p-horizontal
+%p-xs
+  @extend %p-inline-s
+  @extend %p-horizontal-s

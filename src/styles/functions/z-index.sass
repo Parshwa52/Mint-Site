@@ -1,0 +1,8 @@
+// ? Change z-index based on the nominal value assigned to it
+$z-indexes: ('preloader','transition','menu','nav','content', 'footer')
+@function z($name)
+  @if ($z-indexes, $name)
+    @return (length($z-indexes) - index($z-indexes, $name)) + 1
+  @else
+    @warn 'There is no item "#{$name}" in this list; choose one of "#{$z-indexes}"'
+    @return null

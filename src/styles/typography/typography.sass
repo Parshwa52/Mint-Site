@@ -1,0 +1,71 @@
+// import fonts
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap')
+@import './billo/billo'
+@import './courier-new/courier-new'
+
+// declare fonts
+$brand-font: 'Billo', sans-serif
+.brand-font
+  font-family: $brand-font
+  font-weight: lighter
+  line-height: 1.1
+
+$heading-font: 'Bungee Inline', cursive
+.heading-font
+  font-family: $heading-font
+  font-weight: lighter
+  line-height: 1.1
+
+$subheading-font: 'Courier New', sans-serif
+.subheading-font
+  font-family: $subheading-font
+  font-weight: lighter
+  line-height: 1.1
+
+$content-font: 'Asgalt', sans-serif
+.content-font
+  font-family: $content-font
+  font-weight: lighter
+  line-height: 1.1
+
+// fontSize mixin to standardize sizes
+$base-font-size: 16px
+@mixin fontSize($size : 'm')
+  @if $size == 'xs'
+    font-size: $base-font-size - 5px
+  @else if $size == 's'
+    font-size: $base-font-size - 2px
+  @else if $size == 'm'
+    font-size: $base-font-size
+  @else if $size == 'ml'
+    font-size: $base-font-size + 5px
+  @else if $size == 'l'
+    font-size: $base-font-size + 10px
+  @else if $size == 'mxl'
+    font-size: $base-font-size + 25px
+    @media screen and ( max-width: 850px )
+      font-size: $base-font-size + 15px
+  @else if $size == 'xl'
+    font-size: $base-font-size + 50px
+    @media screen and ( max-width: 720px )
+      font-size: $base-font-size + 30px
+  @else if $size == 'mxxl'
+    font-size: $base-font-size + 75px
+    @media screen and ( max-width: 1440px )
+      font-size: $base-font-size + 60px
+  @else if $size == 'xxl'
+    font-size: $base-font-size + 100px
+    @media screen and ( max-width: 1440px )
+      font-size: $base-font-size + 70px
+    @media screen and ( max-width: 500px )
+      font-size: $base-font-size + 50px
+  @else if $size == 'mxxxl'
+    font-size: $base-font-size + 115px
+    @media screen and ( max-width: 850px )
+      @include fontSize('xxl')
+  @else if $size == 'xxxl'
+    font-size: $base-font-size + 125px
+    @media screen and ( max-width: 1000px )
+      @include fontSize('mxxxl')
+  @else
+    font-size: $base-font-size

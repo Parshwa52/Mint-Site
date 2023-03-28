@@ -1,0 +1,32 @@
+// ? Utils
+@import './resetters/modern-css-reset.scss'
+@import './resetters/joshwcomeau-reset.scss'
+
+@import './variables/colors'
+@import './typography/typography'
+
+@import './functions/z-index'
+@import './extends/extends-manager'
+
+html
+  scrollbar-width: none
+  &.lenis
+    height: auto
+  &.lenis.lenis-smooth
+    scroll-behavior: auto
+  &.lenis.lenis-smooth [data-lenis-prevent]
+    overscroll-behavior: contain
+  &.lenis.lenis-stopped
+    overflow: hidden
+
+body
+  background-color: $clr-dark-800
+  color: $clr-primary
+  @extend .content-font
+  -ms-overflow-style: none
+  &::-webkit-scrollbar
+    display: none
+
+// ? Components
+// ? Pages
+@import './pages/homepage/index'
