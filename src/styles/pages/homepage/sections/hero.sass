@@ -16,7 +16,19 @@
       z-index: 2
       height: 100vh
       width: 100%
-
+      .scene-main-text
+        position: absolute
+        top: 50px
+        left: 50px
+        z-index: 2
+        max-width: 500px
+        p
+          @include fontSize('ml')
+          @extend .heading-font
+          text-transform: uppercase
+          span
+            span
+              display: none
       .scene-main-img
         position: relative
         transform-origin: center bottom
