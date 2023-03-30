@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 export const SceneOne = () => {
   const scene1 = useRef<HTMLDivElement>(null)
