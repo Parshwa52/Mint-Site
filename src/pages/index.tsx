@@ -1,3 +1,4 @@
+import { ThreeJSBackground } from '@/components/threeJSBackground'
 import { PageLayout } from '@/layout/pageLayout'
 import { HomepageCity } from '@/sections/city'
 // custom components
@@ -9,6 +10,7 @@ export default function Home() {
       pageTitle='Pluto mint website'
       pageDesc='Cillum pariatur in Lorem consequat velit reprehenderit enim proident.'
     >
+      <ThreeJSBackground />
       <HomepageHero />
       <HomepageCity />
     </PageLayout>
