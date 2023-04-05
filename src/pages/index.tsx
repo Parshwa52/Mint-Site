@@ -1,3 +1,4 @@
+import { Mouse } from '@/components/mouse'
 import { ThreeJSBackground } from '@/components/threeJSBackground'
 import { PageLayout } from '@/layout/pageLayout'
 import { HomepageCity } from '@/sections/city'
@@ -13,6 +14,7 @@ export default function Home() {
       <ThreeJSBackground />
       <HomepageHero />
       <HomepageCity />
+      <Mouse />
     </PageLayout>
   )
 }

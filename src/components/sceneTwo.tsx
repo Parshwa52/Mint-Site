@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
+import { Q2MaskCanvas } from './q2MaskCanvas'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 export const SceneTwo = () => {
   const scene2 = useRef<HTMLDivElement>(null)
@@ -19,7 +21,6 @@ export const SceneTwo = () => {
             start: 'bottom bottom',
             end: 'top top',
             scrub: true,
-            markers: true,
           },
           defaults: {
             ease: 'none',
@@ -70,34 +71,24 @@ export const SceneTwo = () => {
           scrollTrigger: {
             trigger: '#home-city',
             start: 'top top',
-            end: '+=2000',
+            end: '+=4000',
             pin: true,
             scrub: true,
           },
           defaults: {
-            willChange: 'transform',
+            willChange: 'transform, opacity',
             duration: 25,
             stagger: {
               amount: 15,
             },
-            ease: 'power4',
+            ease: 'power1',
           },
         })
         .from(
-          '.city-container .buildings-left > *',
+          '.clouds > *',
           {
-            xPercent: -100,
-            yPercent: 100,
-            rotate: -25,
-          },
-          0
-        )
-        .from(
-          '.city-container .buildings-right > *',
-          {
-            xPercent: 100,
-            yPercent: 100,
-            rotate: 25,
+            yPercent: -50,
+            autoAlpha: 0,
           },
           0
         )
@@ -105,18 +96,63 @@ export const SceneTwo = () => {
           '.city-container .buildings-center > *',
           {
             yPercent: 100,
+            stagger: 10,
           },
           0
         )
         .from(
+          '.city-container .buildings-right > *',
+          {
+            xPercent: 100,
+            // yPercent: 50,
+            stagger: 10,
+          },
+          10
+        )
+        .from(
+          '.city-container .buildings-left > *',
+          {
+            xPercent: -100,
+            // yPercent: 50,
+            stagger: 10,
+          },
+          10
+        )
+        .from(
+          '.city-container .background > *',
+          {
+            autoAlpha: 0,
+            duration: 60,
+            ease: 'power1.inOut',
+            // yPercent: 50,
+            // stagger: 10,
+          },
+          20
+        )
+        .fromTo(
           '.city-container .buildings-logo > *',
           {
             autoAlpha: 0,
             yPercent: -100,
+          },
+          {
+            autoAlpha: 1,
+            yPercent: 2,
             duration: 30,
             ease: 'expo',
           },
-          0
+          '>-75%'
+        )
+
+        .addLabel('cityBuilded', '>+50')
+        .from(
+          '.city-container .buildings-glow > *',
+          {
+            autoAlpha: 0,
+            duration: 25,
+            ease: 'back.inOut',
+          },
+          'cityBuilded-=20'
         )
         .to(
           '.city-container .buildings-logo > *',
@@ -124,18 +160,19 @@ export const SceneTwo = () => {
             yPercent: -50,
             autoAlpha: 0,
             duration: 15,
-            ease: 'back.in',
+            ease: 'power1.in',
           },
-          35
+          'cityBuilded'
         )
         .to(
           '.city-container',
           {
+            willChange: 'filter',
             filter: 'blur(2px)',
             duration: 25,
             ease: 'expo.inOut',
           },
-          35
+          'cityBuilded'
         )
         .from(
           '.q2-container',
@@ -144,7 +181,7 @@ export const SceneTwo = () => {
             duration: 25,
             ease: 'expo.inOut',
           },
-          35
+          'cityBuilded'
         )
     })
 
@@ -154,41 +191,64 @@ export const SceneTwo = () => {
   return (
     <div className='scene scene-2' ref={scene2}>
       <div className='city-container'>
+        <div className='background'>
+          <Building src='/assets/buildings/pluto-background.png' />
+        </div>
+        <div className='clouds'>
+          <Building src='/assets/clouds/2_Clouds1.png' />
+          <Building src='/assets/clouds/3_Clouds2.png' />
+          <Building src='/assets/clouds/10_Clouds3.png' />
+          <Building src='/assets/clouds/16_Clouds4.png' />
+          <Building src='/assets/clouds/20_Clouds5.png' />
+        </div>
         <div className='buildings buildings-center'>
-          <Building src='/assets/buildings/pluto-building-9.png' />
-          <Building src='/assets/buildings/pluto-building-13.png' />
+          <Building src='/assets/buildings/pluto-building-14.png' />
+          <Building src='/assets/buildings/pluto-building-6.png' />
         </div>
         <div className='buildings buildings-right'>
           <Building src='/assets/buildings/pluto-building-15.png' />
-          <Building src='/assets/buildings/pluto-building-3.png' />
-          <Building src='/assets/buildings/pluto-building-6.png' />
+          <Building src='/assets/buildings/pluto-building-12.png' />
+          <Building src='/assets/buildings/pluto-building-10.png' />
+          <Building src='/assets/buildings/pluto-building-5.png' />
           <Building src='/assets/buildings/pluto-building-1.png' />
-          <Building src='/assets/buildings/pluto-building-2.png' />
+          <Building src='/assets/buildings/pluto-building-4.png' />
         </div>
         <div className='buildings buildings-left'>
-          <Building src='/assets/buildings/pluto-building-12.png' />
-          <Building src='/assets/buildings/pluto-building-8.png' />
-          <Building src='/assets/buildings/pluto-building-5.png' />
-          <Building src='/assets/buildings/pluto-building-4.png' />
+          <Building src='/assets/buildings/pluto-building-9.png' />
           <Building src='/assets/buildings/pluto-building-11.png' />
-          <Building src='/assets/buildings/pluto-building-14.png' />
+          <Building src='/assets/buildings/pluto-building-2.png' />
+          <Building src='/assets/buildings/pluto-building-13.png' />
+          <Building src='/assets/buildings/pluto-building-7.png' />
+          <Building src='/assets/buildings/pluto-building-8.png' />
+          <Building src='/assets/buildings/pluto-building-3.png' />
+        </div>
+        <div className='buildings buildings-glow'>
+          <Building src='/assets/buildings/pluto-glow.png' />
         </div>
         <div className='buildings buildings-logo'>
-          <Building src='/assets/buildings/pluto-building-7.png' />
+          <Building src='/assets/buildings/pluto-logo.png' />
         </div>
       </div>
       <div className='q2-container'>
-        <Image
-          src='/assets/sunbeam.png'
-          alt='Q2 mascot'
-          fill
-          priority
-          className='q2'
-          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
-          style={{
-            objectFit: 'contain',
-          }}
-        />
+        <div>
+          <Image
+            src='/assets/sunbeam_2.png'
+            alt='Q2 mascot'
+            fill
+            priority
+            className='q2'
+            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+            style={{
+              objectFit: 'contain',
+            }}
+          />
+          {/* <ConnectButton /> */}
+          <div className='q2-mask-container'>
+            <div className='mask-canvas'>
+              <Q2MaskCanvas />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -197,7 +257,8 @@ export const SceneTwo = () => {
 const Building = ({ src, className }: { src: string; className?: string }) => {
   return (
     <div className='building-container'>
-      <Image
+      <img className='building' alt='building' src={src} />
+      {/* <Image
         src={src}
         alt='building'
         fill
@@ -205,7 +266,7 @@ const Building = ({ src, className }: { src: string; className?: string }) => {
         style={{
           objectFit: 'cover',
         }}
-      />
+      /> */}
     </div>
   )
 }

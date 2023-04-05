@@ -8,8 +8,6 @@ export const HomepageHero = () => {
   useEffect(() => {}, [])
   return (
     <section id='home-hero'>
-      {/* <Background /> */}
-      {/* <ThreeJSBackground /> */}
       <SceneOne />
     </section>
   )

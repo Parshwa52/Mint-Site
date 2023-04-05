@@ -1,13 +1,16 @@
 // React
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 // gsap
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { Q2MaskCanvas } from './q2MaskCanvas1'
 
 export const SceneOne = () => {
   const scene1 = useRef<HTMLDivElement>(null)
+  const sound = useRef<HTMLAudioElement>(null)
+
+  const [currExp, setExp] = useState('')
 
   // The images get duplicated
   // function importAll(r: any) {
@@ -56,149 +59,11 @@ export const SceneOne = () => {
     '/assets/voyager-carousel/voyager-34.jpg',
   ]
 
-  // useEffect(() => {
-  //   // rotate the disk
-  //   const diskRotation = gsap
-  //     .timeline({
-  //       paused: true,
-  //     })
-  //     .to(
-  //       '.scene-secondary-img',
-  //       {
-  //         rotate: 360,
-  //         duration: 10,
-  //         repeat: -1,
-  //         ease: 'none',
-  //       },
-  //       0
-  //     )
-
-  //   // text appear
-  //   const textAppear = gsap
-  //     .timeline({ paused: true })
-  //     .to('.scene-main-text p span span', {
-  //       display: 'inline-flex',
-  //       duration: 0.1,
-  //       stagger: {
-  //         amount: 3,
-  //       },
-  //     })
-  //   // with React gsap offer the possibility of the function context() to auto clean up the timelines
-  //   const ctx = gsap.context(() => {
-  //     const tl = gsap
-  //       .timeline({
-  //         scrollTrigger: {
-  //           trigger: scene1.current,
-  //           start: 'top top',
-  //           end: '+=5000',
-  //           pin: true,
-  //           scrub: true,
-  //           refreshPriority: 99,
-  //           onEnter: () => {
-  //             diskRotation.play()
-  //           },
-  //           onEnterBack: () => {
-  //             diskRotation.play()
-  //             textAppear.timeScale(2)
-  //             textAppear.reverse()
-  //             gsap.to('.scene-main-img-mask', {
-  //               autoAlpha: 1,
-  //               duration: 1.25,
-  //               ease: 'bounce.inOut',
-  //             })
-  //           },
-  //           onLeave: () => {
-  //             diskRotation.pause()
-  //             textAppear.timeScale(1)
-  //             textAppear.play()
-  //             gsap.to('.scene-main-img-mask', {
-  //               autoAlpha: 0,
-  //               duration: 1.25,
-  //               ease: 'bounce.inOut',
-  //             })
-  //           },
-  //           onLeaveBack: () => {
-  //             diskRotation.pause()
-  //             textAppear.timeScale(1)
-  //             textAppear.play()
-  //             gsap.to('.scene-main-img-mask', {
-  //               autoAlpha: 0,
-  //               duration: 1.25,
-  //               ease: 'bounce.inOut',
-  //             })
-  //           },
-  //         },
-  //         defaults: {
-  //           ease: 'none',
-  //         },
-  //       })
-  //       .fromTo(
-  //         '.scene-main-img',
-  //         {
-  //           yPercent: 15,
-  //         },
-  //         {
-  //           scale: 0.75,
-  //           yPercent: 0,
-  //           duration: 50,
-  //         },
-  //         0
-  //       )
-  //       .fromTo(
-  //         '.scene-secondary-img',
-  //         { yPercent: -300, xPercent: 250 },
-  //         {
-  //           yPercent: -110,
-  //           xPercent: 15,
-  //           duration: 25,
-  //           ease: 'back.inOut',
-  //         },
-  //         25
-  //       )
-  //       .addLabel('diskImpact', 50)
-  //       .to(
-  //         '.scene-secondary-img',
-  //         {
-  //           xPercent: 150,
-  //           yPercent: -150,
-  //           duration: 50,
-  //         },
-  //         50
-  //       )
-  //       .to(
-  //         '.scene-secondary-img',
-  //         {
-  //           scale: 0.5,
-  //           skewX: 25,
-  //           duration: 35,
-  //         },
-  //         50
-  //       )
-  //       .to(
-  //         '.scene-secondary-img',
-  //         {
-  //           scale: 0,
-  //           duration: 15,
-  //         },
-  //         85
-  //       )
-  //     gsap.utils.toArray('.mask-carousel > div').forEach((img: any, i) => {
-  //       tl.from(
-  //         img,
-  //         {
-  //           autoAlpha: 0,
-  //           duration: 3.5,
-  //           ease: 'none',
-  //         },
-  //         `diskImpact+=${i * 1.5}`
-  //       )
-  //     })
-  //   }, scene1)
-
-  //   return () => ctx.revert()
-  // }, [])
-
   useEffect(() => {
+    if (sound.current) {
+      sound.current.muted = false
+    }
+
     const ctx = gsap.context(() => {
       const diskRotation = gsap.timeline().to(
         '.scene-secondary-img',
@@ -211,20 +76,31 @@ export const SceneOne = () => {
         0
       )
 
+      gsap.from('.scene-main-img', {
+        autoAlpha: 0,
+        duration: 1.25,
+        ease: 'expo',
+      })
+
       gsap
         .timeline({
           scrollTrigger: {
             trigger: '.scene-1',
             start: 'top top',
-            end: '+=5000',
+            end: '+=7500',
             pin: true,
             scrub: true,
+            // onEnter: () => sound.play(),
             onLeave: () => diskRotation.pause(),
             onEnterBack: () => diskRotation.play(),
           },
           defaults: {
             ease: 'none',
           },
+          // onStart: () => {
+          //   sound.current?.play()
+          //   console.log('ciao')
+          // },
         })
         .fromTo(
           '.scene-main-img',
@@ -252,32 +128,6 @@ export const SceneOne = () => {
           12.5
         )
         .addLabel('diskImpact', 25)
-        .to(
-          '.scene-secondary-img',
-          {
-            xPercent: 150,
-            yPercent: -150,
-            duration: 65,
-          },
-          'diskImpact'
-        )
-        .to(
-          '.scene-secondary-img',
-          {
-            scale: 0.5,
-            skewX: 25,
-            duration: 25,
-          },
-          'diskImpact'
-        )
-        .to(
-          '.scene-secondary-img',
-          {
-            scale: 0,
-            duration: 15,
-          },
-          'diskImpact+=25'
-        )
         // voyager-animation
         .from(
           '.scene-main-img-mask .mask-carousel > *',
@@ -285,7 +135,7 @@ export const SceneOne = () => {
             autoAlpha: 0,
             duration: 1,
             stagger: {
-              amount: 50,
+              amount: 40,
             },
           },
           'diskImpact'
@@ -297,6 +147,33 @@ export const SceneOne = () => {
             duration: 5,
           },
           '>'
+        )
+        .addLabel('diskLeave', '<')
+        .to(
+          '.scene-secondary-img',
+          {
+            xPercent: 150,
+            yPercent: -150,
+            duration: 45,
+          },
+          'diskLeave'
+        )
+        .to(
+          '.scene-secondary-img',
+          {
+            scale: 0.5,
+            skewX: 25,
+            duration: 15,
+          },
+          'diskLeave'
+        )
+        .to(
+          '.scene-secondary-img',
+          {
+            scale: 0,
+            duration: 10,
+          },
+          'diskLeave+=15'
         )
         // fade-out
         .to(
@@ -312,7 +189,7 @@ export const SceneOne = () => {
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [sound])
 
   return (
     <div className='scene scene-1' ref={scene1}>
@@ -326,6 +203,11 @@ export const SceneOne = () => {
         </p>
       </div>
       <div className='scene-main-img'>
+        {/* <div className='scene-main-canvas'>
+          <div>
+            <Q2MaskCanvas />
+          </div>
+        </div> */}
         <div className='scene-main-img-mask'>
           <div className='mask-carousel'>
             {images.map((image: any, i: number) => {
