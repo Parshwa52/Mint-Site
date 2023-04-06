@@ -207,6 +207,7 @@ export const SceneTwo = () => {
         </div>
         <div className='buildings buildings-right'>
           <Building src='/assets/buildings/pluto-building-15.png' />
+          <Building src='/assets/buildings/pluto-building-2.png' />
           <Building src='/assets/buildings/pluto-building-12.png' />
           <Building src='/assets/buildings/pluto-building-10.png' />
           <Building src='/assets/buildings/pluto-building-5.png' />
@@ -216,7 +217,6 @@ export const SceneTwo = () => {
         <div className='buildings buildings-left'>
           <Building src='/assets/buildings/pluto-building-9.png' />
           <Building src='/assets/buildings/pluto-building-11.png' />
-          <Building src='/assets/buildings/pluto-building-2.png' />
           <Building src='/assets/buildings/pluto-building-13.png' />
           <Building src='/assets/buildings/pluto-building-7.png' />
           <Building src='/assets/buildings/pluto-building-8.png' />
