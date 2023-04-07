@@ -1,4 +1,5 @@
 import { Mouse } from '@/components/mouse'
+import { SoundButton } from '@/components/soundButton'
 import { ThreeJSBackground } from '@/components/threeJSBackground'
 import { PageLayout } from '@/layout/pageLayout'
 import { HomepageCity } from '@/sections/city'
@@ -15,6 +16,7 @@ export default function Home() {
       <HomepageHero />
       <HomepageCity />
       <Mouse />
+      <SoundButton />
     </PageLayout>
   )
 }

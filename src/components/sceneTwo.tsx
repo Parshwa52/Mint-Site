@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Split } from '@/utils/split'
 import { Q2MaskCanvas } from './q2MaskCanvas'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import ConnectWallet from './ui/ConnectWallet'
 
 export const SceneTwo = () => {
   const scene2 = useRef<HTMLDivElement>(null)
@@ -38,12 +39,12 @@ export const SceneTwo = () => {
           '.scene-bg',
           {
             background:
-              'linear-gradient(rgba(25,25,25,1) 0%, rgba(25,25,25,1) 25%, rgba(25,25,25,1) 50%, rgba(25,25,25,1) 75%, rgba(25,25,25,1) 100%)',
+              'linear-gradient(#000000 10%, #000000 40%, #000000 65%, #000000 100%)',
           },
           {
-            duration: 33,
+            duration: 66,
             background:
-              'linear-gradient(rgba(3,4,94,1) 0%, rgba(2,62,138,1) 25%, rgba(0,119,182,1) 50%, rgba(0,180,216,1) 75%, rgba(72,202,228,1) 100%)',
+              'linear-gradient(#000000 10%, #1B2947 40%, #2A425F 65%, #89DFF7 100%)',
           },
           0
         )
@@ -52,16 +53,16 @@ export const SceneTwo = () => {
           {
             duration: 33,
             background:
-              'linear-gradient(rgba(2,62,138,1) 0%, rgba(0,119,182,1) 25%, rgba(0,180,216,1) 50%, rgba(72,202,228,1) 75%, rgba(173,232,244,1) 100%)',
+              'linear-gradient(#1B2947 10%, #1B2947 40%, #2A425F 65%, #89DFF7 100%)',
           },
-          33
+          34
         )
         .to(
           '.scene-bg',
           {
             duration: 34,
             background:
-              'linear-gradient(rgba(0,180,216,1) 0%, rgba(72,202,228,1) 25%, rgba(144,224,239,1) 50%, rgba(202,240,248,1) 75%, rgba(202,240,248,1) 100%)',
+              'linear-gradient(#89DFF7 10%, #89DFF7 40%, #89DFF7 65%, #89DFF7 100%)',
           },
           64
         )
@@ -104,7 +105,23 @@ export const SceneTwo = () => {
           '.city-container .buildings-right > *',
           {
             xPercent: 100,
-            // yPercent: 50,
+            stagger: 10,
+          },
+          5
+        )
+        .from(
+          '.city-container .buildings-left > *',
+          {
+            xPercent: -100,
+            stagger: 10,
+          },
+          5
+        )
+        .from(
+          '.city-container .buildings-right > *',
+          {
+            // xPercent: 100,
+            yPercent: 100,
             stagger: 10,
           },
           10
@@ -112,11 +129,19 @@ export const SceneTwo = () => {
         .from(
           '.city-container .buildings-left > *',
           {
-            xPercent: -100,
-            // yPercent: 50,
+            // xPercent: -100,
+            yPercent: 100,
             stagger: 10,
           },
           10
+        )
+        .from(
+          '.city-container .cars > *',
+          {
+            yPercent: 100,
+            duration: 20,
+          },
+          20
         )
         .from(
           '.city-container .background > *',
@@ -143,7 +168,6 @@ export const SceneTwo = () => {
           },
           '>-75%'
         )
-
         .addLabel('cityBuilded', '>+50')
         .from(
           '.city-container .buildings-glow > *',
@@ -164,16 +188,16 @@ export const SceneTwo = () => {
           },
           'cityBuilded'
         )
-        .to(
-          '.city-container',
-          {
-            willChange: 'filter',
-            filter: 'blur(2px)',
-            duration: 25,
-            ease: 'expo.inOut',
-          },
-          'cityBuilded'
-        )
+        // .to(
+        //   '.city-container',
+        //   {
+        //     willChange: 'filter',
+        //     filter: 'blur(2px)',
+        //     duration: 25,
+        //     ease: 'expo.inOut',
+        //   },
+        //   'cityBuilded'
+        // )
         .from(
           '.q2-container',
           {
@@ -198,29 +222,33 @@ export const SceneTwo = () => {
           <Building src='/assets/clouds/2_Clouds1.png' />
           <Building src='/assets/clouds/3_Clouds2.png' />
           <Building src='/assets/clouds/10_Clouds3.png' />
-          <Building src='/assets/clouds/16_Clouds4.png' />
-          <Building src='/assets/clouds/20_Clouds5.png' />
         </div>
         <div className='buildings buildings-center'>
           <Building src='/assets/buildings/pluto-building-14.png' />
-          <Building src='/assets/buildings/pluto-building-6.png' />
         </div>
-        <div className='buildings buildings-right'>
-          <Building src='/assets/buildings/pluto-building-15.png' />
-          <Building src='/assets/buildings/pluto-building-2.png' />
-          <Building src='/assets/buildings/pluto-building-12.png' />
-          <Building src='/assets/buildings/pluto-building-10.png' />
-          <Building src='/assets/buildings/pluto-building-5.png' />
-          <Building src='/assets/buildings/pluto-building-1.png' />
-          <Building src='/assets/buildings/pluto-building-4.png' />
+        <div className='buildings cars'>
+          <Building src='/assets/buildings/pluto-cars.png' />
         </div>
         <div className='buildings buildings-left'>
           <Building src='/assets/buildings/pluto-building-9.png' />
           <Building src='/assets/buildings/pluto-building-11.png' />
           <Building src='/assets/buildings/pluto-building-13.png' />
+          <Building src='/assets/clouds/16_Clouds4.png' />
+
           <Building src='/assets/buildings/pluto-building-7.png' />
           <Building src='/assets/buildings/pluto-building-8.png' />
           <Building src='/assets/buildings/pluto-building-3.png' />
+        </div>
+        <div className='buildings buildings-right'>
+          <Building src='/assets/buildings/pluto-building-6.png' />
+          <Building src='/assets/buildings/pluto-building-15.png' />
+          <Building src='/assets/buildings/pluto-building-2.png' />
+          <Building src='/assets/buildings/pluto-building-12.png' />
+          <Building src='/assets/clouds/20_Clouds5.png' />
+          <Building src='/assets/buildings/pluto-building-10.png' />
+          <Building src='/assets/buildings/pluto-building-5.png' />
+          <Building src='/assets/buildings/pluto-building-1.png' />
+          <Building src='/assets/buildings/pluto-building-4.png' />
         </div>
         <div className='buildings buildings-glow'>
           <Building src='/assets/buildings/pluto-glow.png' />
@@ -242,12 +270,12 @@ export const SceneTwo = () => {
               objectFit: 'contain',
             }}
           />
-          {/* <ConnectButton /> */}
           <div className='q2-mask-container'>
             <div className='mask-canvas'>
               <Q2MaskCanvas />
             </div>
           </div>
+          <div className='q2-mask-wallet'>{/* <ConnectWallet /> */}</div>
         </div>
       </div>
     </div>

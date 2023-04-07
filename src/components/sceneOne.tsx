@@ -87,20 +87,15 @@ export const SceneOne = () => {
           scrollTrigger: {
             trigger: '.scene-1',
             start: 'top top',
-            end: '+=7500',
+            end: '+=8000',
             pin: true,
             scrub: true,
-            // onEnter: () => sound.play(),
             onLeave: () => diskRotation.pause(),
             onEnterBack: () => diskRotation.play(),
           },
           defaults: {
             ease: 'none',
           },
-          // onStart: () => {
-          //   sound.current?.play()
-          //   console.log('ciao')
-          // },
         })
         .fromTo(
           '.scene-main-img',
@@ -118,16 +113,21 @@ export const SceneOne = () => {
         // disk-impact
         .fromTo(
           '.scene-secondary-img',
-          { yPercent: -300, xPercent: 250 },
           {
-            yPercent: -110,
-            xPercent: 15,
-            duration: 12.5,
-            ease: 'back.inOut',
+            // yPercent: -300,
+            xPercent: 300,
+            skewX: 25,
           },
-          12.5
+          {
+            // yPercent: -110,
+            xPercent: 45,
+            skewX: 0,
+            duration: 20,
+            ease: 'back',
+          },
+          15
         )
-        .addLabel('diskImpact', 25)
+        .addLabel('diskImpact', 35)
         // voyager-animation
         .from(
           '.scene-main-img-mask .mask-carousel > *',
@@ -152,29 +152,26 @@ export const SceneOne = () => {
         .to(
           '.scene-secondary-img',
           {
-            xPercent: 150,
-            yPercent: -150,
-            duration: 45,
+            xPercent: 450,
+            duration: 35,
           },
           'diskLeave'
         )
         .to(
           '.scene-secondary-img',
           {
-            scale: 0.5,
             skewX: 25,
             duration: 15,
           },
           'diskLeave'
         )
-        .to(
-          '.scene-secondary-img',
-          {
-            scale: 0,
-            duration: 10,
-          },
-          'diskLeave+=15'
-        )
+        // .set(
+        //   '.scene-secondary-img',
+        //   {
+        //     display: 'none',
+        //   },
+        //   'diskLeave+=15'
+        // )
         // fade-out
         .to(
           '.scene-1',
@@ -184,7 +181,7 @@ export const SceneOne = () => {
             duration: 10,
             ease: 'power2.inOut',
           },
-          90
+          '>+15'
         )
     })
 
