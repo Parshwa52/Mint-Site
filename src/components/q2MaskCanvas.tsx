@@ -13,7 +13,6 @@ export const Q2MaskCanvas = () => {
       dpr={0.5}
     >
       <Face />
-      {/* <AsciiRenderer resolution={0.6} fgColor='white' bgColor='transparent' /> */}
       <EffectComposer>
         <Glitch />
       </EffectComposer>

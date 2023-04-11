@@ -5,8 +5,8 @@ import React from 'react'
 function test() {
   return (
     <div>
-        {/* <ConnectWallet /> */}
-        <ThreeJSLoading />
+      {/* <ConnectWallet /> */}
+      <ThreeJSLoading />
     </div>
   )
 }

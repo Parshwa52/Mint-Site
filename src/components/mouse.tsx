@@ -61,7 +61,7 @@ export const Mouse = () => {
           const audio = document.querySelector(
             '#mouse audio'
           ) as HTMLAudioElement
-          audio.play()
+          if (audio) audio.play()
           gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
             '#sound-button',
             { scale: 0 },

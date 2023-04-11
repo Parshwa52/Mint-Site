@@ -115,7 +115,7 @@ export const SceneOne = () => {
           '.scene-secondary-img',
           {
             // yPercent: -300,
-            xPercent: 300,
+            xPercent: 450,
             skewX: 25,
           },
           {
@@ -165,13 +165,6 @@ export const SceneOne = () => {
           },
           'diskLeave'
         )
-        // .set(
-        //   '.scene-secondary-img',
-        //   {
-        //     display: 'none',
-        //   },
-        //   'diskLeave+=15'
-        // )
         // fade-out
         .to(
           '.scene-1',
