@@ -8,6 +8,7 @@ import { Q2MaskCanvas } from './q2MaskCanvas'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ConnectWallet from './ui/ConnectWallet'
 import { useRouter } from 'next/router'
+import { useGlobalContext } from '@/provider/globalProvider'
 
 import img1 from '@/assets/placements/1_Cloud1.png'
 import img2 from '@/assets/placements/2_Cloud2.png'
@@ -42,8 +43,8 @@ import img30 from '@/assets/placements/30_Cloud10.png'
 import img31 from '@/assets/logo.png'
 
 export const SceneTwo = () => {
+  const { isSoundEnabled, scrollLenis } = useGlobalContext()
   const scene2 = useRef<HTMLDivElement>(null)
-  const [transitionState, setTransitionState] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -134,6 +135,7 @@ export const SceneTwo = () => {
           {
             yPercent: 100,
             autoAlpha: 0,
+            scale: 1.25,
           },
           0
         )
@@ -141,16 +143,18 @@ export const SceneTwo = () => {
           '.city-container .buildings-center > *',
           {
             yPercent: 100,
-            stagger: 5,
+            stagger: 10,
+            scale: 1.25,
           },
-          10
+          20
         )
-        .addLabel('buildingsCenterDone', '>-10')
+        .addLabel('buildingsCenterDone', '>-15')
         .from(
           '.city-container .buildings-left > *',
           {
             xPercent: -100,
             stagger: 10,
+            scale: 1.7,
           },
           'buildingsCenterDone-=10'
         )
@@ -159,25 +163,26 @@ export const SceneTwo = () => {
           {
             xPercent: 100,
             stagger: 7.5,
+            scale: 1.7,
           },
           'buildingsCenterDone-=5'
         )
-        .from(
-          '.city-container .buildings-left > *',
-          {
-            yPercent: 100,
-            stagger: 10,
-          },
-          'buildingsCenterDone-=5'
-        )
-        .from(
-          '.city-container .buildings-right > *',
-          {
-            yPercent: 100,
-            stagger: 7.5,
-          },
-          'buildingsCenterDone'
-        )
+        // .from(
+        //   '.city-container .buildings-left > *',
+        //   {
+        //     yPercent: 100,
+        //     stagger: 10,
+        //   },
+        //   'buildingsCenterDone-=5'
+        // )
+        // .from(
+        //   '.city-container .buildings-right > *',
+        //   {
+        //     yPercent: 100,
+        //     stagger: 7.5,
+        //   },
+        //   'buildingsCenterDone'
+        // )
         .fromTo(
           '.city-container .buildings-logo > *',
           {
@@ -193,29 +198,30 @@ export const SceneTwo = () => {
           'buildingsCenterDone+=10'
         )
         .from(
-          '.city-container .buildings-hover > *',
+          '.city-container .buildings-hover-left > *',
           {
             yPercent: 100,
+            xPercent: -50,
+            duration: 50,
           },
-          'buildingsCenterDone+=20'
+          'buildingsCenterDone+=30'
         )
-        .addLabel('buildingsDone', '>-=10')
+        .from(
+          '.city-container .buildings-hover-right > *',
+          {
+            yPercent: 100,
+            xPercent: 50,
+            duration: 50,
+          },
+          'buildingsCenterDone+=30'
+        )
+        .addLabel('buildingsDone', '>')
         .to(
           '.city-container .buildings-logo > *',
           {
             yPercent: -100,
             duration: 45,
             ease: 'power1.inOut',
-          },
-          'buildingsDone'
-        )
-        .to(
-          '.city-container',
-          {
-            willChange: 'filter',
-            filter: 'blur(2px)',
-            duration: 25,
-            ease: 'expo.inOut',
           },
           'buildingsDone'
         )
@@ -228,36 +234,46 @@ export const SceneTwo = () => {
           },
           'buildingsDone'
         )
+        .to(
+          '.city-container',
+          {
+            willChange: 'filter',
+            filter: 'blur(2px)',
+            duration: 25,
+            ease: 'expo.inOut',
+          },
+          '>-25%'
+        )
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [scrollLenis])
 
-  useEffect(() => {
-    if (transitionState) {
-      gsap
-        .timeline({
-          onComplete: () => {
-            router.push('/connected')
-          },
-        })
-        .to(
-          ['.city-container', '.q2-container'],
-          {
-            willChange: 'opacity',
-            duration: 2,
-            ease: 'expo.in',
-            autoAlpha: 0,
-          },
-          0
-        )
-      gsap.to('.scene-bg', {
-        background: 'black',
-        duration: 2,
-        ease: 'expo.in',
-      })
-    }
-  }, [transitionState, router])
+  // useEffect(() => {
+  //   if (isSoundEnabled) {
+  //     gsap
+  //       .timeline({
+  //         onComplete: () => {
+  //           router.push('/connected')
+  //         },
+  //       })
+  //       .to(
+  //         ['.city-container', '.q2-container'],
+  //         {
+  //           willChange: 'opacity',
+  //           duration: 2,
+  //           ease: 'expo.in',
+  //           autoAlpha: 0,
+  //         },
+  //         0
+  //       )
+  //     gsap.to('.scene-bg', {
+  //       background: 'black',
+  //       duration: 2,
+  //       ease: 'expo.in',
+  //     })
+  //   }
+  // }, [isSoundEnabled, router])
 
   return (
     <div className='scene scene-2' ref={scene2}>
@@ -273,15 +289,20 @@ export const SceneTwo = () => {
           <Building src={img8} />
           <Building src={img9} />
         </div>
-        <div className='buildings buildings-center'>
-          <Building src={img10} />
+        <div className='buildings buildings-right'>
           <Building src={img11} />
-          <Building src={img12} />
           <Building src={img13} />
-          <Building src={img14} />
         </div>
         <div className='buildings buildings-left'>
+          <Building src={img10} />
+          <Building src={img12} />
           <Building src={img15} />
+        </div>
+        <div className='buildings buildings-right'>
+          <Building src={img21} />
+        </div>
+        <div className='buildings buildings-center'>
+          <Building src={img14} />
         </div>
         <div className='buildings buildings-center'>
           <Building src={img16} />
@@ -293,7 +314,6 @@ export const SceneTwo = () => {
         </div>
         <div className='buildings buildings-right'>
           <Building src={img17} />
-          <Building src={img21} />
           <Building src={img19} />
           <Building src={img20} />
           <Building src={img22} />
@@ -301,10 +321,14 @@ export const SceneTwo = () => {
           <Building src={img26} />
           <Building src={img27} />
         </div>
-        <div className='buildings buildings-hover'>
+        <div className='buildings buildings-center'>
           <Building src={img28} />
-          <Building src={img29} />
+        </div>
+        <div className='buildings buildings-hover-left'>
           <Building src={img30} />
+        </div>
+        <div className='buildings buildings-hover-right'>
+          <Building src={img29} />
         </div>
         <div className='buildings buildings-logo'>
           <Building src={img31} />

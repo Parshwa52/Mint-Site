@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
 import { gsap } from 'gsap'
+import { useGlobalContext } from '@/provider/globalProvider'
 
 export const Mouse = () => {
+  const { setSoundStatus } = useGlobalContext()
+
   useEffect(() => {
     const ball = document.querySelector('#mouse') as HTMLDivElement
 
@@ -57,7 +60,8 @@ export const Mouse = () => {
           mouse.y = e.y
         })
 
-        window.addEventListener('click', () => {
+        const handleClick = () => {
+          setSoundStatus(true)
           const audio = document.querySelector(
             '#mouse audio'
           ) as HTMLAudioElement
@@ -79,7 +83,11 @@ export const Mouse = () => {
               isActive = false
             },
           })
-        })
+
+          window.removeEventListener('click', handleClick)
+        }
+
+        window.addEventListener('click', handleClick)
 
         gsap.ticker.add(() => {
           // adjust speed for higher refresh monitors

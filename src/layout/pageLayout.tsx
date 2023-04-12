@@ -7,6 +7,7 @@ import Lenis from '@studio-freight/lenis'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 // Custom components
 import SEO from '@/components/SEO'
+import { useGlobalContext } from '@/provider/globalProvider'
 
 interface pageProps {
   pageTitle?: string
@@ -15,6 +16,7 @@ interface pageProps {
 }
 
 export const PageLayout = (props: pageProps) => {
+  const { setScrollLenis } = useGlobalContext()
   const router = useRouter()
 
   useEffect(() => {
@@ -30,10 +32,13 @@ export const PageLayout = (props: pageProps) => {
 
     requestAnimationFrame(raf)
 
+    setScrollLenis(lenis)
+
     return () => {
       // destroy and init scroller every time page is changed, in case there will be more pages in future
       lenis.destroy()
       // update the global value
+      setScrollLenis(null)
     }
   }, [router])
 

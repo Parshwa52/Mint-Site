@@ -4,11 +4,15 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
+import { useGlobalContext } from '@/provider/globalProvider'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 // import { Q2MaskCanvas } from './q2MaskCanvas1'
 
 export const SceneOne = () => {
+  const { scrollLenis } = useGlobalContext()
+
   const scene1 = useRef<HTMLDivElement>(null)
-  const sound = useRef<HTMLAudioElement>(null)
+  const voyagerTl = useRef<GSAPTimeline>()
 
   const [currExp, setExp] = useState('')
 
@@ -60,13 +64,9 @@ export const SceneOne = () => {
   ]
 
   useEffect(() => {
-    if (sound.current) {
-      sound.current.muted = false
-    }
-
     const ctx = gsap.context(() => {
       const diskRotation = gsap.timeline().to(
-        '.scene-secondary-img',
+        '.scene-secondary-img > div',
         {
           rotate: 360,
           duration: 10,
@@ -111,19 +111,29 @@ export const SceneOne = () => {
           0
         )
         // disk-impact
-        .fromTo(
-          '.scene-secondary-img',
-          {
-            // yPercent: -300,
-            xPercent: 450,
-            skewX: 25,
+        .call(
+          () => {
+            voyagerTl.current?.reversed()
+              ? voyagerTl.current?.play()
+              : voyagerTl.current?.reverse()
+            if (scrollLenis) scrollLenis?.stop()
           },
+          undefined,
+          '>'
+        )
+        .to(
+          '.scene-secondary-img',
+          // {
+          //   // yPercent: -300,
+          //   xPercent: 450,
+          //   skewX: 25,
+          // },
           {
             // yPercent: -110,
-            xPercent: 45,
-            skewX: 0,
+            // xPercent: 45,
+            // skewX: 0,
             duration: 20,
-            ease: 'back',
+            // ease: 'back',
           },
           15
         )
@@ -150,15 +160,16 @@ export const SceneOne = () => {
         )
         .addLabel('diskLeave', '<')
         .to(
-          '.scene-secondary-img',
+          '.scene-secondary-img > div',
           {
             xPercent: 450,
             duration: 35,
+            ease: 'power1.in',
           },
           'diskLeave'
         )
         .to(
-          '.scene-secondary-img',
+          '.scene-secondary-img > div',
           {
             skewX: 25,
             duration: 15,
@@ -176,10 +187,39 @@ export const SceneOne = () => {
           },
           '>+15'
         )
+
+      voyagerTl.current = gsap
+        .timeline({
+          paused: true,
+          reversed: true,
+          onComplete: () => {
+            if (scrollLenis) scrollLenis?.start()
+          },
+          onReverseComplete: () => {
+            if (scrollLenis) scrollLenis?.start()
+          },
+        })
+        .fromTo(
+          '.scene-secondary-img',
+          {
+            xPercent: 450,
+            skewX: 25,
+          },
+          {
+            xPercent: 45,
+            skewX: 0,
+            duration: 4,
+            ease: 'back',
+          }
+        )
+
+      return () => voyagerTl.current?.revert()
     })
 
-    return () => ctx.revert()
-  }, [sound])
+    return () => {
+      ctx.revert()
+    }
+  }, [scrollLenis])
 
   return (
     <div className='scene scene-1' ref={scene1}>

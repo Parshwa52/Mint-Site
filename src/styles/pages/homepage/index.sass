@@ -13,10 +13,6 @@ main
     canvas
       height: 100%
       width: 100%
-    .star
-      position: fixed
-      border-radius: 50%
-      background-color: #fff
   #mouse
     position: fixed
     top: 0
@@ -25,8 +21,9 @@ main
     pointer-events: none
     @extend %flex-center
     flex-direction: column
+    mix-blend-mode: exclusion
     > div
-      border: 2px solid $clr-primary
+      // border: 2px solid $clr-primary
       @extend %flex-center
       overflow: hidden
       height: 44px
@@ -63,8 +60,9 @@ main
     z-index: 2
     width: 42px
     height: 42px
-    border-radius: 10px
-    border: 2px solid $clr-primary
+    mix-blend-mode: exclusion
+    // border-radius: 10px
+    // border: 2px solid $clr-primary
     overflow: hidden
     cursor: pointer
     .button-wave
