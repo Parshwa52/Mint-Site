@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
-import { Q2MaskCanvas } from './q2MaskCanvas1'
+// import { Q2MaskCanvas } from './q2MaskCanvas1'
 
 export const SceneOne = () => {
   const scene1 = useRef<HTMLDivElement>(null)

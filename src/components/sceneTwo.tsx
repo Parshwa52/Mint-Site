@@ -329,7 +329,15 @@ export const SceneTwo = () => {
             </div>
           </div>
           <div className='q2-mask-wallet'>
-            <button onClick={() => setTransitionState(true)} />
+            {/* <ConnectWallet /> */}
+            <ConnectButton
+              showBalance={false}
+              accountStatus={{
+                smallScreen: 'avatar',
+                largeScreen: 'full',
+              }}
+            />
+            {/* <button onClick={() => setTransitionState(true)} /> */}
           </div>
         </div>
       </div>

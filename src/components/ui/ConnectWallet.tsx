@@ -1,5 +1,5 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React from "react";
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import React from 'react'
 
 function ConnectWallet(): JSX.Element {
   return (
@@ -7,12 +7,12 @@ function ConnectWallet(): JSX.Element {
       <ConnectButton
         showBalance={false}
         accountStatus={{
-          smallScreen: "avatar",
-          largeScreen: "full",
+          smallScreen: 'avatar',
+          largeScreen: 'full',
         }}
       />
     </div>
-  );
+  )
 }
 
-export default ConnectWallet;
+export default ConnectWallet
