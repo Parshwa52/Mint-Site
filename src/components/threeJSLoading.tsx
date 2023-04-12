@@ -112,8 +112,8 @@ const ThreeJSLoading = () => {
           `#include <color_vertex>
            float d = length(abs(position) / vec3(40., 10., 40.));
            d = clamp(d, 0., 1.);
-           vColor = mix(vec3(227., 155., 0.), vec3(100., 50., 255.), d) / 255.;
-`
+           vColor = mix(vec3(113., 218., 188.), vec3(228., 97., 157.), d) / 255.;
+           `
         )
         .replace(
           `#include <begin_vertex>`,
