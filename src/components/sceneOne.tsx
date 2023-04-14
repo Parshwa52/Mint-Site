@@ -82,7 +82,7 @@ export const SceneOne = () => {
         ease: 'expo',
       })
 
-      gsap
+      const pinTl = gsap
         .timeline({
           scrollTrigger: {
             trigger: '.scene-1',
@@ -90,8 +90,12 @@ export const SceneOne = () => {
             end: '+=8000',
             pin: true,
             scrub: true,
+            // invalidateOnRefresh: true,
             onLeave: () => diskRotation.pause(),
             onEnterBack: () => diskRotation.play(),
+            onRefresh: () => {
+              // console.log('hello')
+            },
           },
           defaults: {
             ease: 'none',
@@ -144,6 +148,7 @@ export const SceneOne = () => {
           {
             autoAlpha: 0,
             duration: 1,
+            willChange: 'opacity',
             stagger: {
               amount: 40,
             },
@@ -213,6 +218,10 @@ export const SceneOne = () => {
           }
         )
 
+      window.addEventListener('resize', () => {
+        // pinTl.ref
+      })
+
       return () => voyagerTl.current?.revert()
     })
 
@@ -247,9 +256,10 @@ export const SceneOne = () => {
                     src={image}
                     alt='Q2 mascot'
                     fill
-                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                    sizes='33vw'
                     style={{
-                      objectFit: 'cover',
+                      objectFit: 'contain',
+                      objectPosition: 'center',
                     }}
                   />
                 </div>
@@ -264,8 +274,10 @@ export const SceneOne = () => {
           priority
           sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
           loading='eager'
+          className='imgimg'
           style={{
             objectFit: 'contain',
+            objectPosition: 'center bottom',
           }}
         />
       </div>

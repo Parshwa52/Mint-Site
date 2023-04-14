@@ -38,9 +38,14 @@ import img25 from '@/assets/placements/25_POP_Building.png'
 import img26 from '@/assets/placements/26_Characters.png'
 import img27 from '@/assets/placements/27_Green_Structure.png'
 import img28 from '@/assets/placements/28_Cars_smokes_lines.png'
-import img29 from '@/assets/placements/29_Cloud9.png'
-import img30 from '@/assets/placements/30_Cloud10.png'
-import img31 from '@/assets/logo.png'
+import img29 from '@/assets/placements/29_Clouds9.png'
+import img30 from '@/assets/placements/30_Clouds10.png'
+import img31 from '@/assets/placements/31_Clouds11.png'
+import img32 from '@/assets/placements/32_Clouds12.png'
+import img33 from '@/assets/placements/33_Clouds13.png'
+import img34 from '@/assets/placements/34_Clouds14.png'
+import img35 from '@/assets/placements/35_Clouds15.png'
+import img36 from '@/assets/logo.png'
 
 export const SceneTwo = () => {
   const { isSoundEnabled, scrollLenis } = useGlobalContext()
@@ -326,12 +331,17 @@ export const SceneTwo = () => {
         </div>
         <div className='buildings buildings-hover-left'>
           <Building src={img30} />
+          <Building src={img32} />
+          <Building src={img33} />
+          <Building src={img34} />
         </div>
         <div className='buildings buildings-hover-right'>
           <Building src={img29} />
+          <Building src={img31} />
+          <Building src={img35} />
         </div>
         <div className='buildings buildings-logo'>
-          <Building src={img31} />
+          <Building src={img36} />
         </div>
       </div>
       <div className='q2-container'>
@@ -375,7 +385,7 @@ const Building = ({ src, className }: { src: any; className?: string }) => {
       src={src}
       alt='building'
       className='building-container'
-      loading='eager'
+      sizes='60vw'
       style={{
         objectFit: 'cover',
       }}
