@@ -21,7 +21,9 @@ export const PageLayout = (props: pageProps) => {
 
   useEffect(() => {
     // init smooth scroll
-    const lenis = new Lenis()
+    const lenis = new Lenis({
+      normalizeWheel: true,
+    })
 
     lenis.on('scroll', ScrollTrigger.update)
 

@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 // custom components
-import { Background } from '@/components/backgroundOne'
-import { SceneOne } from '@/components/sceneOne'
-import { ThreeJSBackground } from '@/components/threeJSBackground'
+import { SceneOne } from '@/components/scene1/sceneOne'
 
 export const HomepageHero = () => {
   useEffect(() => {}, [])

@@ -62,10 +62,6 @@ export const Mouse = () => {
 
         const handleClick = () => {
           setSoundStatus(true)
-          const audio = document.querySelector(
-            '#mouse audio'
-          ) as HTMLAudioElement
-          if (audio) audio.play()
           gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
             '#sound-button',
             { scale: 0 },
@@ -116,10 +112,10 @@ export const Mouse = () => {
           <li />
           <li />
         </ul>
-        <audio
+        {/* <audio
           src='/assets/sounds/Space-Ambience.mp3'
           style={{ display: 'none' }}
-        ></audio>
+        ></audio> */}
       </div>
       <p>Click for sound</p>
     </div>

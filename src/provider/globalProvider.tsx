@@ -6,6 +6,8 @@ interface GlobalInterface {
   // Manage Sound enabled
   isSoundEnabled: boolean
   setSoundStatus?: React.ComponentState
+  // sound array
+  soundsArray: any[]
   // Manage scroll state
   scrollLenis: Lenis | null
   setScrollLenis?: React.ComponentState
@@ -14,6 +16,7 @@ interface GlobalInterface {
 const defaultGlobalState = {
   isSoundEnabled: false,
   scrollLenis: null,
+  soundsArray: [],
 }
 
 const GlobalCtx = createContext<GlobalInterface>(defaultGlobalState)
@@ -23,12 +26,14 @@ const GlobalProvider = ({ children }: { children: any }) => {
     defaultGlobalState.isSoundEnabled
   )
   const [scrollLenis, setScrollLenis] = useState(defaultGlobalState.scrollLenis)
+  const soundsArray = defaultGlobalState.soundsArray
 
   return (
     <GlobalCtx.Provider
       value={{
         isSoundEnabled,
         setSoundStatus,
+        soundsArray,
         scrollLenis,
         setScrollLenis,
       }}

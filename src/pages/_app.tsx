@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import '@/styles/globals.sass'
+import { useCallback, useEffect } from 'react'
 
 // Gsap register plugins
 import gsap from 'gsap'
@@ -14,16 +15,26 @@ import { WagmiConfig } from 'wagmi'
 //RainbowKit customisation
 import { chains, customTheme, wagmiClient } from '@/utils/rainbowkitconfig'
 import GlobalProvider from '@/provider/globalProvider'
+import { AudioManager } from '@/components/audioManager'
 
 gsap.registerPlugin(Flip) // remove if not needed
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App({ Component, pageProps }: AppProps) {
+  const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), [])
+
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      resetWindowScrollPosition()
+    }
+  }, [resetWindowScrollPosition])
+
   return (
     <GlobalProvider>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains} theme={customTheme}>
           <Component {...pageProps} />
+          <AudioManager />
         </RainbowKitProvider>
       </WagmiConfig>
     </GlobalProvider>

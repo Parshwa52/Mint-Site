@@ -1,30 +1,21 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getSession } from 'next-auth/react'
-import { getToken } from 'next-auth/jwt'
-import React from 'react'
-import { PageLayout } from '@/layout/pageLayout'
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  const token = await getToken({ req: context.req })
-  const address = token?.sub ?? null
-  // If you have a value for "address" here, your
-  // server knows the user is authenticated.
-  // You can then pass any data you want
-  // to the page component here.
-  return {
-    props: {
-      address,
-      session,
-    },
-  }
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+
+const Connected = () => {
+  const { address, isConnected } = useAccount()
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  })
+  const { disconnect } = useDisconnect()
+
+  if (isConnected)
+    return (
+      <div>
+        Connected to {address}
+        <button onClick={() => disconnect()}>Disconnect</button>
+      </div>
+    )
+  return <button onClick={() => connect()}>Connect Wallet</button>
 }
-type AuthenticatedPageProps = InferGetServerSidePropsType<
-  typeof getServerSideProps
->
-export default function Connected({ address }: AuthenticatedPageProps) {
-  return (
-    <PageLayout pageTitle='Pluto connection status' pageDesc='lorem ipsum'>
-      {address ? <h1>Authenticated as {address}</h1> : <h1>Unauthenticated</h1>}
-    </PageLayout>
-  )
-}
+
+export default Connected
