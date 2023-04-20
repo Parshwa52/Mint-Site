@@ -8,6 +8,7 @@ import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 // Custom components
 import SEO from '@/components/SEO'
 import { useGlobalContext } from '@/provider/globalProvider'
+import { AspectRatioManager } from '@/components/aspectRatioManager'
 
 interface pageProps {
   pageTitle?: string
@@ -47,6 +48,7 @@ export const PageLayout = (props: pageProps) => {
   return (
     <main>
       <SEO title={props.pageTitle || 'Pluto'} desc={props.pageDesc || ''} />
+      <AspectRatioManager />
       {props.children}
     </main>
   )

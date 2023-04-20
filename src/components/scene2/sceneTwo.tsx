@@ -6,6 +6,7 @@ import Image from 'next/image'
 import gsap from 'gsap'
 // Rainbow & Wagmi
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useAccount } from 'wagmi'
 // Custom components
 import { useGlobalContext } from '@/provider/globalProvider'
 import { Q2MaskCanvas } from './q2MaskCanvas'
@@ -49,8 +50,15 @@ import img36 from '@/assets/logo.png'
 
 export const SceneTwo = () => {
   const { isSoundEnabled, scrollLenis, soundsArray } = useGlobalContext()
+  const { isConnecting, isConnected, isDisconnected } = useAccount()
   const scene2 = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    console.log('wallet is connecting ', isConnecting)
+    console.log('wallet is connected ', isConnected)
+    console.log('wallet is disconnected ', isDisconnected)
+  }, [isConnecting, isConnected, isDisconnected])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
