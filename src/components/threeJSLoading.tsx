@@ -20,7 +20,7 @@ const ThreeJSLoading = () => {
       1, // Near clipping plane
       1000 // Far clipping plane
     );
-    camera.position.set(0, 4, 21);
+    camera.position.set(0, 7, 1);
 
     // Create a new WebGL renderer and set its size
     let renderer = new THREE.WebGLRenderer();
@@ -40,8 +40,8 @@ const ThreeJSLoading = () => {
     let controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.enablePan = false;
-    controls.minDistance = 7;
-    controls.maxDistance = 40;
+    controls.minDistance = 5;
+    controls.maxDistance = 25;
 
     // Define some properties for the particles
     let gu = {
@@ -112,7 +112,7 @@ const ThreeJSLoading = () => {
           `#include <color_vertex>
            float d = length(abs(position) / vec3(40., 10., 40.));
            d = clamp(d, 0., 1.);
-           vColor = mix(vec3(113., 218., 188.), vec3(228., 97., 157.), d) / 255.;
+           vColor = mix(vec3(113., 218., 188) / 255., vec3(134., 43., 79) / 255.,  d);
            `
         )
         .replace(
