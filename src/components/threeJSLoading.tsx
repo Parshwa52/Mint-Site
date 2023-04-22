@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import React, { useEffect, useRef } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { LoadingMouse } from "./loadingMouse";
 
 const ThreeJSLoading = () => {
   // Create a reference to the mount point for the Three.js scene
@@ -20,7 +21,7 @@ const ThreeJSLoading = () => {
       1, // Near clipping plane
       1000 // Far clipping plane
     );
-    camera.position.set(0, 7, 1);
+    camera.position.set(3, 1, 6);
 
     // Create a new WebGL renderer and set its size
     let renderer = new THREE.WebGLRenderer();
@@ -41,7 +42,7 @@ const ThreeJSLoading = () => {
     controls.enableDamping = true;
     controls.enablePan = false;
     controls.minDistance = 5;
-    controls.maxDistance = 25;
+    controls.maxDistance = 30;
 
     // Define some properties for the particles
     let gu = {
@@ -112,9 +113,10 @@ const ThreeJSLoading = () => {
           `#include <color_vertex>
            float d = length(abs(position) / vec3(40., 10., 40.));
            d = clamp(d, 0., 1.);
-           vColor = mix(vec3(113., 218., 188) / 255., vec3(134., 43., 79) / 255.,  d);
+           vColor = mix(vec3(40., 187., 217) / 255., vec3(228., 41., 136) / 255.,  d);
            `
         )
+        
         .replace(
           `#include <begin_vertex>`,
           `#include <begin_vertex>
@@ -162,9 +164,11 @@ const ThreeJSLoading = () => {
   }, []);
 
   return (
-    <>
-      <div ref={mount} />
-    </>
+    <div ref={mount} className="relative w-screen h-screen overflow-hidden cursor-all-scroll	">
+      <div className="absolute -ml-[65px] mt-5 text-white font-heading">
+        <LoadingMouse />
+      </div>
+    </div>
   );
 };
 
