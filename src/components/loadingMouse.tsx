@@ -3,7 +3,6 @@ import { gsap } from "gsap";
 import { useGlobalContext } from "@/provider/globalProvider";
 
 export const LoadingMouse = () => {
-
   useEffect(() => {
     const ball = document.querySelector("#mouse-loading") as HTMLDivElement;
 
@@ -66,7 +65,10 @@ export const LoadingMouse = () => {
 
   return (
     <div id="mouse-loading">
-      <p>Drag/Scroll to move</p>
+      <p className="flex flex-col text-center">
+        <span>Drag and hold </span>
+        <span>Zoom in out</span>
+      </p>
     </div>
   );
 };

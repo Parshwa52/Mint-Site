@@ -11,8 +11,10 @@ module.exports = {
   theme: {
     fontFamily: {
       'heading': ['Bungee Inline', 'cursive'],
+      'courier': ['Courier New', 'cursive'],
     },
     extend: {},
   },
   plugins: [],
 }
+
