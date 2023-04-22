@@ -54,11 +54,11 @@ export const SceneTwo = () => {
   const scene2 = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    console.log('wallet is connecting ', isConnecting)
-    console.log('wallet is connected ', isConnected)
-    console.log('wallet is disconnected ', isDisconnected)
-  }, [isConnecting, isConnected, isDisconnected])
+  // useEffect(() => {
+  //   console.log('wallet is connecting ', isConnecting)
+  //   console.log('wallet is connected ', isConnected)
+  //   console.log('wallet is disconnected ', isDisconnected)
+  // }, [isConnecting, isConnected, isDisconnected])
 
   useEffect(() => {
     const ctx = gsap.context(() => {

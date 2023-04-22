@@ -1,11 +1,11 @@
 // React
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // gsap
 import gsap from 'gsap'
 import Image from 'next/image'
 import { Split } from '@/utils/split'
 import { useGlobalContext } from '@/provider/globalProvider'
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import { Q2MaskCanvas } from './q2MaskCanvas'
 // import { Q2MaskCanvas } from './q2MaskCanvas1'
 
 export const SceneOne = () => {
@@ -13,6 +13,28 @@ export const SceneOne = () => {
 
   const scene1 = useRef<HTMLDivElement>(null)
   const voyagerTl = useRef<GSAPTimeline>()
+
+  const [currExpression, setCurrExpression] = useState(0)
+
+  useEffect(() => {
+    let interval: any
+    if (currExpression === 0 || currExpression === 1) {
+      interval = setInterval(() => {
+        if (currExpression === 0) setCurrExpression(1)
+        else if (currExpression === 1) setCurrExpression(0)
+      }, 1500)
+    }
+    if (currExpression === 6 || currExpression === 7) {
+      interval = setInterval(() => {
+        if (currExpression === 6) setCurrExpression(7)
+        else if (currExpression === 7) setCurrExpression(6)
+      }, 1500)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [currExpression])
 
   const images = [
     '/assets/voyager-carousel/voyager-01.jpg',
@@ -52,6 +74,7 @@ export const SceneOne = () => {
   ]
 
   useEffect(() => {
+    let pastDuration = 0
     const ctx = gsap.context(() => {
       const diskRotation = gsap.timeline().to(
         '.scene-secondary-img > div',
@@ -70,7 +93,7 @@ export const SceneOne = () => {
         ease: 'expo',
       })
 
-      gsap
+      const tl = gsap
         .timeline({
           scrollTrigger: {
             trigger: '.scene-1',
@@ -88,11 +111,12 @@ export const SceneOne = () => {
         .fromTo(
           '.scene-main-img',
           {
-            yPercent: 15,
+            // scale: 1.25,
+            yPercent: 30,
           },
           {
-            scale: 0.75,
-            yPercent: 0,
+            // scale: 0.75,
+            yPercent: 15,
             duration: 22.5,
             ease: 'power1.inOut',
           },
@@ -166,6 +190,19 @@ export const SceneOne = () => {
           'diskLeave'
         )
         // fade-out
+        .call(
+          () => {
+            console.log(tl.progress())
+            if (pastDuration > tl.progress()) {
+              setCurrExpression(5)
+            } else {
+              setCurrExpression(6)
+            }
+            pastDuration = tl.progress()
+          },
+          undefined,
+          'diskLeave'
+        )
         .to(
           '.scene-1',
           {
@@ -174,7 +211,7 @@ export const SceneOne = () => {
             duration: 10,
             ease: 'power2.inOut',
           },
-          '>+15'
+          '>+35'
         )
 
       voyagerTl.current = gsap
@@ -183,6 +220,7 @@ export const SceneOne = () => {
           reversed: true,
           onComplete: () => {
             if (scrollLenis) scrollLenis?.start()
+            setCurrExpression(5)
           },
           onReverseComplete: () => {
             if (scrollLenis) scrollLenis?.start()
@@ -197,9 +235,37 @@ export const SceneOne = () => {
           {
             xPercent: 45,
             skewX: 0,
-            duration: 4,
+            duration: 7,
             ease: 'back',
-          }
+          },
+          0
+        )
+        .call(
+          () => {
+            voyagerTl.current?.reversed()
+              ? setCurrExpression(0)
+              : setCurrExpression(2)
+          },
+          undefined,
+          0
+        )
+        .call(
+          () => {
+            voyagerTl.current?.reversed()
+              ? setCurrExpression(2)
+              : setCurrExpression(3)
+          },
+          undefined,
+          1.5
+        )
+        .call(
+          () => {
+            voyagerTl.current?.reversed()
+              ? setCurrExpression(3)
+              : setCurrExpression(4)
+          },
+          undefined,
+          2.5
         )
 
       return () => voyagerTl.current?.revert()
@@ -236,11 +302,6 @@ export const SceneOne = () => {
         </p>
       </div>
       <div className='scene-main-img'>
-        {/* <div className='scene-main-canvas'>
-          <div>
-            <Q2MaskCanvas />
-          </div>
-        </div> */}
         <div className='scene-main-img-mask'>
           <div className='mask-carousel'>
             {images.map((image: any, i: number) => {
@@ -261,14 +322,29 @@ export const SceneOne = () => {
             })}
           </div>
         </div>
+        <div className='scene-exp-img-mask'>
+          <Q2MaskCanvas currExp={currExpression} />
+        </div>
         <Image
-          src='/assets/sunbeam.png'
+          src='/assets/q2/q2_body.png'
           alt='Q2 mascot'
           fill
           priority
           sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
           loading='eager'
-          className='imgimg'
+          style={{
+            objectFit: 'contain',
+            objectPosition: 'center bottom',
+          }}
+        />
+        <Image
+          src='/assets/q2/q2_band.png'
+          alt='Q2 band'
+          fill
+          priority
+          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+          loading='eager'
+          className='main-img-band'
           style={{
             objectFit: 'contain',
             objectPosition: 'center bottom',
