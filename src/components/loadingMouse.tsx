@@ -66,7 +66,7 @@ export const LoadingMouse = () => {
 
   return (
     <div id="mouse-loading">
-      <p>Drag to move</p>
+      <p>Drag/Scroll to move</p>
     </div>
   );
 };

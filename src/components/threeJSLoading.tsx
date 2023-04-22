@@ -113,10 +113,10 @@ const ThreeJSLoading = () => {
           `#include <color_vertex>
            float d = length(abs(position) / vec3(40., 10., 40.));
            d = clamp(d, 0., 1.);
-           vColor = mix(vec3(40., 187., 217) / 255., vec3(228., 41., 136) / 255.,  d);
-           `
+           vColor = mix( vec3(134., 43., 79.) / 255.,vec3(165., 122., 193.) / 255., d);
+          `
         )
-        
+
         .replace(
           `#include <begin_vertex>`,
           `#include <begin_vertex>
@@ -164,8 +164,11 @@ const ThreeJSLoading = () => {
   }, []);
 
   return (
-    <div ref={mount} className="relative w-screen h-screen overflow-hidden cursor-all-scroll	">
-      <div className="absolute -ml-[65px] mt-5 text-white font-heading">
+    <div
+      ref={mount}
+      className="relative w-screen h-screen overflow-hidden cursor-all-scroll	"
+    >
+      <div className="absolute -ml-[100px] mt-5 text-white font-heading shadow-xl">
         <LoadingMouse />
       </div>
     </div>
@@ -173,3 +176,6 @@ const ThreeJSLoading = () => {
 };
 
 export default ThreeJSLoading;
+
+//light shade - to keep minimum 9D6EBB
+//dark shade - to have max 862B4F
