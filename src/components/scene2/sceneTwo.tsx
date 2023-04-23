@@ -1,6 +1,5 @@
 // React
-import { useEffect, useRef } from 'react'
-import { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 // gsap
 import gsap from 'gsap'
@@ -52,7 +51,21 @@ export const SceneTwo = () => {
   const { isSoundEnabled, scrollLenis, soundsArray } = useGlobalContext()
   const { isConnecting, isConnected, isDisconnected } = useAccount()
   const scene2 = useRef<HTMLDivElement>(null)
-  const router = useRouter()
+  const [currExpression, setCurrExpression] = useState(0)
+
+  useEffect(() => {
+    let interval: any
+    if (currExpression === 0 || currExpression === 1) {
+      interval = setInterval(() => {
+        if (currExpression === 0) setCurrExpression(1)
+        else if (currExpression === 1) setCurrExpression(0)
+      }, 1500)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [currExpression])
 
   // useEffect(() => {
   //   console.log('wallet is connecting ', isConnecting)
@@ -295,31 +308,20 @@ export const SceneTwo = () => {
     }
   }, [isSoundEnabled, soundsArray])
 
-  // useEffect(() => {
-  //   if (isSoundEnabled) {
-  //     gsap
-  //       .timeline({
-  //         onComplete: () => {
-  //           router.push('/connected')
-  //         },
-  //       })
-  //       .to(
-  //         ['.city-container', '.q2-container'],
-  //         {
-  //           willChange: 'opacity',
-  //           duration: 2,
-  //           ease: 'expo.in',
-  //           autoAlpha: 0,
-  //         },
-  //         0
-  //       )
-  //     gsap.to('.scene-bg', {
-  //       background: 'black',
-  //       duration: 2,
-  //       ease: 'expo.in',
-  //     })
-  //   }
-  // }, [isSoundEnabled, router])
+  function doSuccessAnimation() {
+    // 2 = success
+    setCurrExpression(2)
+  }
+
+  function doTransactionAnimation() {
+    // 4 = transaction
+    setCurrExpression(4)
+  }
+
+  function doFailureAnimation() {
+    // 3 = failure
+    setCurrExpression(3)
+  }
 
   return (
     <div className='scene scene-2' ref={scene2}>
@@ -386,33 +388,48 @@ export const SceneTwo = () => {
         </div>
       </div>
       <div className='q2-container'>
-        <div>
+        <div className='scene'>
+          <div className='scene-exp-img-mask'>
+            <Q2MaskCanvas currExp={currExpression} />
+          </div>
           <Image
-            src='/assets/sunbeam_2.png'
+            src='/assets/q2/q2_body.png'
             alt='Q2 mascot'
             fill
             priority
-            className='q2'
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 90vw'
+            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+            loading='eager'
             style={{
               objectFit: 'contain',
+              objectPosition: 'center bottom',
             }}
           />
-          <div className='q2-mask-container'>
-            <div className='mask-canvas'>
-              <Q2MaskCanvas />
-            </div>
-          </div>
-          <div className='q2-mask-wallet'>
-            <ConnectButton
-              showBalance={false}
-              accountStatus={{
-                smallScreen: 'avatar',
-                largeScreen: 'full',
-              }}
-            />
-          </div>
+          <Image
+            src='/assets/q2/q2_band.png'
+            alt='Q2 band'
+            fill
+            priority
+            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+            loading='eager'
+            className='main-img-band'
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center bottom',
+            }}
+          />
+          {/* <div className='scene-wallet-mask'>
+            <ConnectButton />
+          </div> */}
         </div>
+      </div>
+      {/*  */}
+      <div className='buttons-container'>
+        <button onClick={() => doSuccessAnimation()}>Success animation</button>
+        <button onClick={() => doTransactionAnimation()}>
+          Transaction animation
+        </button>
+        <button onClick={() => doFailureAnimation()}>Failure animation</button>
+        <button onClick={() => setCurrExpression(0)}>Reset animation</button>
       </div>
     </div>
   )

@@ -50,6 +50,7 @@ export const ThreeJSBackground = () => {
           near: 1,
           far: 1000,
         }}
+        dpr={0.75}
       >
         <StarField />
       </Canvas>
