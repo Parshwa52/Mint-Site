@@ -133,16 +133,91 @@ const Face = (currExpProp: any) => {
     }
     // success
     else if (currExpProp.currExpProp === 2) {
-      if (expression) expression.current.visible = true
       // success first phase
       currentTl = gsap
         // smirk
         .timeline({
           onStart: () => {
+            setExp(loadingFailStatic)
+            setStaticExp(loadingFailDots1)
+          },
+        })
+        // fake failure animation
+        .call(
+          () => {
+            setStaticExp(loadingFailDots2)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(loadingFailDots3)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(loadingFailDots4)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(loadingFailDots5)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(loadingFailDots6)
+          },
+          undefined,
+          '>+.5'
+        )
+        // battery
+        .call(
+          () => {
+            if (expression) expression.current.visible = false
+            setStaticExp(batteryExpression1)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression2)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression3)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression4)
+          },
+          undefined,
+          '>+.5'
+        )
+        // success animation
+        .call(
+          () => {
+            if (expression) expression.current.visible = true
             setExp(success11)
             setStaticExp(success1Static)
           },
-        })
+          undefined,
+          '>+.75'
+        )
         .call(
           () => {
             setExp(success12)
