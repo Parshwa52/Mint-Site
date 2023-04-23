@@ -35,9 +35,12 @@ const Face = (currExpProp: any) => {
   const staticExpression: any = useRef()
 
   // Entrance textures
-  const [expression1, expression2] = useTexture([
+  const [expression1, expression2, wallet1, wallet2, wallet3] = useTexture([
     '/assets/expressions/world/dynamic/exp-1.jpg',
     '/assets/expressions/world/dynamic/exp-2.jpg',
+    '/assets/expressions/world/static/exp-wallet-1.jpg',
+    '/assets/expressions/world/static/exp-wallet-2.jpg',
+    '/assets/expressions/world/static/exp-wallet-3.jpg',
   ])
   // Failure textures
   const [
@@ -129,20 +132,37 @@ const Face = (currExpProp: any) => {
       setExp(expression1)
       setStaticExp(staticExpression1)
     } else if (currExpProp.currExpProp === 1) {
+      if (expression) expression.current.visible = true
       setExp(expression2)
+      setStaticExp(staticExpression1)
+    } else if (currExpProp.currExpProp === 5) {
+      if (expression) expression.current.visible = false
+      setStaticExp(wallet1)
+    } else if (currExpProp.currExpProp === 6) {
+      if (expression) expression.current.visible = false
+      setStaticExp(wallet2)
+    } else if (currExpProp.currExpProp === 7) {
+      if (expression) expression.current.visible = false
+      setStaticExp(wallet3)
     }
     // success
     else if (currExpProp.currExpProp === 2) {
+      if (expression) expression.current.visible = true
       // success first phase
       currentTl = gsap
         // smirk
         .timeline({
-          onStart: () => {
+          repeat: -1,
+        })
+        // fake failure animation
+        .call(
+          () => {
             setExp(loadingFailStatic)
             setStaticExp(loadingFailDots1)
           },
-        })
-        // fake failure animation
+          undefined,
+          0
+        )
         .call(
           () => {
             setStaticExp(loadingFailDots2)
@@ -320,6 +340,8 @@ const Face = (currExpProp: any) => {
     }
     // failure
     else if (currExpProp.currExpProp === 3) {
+      if (expression) expression.current.visible = true
+
       // battery
       currentTl = gsap
         // dots

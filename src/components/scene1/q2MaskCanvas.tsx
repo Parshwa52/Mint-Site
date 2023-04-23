@@ -77,10 +77,10 @@ const Face = (currExpProp: any) => {
           },
           {
             x: 0.025,
-            duration: 0.2,
+            duration: 0.05,
             repeat: -1,
             yoyo: true,
-            ease: 'back.inOut',
+            ease: 'none',
           }
         )
       }

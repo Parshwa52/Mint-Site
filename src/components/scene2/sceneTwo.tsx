@@ -58,9 +58,18 @@ export const SceneTwo = () => {
     if (currExpression === 0 || currExpression === 1) {
       interval = setInterval(() => {
         if (currExpression === 0) setCurrExpression(1)
-        else if (currExpression === 1) setCurrExpression(0)
+        else if (currExpression === 1) setCurrExpression(5)
+      }, 1000)
+    }
+    if (currExpression === 5 || currExpression === 6 || currExpression === 7) {
+      interval = setInterval(() => {
+        if (currExpression === 5) setCurrExpression(6)
+        else if (currExpression === 6) setCurrExpression(7)
+        else if (currExpression === 7) setCurrExpression(0)
       }, 1500)
     }
+
+    console.log(currExpression)
 
     return () => {
       if (interval) clearInterval(interval)

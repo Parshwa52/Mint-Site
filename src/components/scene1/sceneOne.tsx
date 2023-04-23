@@ -151,6 +151,18 @@ export const SceneOne = () => {
         )
         .addLabel('diskImpact', 35)
         // voyager-animation
+        .call(
+          () => {
+            if (pastDuration > tl.progress()) {
+              setCurrExpression(4)
+            } else {
+              setCurrExpression(5)
+            }
+            pastDuration = tl.progress()
+          },
+          undefined,
+          'diskImpact'
+        )
         .from(
           '.scene-main-img-mask .mask-carousel > *',
           {
@@ -192,16 +204,15 @@ export const SceneOne = () => {
         // fade-out
         .call(
           () => {
-            console.log(tl.progress())
             if (pastDuration > tl.progress()) {
               setCurrExpression(5)
             } else {
-              setCurrExpression(6)
+              setCurrExpression(7)
             }
             pastDuration = tl.progress()
           },
           undefined,
-          'diskLeave'
+          'diskLeave+=5'
         )
         .to(
           '.scene-1',
@@ -220,7 +231,6 @@ export const SceneOne = () => {
           reversed: true,
           onComplete: () => {
             if (scrollLenis) scrollLenis?.start()
-            setCurrExpression(5)
           },
           onReverseComplete: () => {
             if (scrollLenis) scrollLenis?.start()
