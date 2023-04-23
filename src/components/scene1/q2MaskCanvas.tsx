@@ -106,7 +106,7 @@ const Face = (currExpProp: any) => {
       ref={expression}
     >
       <planeGeometry args={[0.4, 0.4, 4, 4]} />
-      <meshBasicMaterial color={0xffffff} alphaMap={currExp} alphaTest={0.5} />
+      <meshBasicMaterial color={0xffffff} alphaMap={currExp} alphaTest={0.1} />
     </mesh>
   )
 }
