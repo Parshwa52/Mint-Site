@@ -46,10 +46,11 @@ import img33 from '@/assets/placements/33_Clouds13.png'
 import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
 import img36 from '@/assets/logo.png'
+import ConnectWallet from '../ui/ConnectWallet'
 
 export const SceneTwo = () => {
   const { isSoundEnabled, scrollLenis, soundsArray } = useGlobalContext()
-  const { isConnecting, isConnected, isDisconnected } = useAccount()
+  // const { isConnecting, isConnected, isDisconnected } = useAccount()
   const scene2 = useRef<HTMLDivElement>(null)
   const [currExpression, setCurrExpression] = useState(0)
 
@@ -69,8 +70,6 @@ export const SceneTwo = () => {
       }, 1500)
     }
 
-    console.log(currExpression)
-
     return () => {
       if (interval) clearInterval(interval)
     }
@@ -84,6 +83,28 @@ export const SceneTwo = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // clouds animation
+      const cloudsTl = gsap.timeline({
+        paused: true,
+        repeat: -1,
+        reversed: true,
+      })
+
+      gsap.utils.toArray('.clouds > *').forEach((cloud: any, i) => {
+        cloudsTl.fromTo(
+          cloud,
+          {
+            xPercent: -100,
+          },
+          {
+            xPercent: 100,
+            willChange: 'transform',
+            duration: 10,
+            ease: 'power1.inOut',
+          },
+          i / 4
+        )
+      })
       // pin section 1 - fade out
       gsap
         .timeline({
@@ -186,12 +207,37 @@ export const SceneTwo = () => {
           .from(
             '.clouds > *',
             {
-              yPercent: 100,
               autoAlpha: 0,
               scale: 1.25,
             },
             0
           )
+          .call(
+            () => {
+              cloudsTl.reversed() ? cloudsTl.play() : cloudsTl.reverse()
+            },
+            undefined,
+            1
+          )
+          .from(
+            '.background > *',
+            {
+              yPercent: 100,
+              autoAlpha: 0,
+              scale: 1.25,
+            },
+            7.5
+          )
+          // .to(
+          //   '.city-container',
+          //   {
+          //     '--filter': 1.5,
+          //     willChange: 'none',
+          //     stagger: 0,
+          //     ease: 'none',
+          //   },
+          //   20
+          // )
           .from(
             '.city-container .buildings-center > *',
             {
@@ -201,6 +247,24 @@ export const SceneTwo = () => {
             },
             20
           )
+          .from(
+            '.city-container .buildings-center-left > *',
+            {
+              xPercent: -100,
+              stagger: -10,
+              scale: 1.25,
+            },
+            30
+          )
+          .from(
+            '.city-container .buildings-center-right > *',
+            {
+              xPercent: 100,
+              stagger: -10,
+              scale: 1.25,
+            },
+            30
+          )
           .addLabel('buildingsCenterDone', '>-15')
           .from(
             '.city-container .buildings-left > *',
@@ -209,7 +273,7 @@ export const SceneTwo = () => {
               stagger: 10,
               scale: 1.7,
             },
-            'buildingsCenterDone-=10'
+            'buildingsCenterDone-=5'
           )
           .from(
             '.city-container .buildings-right > *',
@@ -220,22 +284,15 @@ export const SceneTwo = () => {
             },
             'buildingsCenterDone-=5'
           )
-          // .from(
-          //   '.city-container .buildings-left > *',
-          //   {
-          //     yPercent: 100,
-          //     stagger: 10,
-          //   },
-          //   'buildingsCenterDone-=5'
-          // )
-          // .from(
-          //   '.city-container .buildings-right > *',
-          //   {
-          //     yPercent: 100,
-          //     stagger: 7.5,
-          //   },
-          //   'buildingsCenterDone'
-          // )
+          .from(
+            '.q2-container',
+            {
+              yPercent: 100,
+              duration: 100,
+              ease: 'power1',
+            },
+            'buildingsCenterDone+=10'
+          )
           .fromTo(
             '.city-container .buildings-logo > *',
             {
@@ -268,7 +325,7 @@ export const SceneTwo = () => {
             },
             'buildingsCenterDone+=30'
           )
-          .addLabel('buildingsDone', '>')
+          .addLabel('buildingsDone', 'buildingsCenterDone+=80')
           .to(
             '.city-container .buildings-logo > *',
             {
@@ -278,22 +335,23 @@ export const SceneTwo = () => {
             },
             'buildingsDone'
           )
-          .from(
-            '.q2-container',
-            {
-              yPercent: 100,
-              duration: 45,
-              ease: 'expo.inOut',
-            },
-            'buildingsDone'
-          )
+          // .from(
+          //   '.q2-container',
+          //   {
+          //     yPercent: 100,
+          //     duration: 45,
+          //     ease: 'expo.inOut',
+          //   },
+          //   'buildingsDone'
+          // )
           .to(
             '.city-container',
             {
               willChange: 'filter',
               filter: 'blur(2px)',
+              stagger: 0,
               duration: 25,
-              ease: 'expo.inOut',
+              ease: 'none',
             },
             '>-25%'
           )
@@ -339,20 +397,26 @@ export const SceneTwo = () => {
           <Building src={img1} />
           <Building src={img2} />
           <Building src={img3} />
+        </div>
+        <div className='background'>
           <Building src={img4} />
+        </div>
+        <div className='clouds'>
           <Building src={img5} />
           <Building src={img6} />
           <Building src={img7} />
           <Building src={img8} />
           <Building src={img9} />
         </div>
-        <div className='buildings buildings-right'>
+        <div className='buildings buildings-center-right'>
           <Building src={img11} />
           <Building src={img13} />
         </div>
-        <div className='buildings buildings-left'>
+        <div className='buildings buildings-center-left'>
           <Building src={img10} />
           <Building src={img12} />
+        </div>
+        <div className='buildings buildings-left'>
           <Building src={img15} />
         </div>
         <div className='buildings buildings-right'>
@@ -406,7 +470,7 @@ export const SceneTwo = () => {
             alt='Q2 mascot'
             fill
             priority
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 80vw'
             loading='eager'
             style={{
               objectFit: 'contain',
@@ -418,7 +482,7 @@ export const SceneTwo = () => {
             alt='Q2 band'
             fill
             priority
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
+            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 80vw'
             loading='eager'
             className='main-img-band'
             style={{
@@ -426,9 +490,9 @@ export const SceneTwo = () => {
               objectPosition: 'center bottom',
             }}
           />
-          {/* <div className='scene-wallet-mask'>
-            <ConnectButton />
-          </div> */}
+          <div className='scene-wallet-mask'>
+            <ConnectWallet />
+          </div>
         </div>
       </div>
       {/*  */}
@@ -450,7 +514,7 @@ const Building = ({ src, className }: { src: any; className?: string }) => {
       src={src}
       alt='building'
       className='building-container'
-      sizes='(max-width: 768px) 50vw, (max-width: 1200px) 65vw, 80vw'
+      sizes='(max-width: 768px) 50vw, (max-width: 1200px) 65vw, 75vw'
       style={{
         objectFit: 'cover',
       }}

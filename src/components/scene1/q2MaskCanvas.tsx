@@ -12,12 +12,15 @@ export const Q2MaskCanvas = (props: any) => {
         rotation: [0, 0, 0],
       }}
       dpr={0.9}
+      resize={{
+        debounce: 0,
+      }}
     >
       <Face currExpProp={props.currExp} />
       <EffectComposer>
         <Glitch
           // @ts-ignore
-          delay={[0.5, 2.5]} // min and max glitch delay
+          delay={[1.5, 3]} // min and max glitch delay
           // @ts-ignore
           duration={[0.6, 1.0]} // min and max glitch duration
           // @ts-ignore

@@ -112,7 +112,7 @@ export const SceneOne = () => {
           '.scene-main-img',
           {
             // scale: 1.25,
-            yPercent: 30,
+            yPercent: 65,
           },
           {
             // scale: 0.75,
