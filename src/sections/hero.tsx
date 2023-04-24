@@ -4,5 +4,9 @@ import { SceneOne } from '@/components/scene1/sceneOne'
 
 export const HomepageHero = () => {
   useEffect(() => {}, [])
-  return <section id='home-hero'>{/* <SceneOne /> */}</section>
+  return (
+    <section id='home-hero'>
+      <SceneOne />
+    </section>
+  )
 }
