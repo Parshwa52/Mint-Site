@@ -361,42 +361,42 @@ const Face = (currExpProp: any) => {
             setExp(failing31)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
         .call(
           () => {
             setExp(failing32)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
         .call(
           () => {
             setExp(failing33)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
         .call(
           () => {
             setExp(failing34)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
         .call(
           () => {
             setExp(failing35)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
         .call(
           () => {
             setExp(failing36)
           },
           undefined,
-          '>+.5'
+          '>+.25'
         )
 
       // battery
@@ -472,51 +472,6 @@ const Face = (currExpProp: any) => {
         .call(
           () => {
             setStaticExp(batteryExpression4)
-          },
-          undefined,
-          '>+.5'
-        )
-        // rotating eye
-        .call(
-          () => {
-            if (expression) expression.current.visible = true
-            setStaticExp(failing3Base)
-            setExp(failing31)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(failing32)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(failing33)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(failing34)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(failing35)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(failing36)
           },
           undefined,
           '>+.5'
@@ -601,6 +556,7 @@ const Face = (currExpProp: any) => {
       <mesh ref={expression}>
         <planeGeometry args={[0.4, 0.4, 4, 4]} />
         <meshBasicMaterial
+          map={currExp}
           color={0xffffff}
           alphaMap={currExp}
           alphaTest={0.1}
