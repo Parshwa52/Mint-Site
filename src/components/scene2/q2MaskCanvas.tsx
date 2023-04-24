@@ -79,6 +79,23 @@ const Face = (currExpProp: any) => {
     '/assets/expressions/world/static/exp-dot-5.jpg',
     '/assets/expressions/world/static/exp-dot-6.jpg',
   ])
+  const [
+    failing3Base,
+    failing31,
+    failing32,
+    failing33,
+    failing34,
+    failing35,
+    failing36,
+  ] = useTexture([
+    '/assets/expressions/world/static/failure/3/exp-base.jpg',
+    '/assets/expressions/world/static/failure/3/exp-1.jpg',
+    '/assets/expressions/world/static/failure/3/exp-2.jpg',
+    '/assets/expressions/world/static/failure/3/exp-3.jpg',
+    '/assets/expressions/world/static/failure/3/exp-4.jpg',
+    '/assets/expressions/world/static/failure/3/exp-5.jpg',
+    '/assets/expressions/world/static/failure/3/exp-6.jpg',
+  ])
   // Success textures
   const [
     success1Static,
@@ -129,6 +146,7 @@ const Face = (currExpProp: any) => {
 
   useEffect(() => {
     let currentTl: any
+    let loopTl: any
 
     // entrance
     if (currExpProp.currExpProp === 0) {
@@ -331,6 +349,55 @@ const Face = (currExpProp: any) => {
     // failure
     else if (currExpProp.currExpProp === 3) {
       if (expression) expression.current.visible = true
+      loopTl = gsap
+        .timeline({
+          paused: true,
+          repeat: -1,
+        }) // rotating eye
+        .call(
+          () => {
+            if (expression) expression.current.visible = true
+            setStaticExp(failing3Base)
+            setExp(failing31)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing32)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing33)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing34)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing35)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing36)
+          },
+          undefined,
+          '>+.5'
+        )
 
       // battery
       currentTl = gsap
@@ -339,6 +406,9 @@ const Face = (currExpProp: any) => {
           onStart: () => {
             setExp(loadingFailStatic)
             setStaticExp(loadingFailDots1)
+          },
+          onComplete: () => {
+            loopTl.play()
           },
         })
         .call(
@@ -402,6 +472,51 @@ const Face = (currExpProp: any) => {
         .call(
           () => {
             setStaticExp(batteryExpression4)
+          },
+          undefined,
+          '>+.5'
+        )
+        // rotating eye
+        .call(
+          () => {
+            if (expression) expression.current.visible = true
+            setStaticExp(failing3Base)
+            setExp(failing31)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing32)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing33)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing34)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing35)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setExp(failing36)
           },
           undefined,
           '>+.5'
@@ -471,6 +586,7 @@ const Face = (currExpProp: any) => {
     return () => {
       if (currentTl) {
         currentTl.kill()
+        if (loopTl) loopTl.kill()
         if (expression) gsap.set(expression.current.position, { x: 0 })
       }
     }
