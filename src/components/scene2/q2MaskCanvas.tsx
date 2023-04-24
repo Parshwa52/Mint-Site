@@ -85,7 +85,6 @@ const Face = (currExpProp: any) => {
     success31,
     success32,
     success33,
-    success34,
   ] = useTexture([
     '/assets/expressions/world/static/success/1/exp-base.jpg',
     '/assets/expressions/world/static/success/1/exp-1.jpg',
@@ -97,7 +96,6 @@ const Face = (currExpProp: any) => {
     '/assets/expressions/world/static/success/3/exp-1.jpg',
     '/assets/expressions/world/static/success/3/exp-2.jpg',
     '/assets/expressions/world/static/success/3/exp-3.jpg',
-    '/assets/expressions/world/static/success/3/exp-4.jpg',
   ])
   // Transaction textures
   const [
@@ -152,7 +150,7 @@ const Face = (currExpProp: any) => {
       currentTl = gsap
         // smirk
         .timeline({
-          repeat: -1,
+          // repeat: -1,
         })
         // fake failure animation
         .call(
@@ -311,24 +309,10 @@ const Face = (currExpProp: any) => {
         )
         .call(
           () => {
-            setExp(success34)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(success33)
-          },
-          undefined,
-          '>+1.5'
-        )
-        .call(
-          () => {
             setExp(success32)
           },
           undefined,
-          '>+.5'
+          '>+1.5'
         )
         .call(
           () => {
