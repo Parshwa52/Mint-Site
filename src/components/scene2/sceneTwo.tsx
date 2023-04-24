@@ -469,9 +469,9 @@ export const SceneTwo = () => {
             src='/assets/q2/q2_body.png'
             alt='Q2 mascot'
             fill
-            priority
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 80vw'
-            loading='eager'
+            sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
             style={{
               objectFit: 'contain',
               objectPosition: 'center bottom',
@@ -481,9 +481,9 @@ export const SceneTwo = () => {
             src='/assets/q2/q2_band.png'
             alt='Q2 band'
             fill
-            priority
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 80vw'
-            loading='eager'
+            sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
             className='main-img-band'
             style={{
               objectFit: 'contain',
@@ -514,7 +514,10 @@ const Building = ({ src, className }: { src: any; className?: string }) => {
       src={src}
       alt='building'
       className='building-container'
-      sizes='(max-width: 768px) 50vw, (max-width: 1200px) 65vw, 75vw'
+      placeholder='blur'
+      sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
       style={{
         objectFit: 'cover',
       }}

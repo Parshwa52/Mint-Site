@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { useEffect, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { AdaptiveDpr } from '@react-three/drei'
 
 const StarField = () => {
   const { scene } = useThree()
@@ -50,7 +51,7 @@ export const ThreeJSBackground = () => {
           near: 1,
           far: 1000,
         }}
-        dpr={0.75}
+        dpr={0.5}
       >
         <StarField />
       </Canvas>

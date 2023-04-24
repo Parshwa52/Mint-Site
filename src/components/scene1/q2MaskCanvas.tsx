@@ -1,17 +1,19 @@
-import { useTexture } from '@react-three/drei'
+import { useTexture, PerformanceMonitor } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, Glitch } from '@react-three/postprocessing'
 import { gsap } from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 
 export const Q2MaskCanvas = (props: any) => {
+  const [dpr, setDpr] = useState(1.5)
+
   return (
     <Canvas
       camera={{
         position: [0, 0, 0],
         rotation: [0, 0, 0],
       }}
-      dpr={0.9}
+      dpr={dpr}
       resize={{
         debounce: 0,
       }}
@@ -29,6 +31,7 @@ export const Q2MaskCanvas = (props: any) => {
           ratio={0.85}
         />
       </EffectComposer>
+      <PerformanceMonitor flipflops={3} onFallback={() => setDpr(0.8)} />
     </Canvas>
   )
 }

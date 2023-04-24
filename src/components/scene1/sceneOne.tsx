@@ -340,8 +340,9 @@ export const SceneOne = () => {
           alt='Q2 mascot'
           fill
           priority
-          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
-          loading='eager'
+          sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
           style={{
             objectFit: 'contain',
             objectPosition: 'center bottom',
@@ -351,9 +352,9 @@ export const SceneOne = () => {
           src='/assets/q2/q2_band.png'
           alt='Q2 band'
           fill
-          priority
-          sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
-          loading='eager'
+          sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
           className='main-img-band'
           style={{
             objectFit: 'contain',
@@ -367,8 +368,9 @@ export const SceneOne = () => {
             src='/assets/disk.webp'
             alt='Discover'
             fill
-            sizes='(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw'
-            loading='eager'
+            sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              75vw'
             style={{
               objectFit: 'contain',
             }}
