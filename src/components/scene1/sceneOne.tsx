@@ -277,6 +277,14 @@ export const SceneOne = () => {
           undefined,
           2.5
         )
+        .to(
+          '.scene-main-img-mask .mask-carousel > *:nth-child(3)',
+          {
+            autoAlpha: 1,
+            duration: 0.25,
+          },
+          3.5
+        )
 
       return () => voyagerTl.current?.revert()
     })

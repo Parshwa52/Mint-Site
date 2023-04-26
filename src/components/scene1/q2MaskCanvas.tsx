@@ -22,7 +22,7 @@ export const Q2MaskCanvas = (props: any) => {
       <EffectComposer>
         <Glitch
           // @ts-ignore
-          delay={[1.5, 3]} // min and max glitch delay
+          delay={[3, 5]} // min and max glitch delay
           // @ts-ignore
           duration={[0.6, 1.0]} // min and max glitch duration
           // @ts-ignore

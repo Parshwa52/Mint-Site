@@ -22,7 +22,7 @@ export const Q2MaskCanvas = (props: any) => {
       <EffectComposer>
         <Glitch
           // @ts-ignore
-          delay={[1.5, 3]} // min and max glitch delay
+          delay={[3, 5]} // min and max glitch delay
           // @ts-ignore
           duration={[0.6, 1.0]} // min and max glitch duration
           // @ts-ignore
@@ -146,7 +146,47 @@ const Face = (currExpProp: any) => {
 
   useEffect(() => {
     let currentTl: any
-    let loopTl: any
+    const loopTl = gsap
+      .timeline({
+        paused: true,
+        repeat: -1,
+      })
+      .call(
+        () => {
+          setExp(success31)
+          setStaticExp(success3Static)
+        },
+        undefined,
+        0
+      )
+      .call(
+        () => {
+          setExp(success32)
+        },
+        undefined,
+        '>+.5'
+      )
+      .call(
+        () => {
+          setExp(success33)
+        },
+        undefined,
+        '>+.5'
+      )
+      .call(
+        () => {
+          setExp(success32)
+        },
+        undefined,
+        '>+1.5'
+      )
+      .call(
+        () => {
+          setExp(success31)
+        },
+        undefined,
+        '>+.5'
+      )
 
     // entrance
     if (currExpProp.currExpProp === 0) {
@@ -170,21 +210,17 @@ const Face = (currExpProp: any) => {
     // success
     else if (currExpProp.currExpProp === 2) {
       if (expression) expression.current.visible = true
+
       // success first phase
       currentTl = gsap
         // smirk
         .timeline({
-          // repeat: -1,
-        })
-        // fake failure animation
-        .call(
-          () => {
+          onStart: () => {
             setExp(loadingFailStatic)
             setStaticExp(loadingFailDots1)
           },
-          undefined,
-          0
-        )
+        })
+        // fake failure animation
         .call(
           () => {
             setStaticExp(loadingFailDots2)
@@ -220,140 +256,7 @@ const Face = (currExpProp: any) => {
           undefined,
           '>+.5'
         )
-        // battery
-        .call(
-          () => {
-            if (expression) expression.current.visible = false
-            setStaticExp(batteryExpression1)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setStaticExp(batteryExpression2)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setStaticExp(batteryExpression3)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setStaticExp(batteryExpression4)
-          },
-          undefined,
-          '>+.5'
-        )
-        // success animation
-        .call(
-          () => {
-            if (expression) expression.current.visible = true
-            setExp(success11)
-            setStaticExp(success1Static)
-          },
-          undefined,
-          '>+.75'
-        )
-        .call(
-          () => {
-            setExp(success12)
-          },
-          undefined,
-          '>+.75'
-        )
-        .call(
-          () => {
-            setExp(success11)
-          },
-          undefined,
-          '>+.75'
-        )
-        .call(
-          () => {
-            setExp(success12)
-          },
-          undefined,
-          '>+.75'
-        )
-        .call(
-          () => {
-            setExp(success13)
-            if (staticExpression.current)
-              staticExpression.current.visible = false
-          },
-          undefined,
-          '>+.75'
-        )
-        // 2
-        .addLabel('phase2', '>+2')
-        .call(
-          () => {
-            setExp(success21)
-            setStaticExp(success2Static)
-            if (staticExpression.current)
-              staticExpression.current.visible = true
-          },
-          undefined,
-          'phase2'
-        )
-        .to(
-          expression.current.position,
-          { x: -0.04, repeat: 5, yoyo: true, duration: 0.5, ease: 'none' },
-          'phase2'
-        )
-        // 3
-        .addLabel('phase3', '>')
-        .call(
-          () => {
-            setExp(success31)
-            setStaticExp(success3Static)
-          },
-          undefined,
-          'phase3'
-        )
-        .call(
-          () => {
-            setExp(success32)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(success33)
-          },
-          undefined,
-          '>+.5'
-        )
-        .call(
-          () => {
-            setExp(success32)
-          },
-          undefined,
-          '>+1.5'
-        )
-        .call(
-          () => {
-            setExp(success31)
-          },
-          undefined,
-          '>+.5'
-        )
-    }
-    // failure
-    else if (currExpProp.currExpProp === 3) {
-      if (expression) expression.current.visible = true
-      loopTl = gsap
-        .timeline({
-          paused: true,
-          repeat: -1,
-        }) // rotating eye
+        // pokemon eyes
         .call(
           () => {
             if (expression) expression.current.visible = true
@@ -398,7 +301,107 @@ const Face = (currExpProp: any) => {
           undefined,
           '>+.25'
         )
-
+        // battery
+        .call(
+          () => {
+            if (expression) expression.current.visible = false
+            setStaticExp(batteryExpression1)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression2)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression3)
+          },
+          undefined,
+          '>+.5'
+        )
+        .call(
+          () => {
+            setStaticExp(batteryExpression4)
+          },
+          undefined,
+          '>+.5'
+        )
+        // success animation
+        // 2
+        .call(
+          () => {
+            setExp(success13)
+            if (expression) expression.current.visible = true
+            if (staticExpression.current)
+              staticExpression.current.visible = false
+          },
+          undefined,
+          '>+.75'
+        )
+        .call(
+          () => {
+            setExp(success11)
+            setStaticExp(success1Static)
+          },
+          undefined,
+          '>+2.25'
+        )
+        .call(
+          () => {
+            setExp(success12)
+          },
+          undefined,
+          '>+.75'
+        )
+        .call(
+          () => {
+            setExp(success11)
+          },
+          undefined,
+          '>+.75'
+        )
+        .call(
+          () => {
+            setExp(success12)
+          },
+          undefined,
+          '>+.75'
+        )
+        // 2
+        .addLabel('phase2', '>+.75')
+        .call(
+          () => {
+            setExp(success21)
+            setStaticExp(success2Static)
+            if (staticExpression.current)
+              staticExpression.current.visible = true
+          },
+          undefined,
+          'phase2'
+        )
+        .to(
+          expression.current.position,
+          { x: -0.04, repeat: 5, yoyo: true, duration: 0.5, ease: 'none' },
+          'phase2'
+        )
+        // 3
+        .addLabel('phase3', '>')
+        .call(
+          () => {
+            loopTl.play()
+          },
+          undefined,
+          'phase3'
+        )
+    }
+    // failure
+    else if (currExpProp.currExpProp === 3) {
+      if (expression) expression.current.visible = true
       // battery
       currentTl = gsap
         // dots
@@ -406,9 +409,6 @@ const Face = (currExpProp: any) => {
           onStart: () => {
             setExp(loadingFailStatic)
             setStaticExp(loadingFailDots1)
-          },
-          onComplete: () => {
-            loopTl.play()
           },
         })
         .call(
@@ -445,6 +445,51 @@ const Face = (currExpProp: any) => {
           },
           undefined,
           '>+.5'
+        )
+        // pokemon eyes
+        .call(
+          () => {
+            if (expression) expression.current.visible = true
+            setStaticExp(failing3Base)
+            setExp(failing31)
+          },
+          undefined,
+          '>+.25'
+        )
+        .call(
+          () => {
+            setExp(failing32)
+          },
+          undefined,
+          '>+.25'
+        )
+        .call(
+          () => {
+            setExp(failing33)
+          },
+          undefined,
+          '>+.25'
+        )
+        .call(
+          () => {
+            setExp(failing34)
+          },
+          undefined,
+          '>+.25'
+        )
+        .call(
+          () => {
+            setExp(failing35)
+          },
+          undefined,
+          '>+.25'
+        )
+        .call(
+          () => {
+            setExp(failing36)
+          },
+          undefined,
+          '>+.25'
         )
         // battery
         .call(

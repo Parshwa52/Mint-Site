@@ -99,7 +99,7 @@ export const SceneTwo = () => {
           {
             xPercent: 100,
             willChange: 'transform',
-            duration: 10,
+            duration: 20,
             ease: 'power1.inOut',
           },
           i / 4
