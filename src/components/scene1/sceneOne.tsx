@@ -184,6 +184,28 @@ export const SceneOne = () => {
           '>'
         )
         .addLabel('diskLeave', '<')
+        .from(
+          '.scene-main-text span span',
+          {
+            autoAlpha: 0,
+            duration: 1,
+            stagger: {
+              amount: 15,
+            },
+          },
+          'diskLeave'
+        )
+        .to(
+          '.scene-main-text span span',
+          {
+            autoAlpha: 0,
+            duration: 1,
+            stagger: {
+              amount: 15,
+            },
+          },
+          '>+5'
+        )
         .to(
           '.scene-secondary-img > div',
           {

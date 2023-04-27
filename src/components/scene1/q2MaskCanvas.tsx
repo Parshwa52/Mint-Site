@@ -1,6 +1,11 @@
 import { useTexture, PerformanceMonitor } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { EffectComposer, Glitch } from '@react-three/postprocessing'
+import {
+  ChromaticAberration,
+  EffectComposer,
+  Glitch,
+  Scanline,
+} from '@react-three/postprocessing'
 import { gsap } from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 
@@ -28,7 +33,6 @@ export const Q2MaskCanvas = (props: any) => {
           // @ts-ignore
           strength={[0.3, 1.0]} // min and max glitch strength
           active // turn on/off the effect (switches between "mode" prop and GlitchMode.DISABLED)
-          ratio={0.85}
         />
       </EffectComposer>
       <PerformanceMonitor flipflops={3} onFallback={() => setDpr(0.8)} />
