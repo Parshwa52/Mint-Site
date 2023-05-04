@@ -1,115 +1,33 @@
 #home-hero
   position: relative
   z-index: 1
-  .scene
-    &.scene-1
-      position: relative
-      z-index: 2
-      height: 100vh
-      width: 100%
-      .scene-main-text
-        position: absolute
-        top: 50px
-        left: 50px
-        z-index: 2
-        max-width: 500px
-        p
-          @include fontSize('ml')
-          @extend .heading-font
-          text-transform: uppercase
-      .scene-main-img
-        position: relative
-        transform-origin: center bottom
-        height: 100%
-        width: 100%
-        margin: auto
-        .scene-main-canvas
-          position: absolute
-          top: 0
-          left: 0
-          z-index: 2
-          width: 100%
-          height: 100%
-          > div
-            position: relative
-            width: 100%
-            height: 100%
-            overflow: hidden
-            mask-image: url(/assets/sunbeam_mask.png)
-            mask-size: auto 100%
-            mask-position: center center
-            mask-clip: border-box
-            mask-repeat: no-repeat
-        .scene-exp-img-mask
-          position: absolute
-          top: 0
-          left: 0
-          z-index: 2
-          width: 100%
-          height: 100%
-          overflow: hidden
-          mask-image: url(/assets/q2/q2_head_mask.png)
-          mask-size: contain
-          mask-position: center bottom
-          mask-clip: border-box
-          mask-repeat: no-repeat
-          *
-            position: relative
-            height: 100%
-            width: 100%
-            transform: none
-            canvas
-        .scene-main-img-mask
-          position: absolute
-          top: 0
-          left: 0
-          z-index: 2
-          width: 100%
-          height: 100%
-          overflow: hidden
-          border: 1px solid white
-          mask-image: url(/assets/q2/q2_head_vision_mask.png)
-          mask-size: contain
-          mask-position: center bottom
-          mask-clip: border-box
-          mask-repeat: no-repeat
-          .mask-carousel
-            position: relative
-            width: 100%
-            height: 100%
-            overflow: hidden
-            > div
-              position: absolute
-              top: 40%
-              left: 53.5%
-              transform: translate(-50%, -50%)
-              height: 100%
-              width: 100%
-              @extend %flex-center
-              align-items: flex-end
-              padding: 0
-              > *
-                max-width: 50%
-                max-height: 70%
-                margin: auto
-                padding: 0
-        .main-img-band
-          position: absolute
-          top: 0
-          left: 0
-          z-index: 2
-          width: 100%
-          height: 100%
-      .scene-secondary-img
-        position: absolute
-        z-index: 3
-        top: 30%
-        left: 50%
-        height: 25vw
-        width: 25vw
-        max-height: 250px
-        max-width: 250px
-        > *
-          position: relative
-          height: 100%
-          width: 100%
+  height: 100vh
+  width: 100%
+  .canvas-container
+    width: 100%
+    height: 100%
+  .canvas-text-container
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 3
+    background-color: black
+    @extend %flex-center
+    flex-direction: column
+    font-family: $content-font
+    gap: 50px
+    p
+      @include fontSize('ml')
+      color: white
+      max-width: 700px
+      text-align: center
+    button
+      color: white
+      border: 1px solid $clr-primary
+      padding: 10px 15px
+      border-radius: 5px 0
+      transition: background-color .25s, color .25s
+      &:hover
+        background-color: $clr-primary

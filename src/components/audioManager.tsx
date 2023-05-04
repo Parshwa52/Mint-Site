@@ -9,12 +9,27 @@ export const AudioManager = () => {
     // standardize audio volume
     audios.forEach((audio) => {
       audio.volume = 0.5
+      audio.pause()
       soundsArray.push(audio)
+
+      console.log(audio)
     })
   }, [])
 
   return (
     <>
+      <audio
+        id='audio-0'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source
+          src='/assets/sounds/Kubrick_Space_Voyager.mp3'
+          type='audio/mp3'
+        />
+      </audio>
       <audio
         id='audio-1'
         loop
@@ -23,7 +38,7 @@ export const AudioManager = () => {
           display: 'none',
         }}
       >
-        <source src='/assets/sounds/Space-Ambience.mp3' type='audio/mp3' />
+        <source src='/assets/sounds/Loop_Space_Drone.mp3' type='audio/mp3' />
       </audio>
       <audio
         id='audio-2'
@@ -33,7 +48,7 @@ export const AudioManager = () => {
           display: 'none',
         }}
       >
-        <source src='/assets/sounds/World-Score.mp3' type='audio/mp3' />
+        <source src='/assets/sounds/Loop_Pluto_World.mp3' type='audio/mp3' />
       </audio>
     </>
   )

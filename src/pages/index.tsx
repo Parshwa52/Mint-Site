@@ -15,7 +15,7 @@ export default function Home() {
       <ThreeJSBackground />
       <HomepageHero />
       <HomepageCity />
-      <Mouse />
+      {/* <Mouse /> */}
       <SoundButton />
     </PageLayout>
   )

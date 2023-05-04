@@ -1,14 +1,23 @@
 // React
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 // gsap
 import gsap from 'gsap'
 // Rainbow & Wagmi
+import ConnectWallet from '../ui/ConnectWallet'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
+// THREE
+import { Canvas } from '@react-three/fiber'
+import {
+  PerspectiveCamera,
+  RenderTexture,
+  useTexture,
+  Html,
+} from '@react-three/drei'
+import { PlaneGeometry } from 'three'
 // Custom components
 import { useGlobalContext } from '@/provider/globalProvider'
-import { Q2MaskCanvas } from './q2MaskCanvas'
 // Images imports
 import img1 from '@/assets/placements/1_Cloud1.png'
 import img2 from '@/assets/placements/2_Cloud2.png'
@@ -45,42 +54,25 @@ import img32 from '@/assets/placements/32_Clouds12.png'
 import img33 from '@/assets/placements/33_Clouds13.png'
 import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
-import img36 from '@/assets/logo.png'
-import ConnectWallet from '../ui/ConnectWallet'
 
 export const SceneTwo = () => {
+  const { connector } = useAccount()
   const { isSoundEnabled, scrollLenis, soundsArray } = useGlobalContext()
-  // const { isConnecting, isConnected, isDisconnected } = useAccount()
   const scene2 = useRef<HTMLDivElement>(null)
+  const entryTl = useRef<any>()
+  const failureTl = useRef<any>()
+  const successTl = useRef<any>()
+  const transactTl = useRef<any>()
+  const [q2, setQ2] = useState<any>(null)
   const [currExpression, setCurrExpression] = useState(0)
+  const updater = {
+    entryExp: currExpression,
+    failureExp: currExpression,
+    successExp: currExpression,
+    transactionExp: currExpression,
+  }
 
-  useEffect(() => {
-    let interval: any
-    if (currExpression === 0 || currExpression === 1) {
-      interval = setInterval(() => {
-        if (currExpression === 0) setCurrExpression(1)
-        else if (currExpression === 1) setCurrExpression(5)
-      }, 1000)
-    }
-    if (currExpression === 5 || currExpression === 6 || currExpression === 7) {
-      interval = setInterval(() => {
-        if (currExpression === 5) setCurrExpression(6)
-        else if (currExpression === 6) setCurrExpression(7)
-        else if (currExpression === 7) setCurrExpression(0)
-      }, 1500)
-    }
-
-    return () => {
-      if (interval) clearInterval(interval)
-    }
-  }, [currExpression])
-
-  // useEffect(() => {
-  //   console.log('wallet is connecting ', isConnecting)
-  //   console.log('wallet is connected ', isConnected)
-  //   console.log('wallet is disconnected ', isDisconnected)
-  // }, [isConnecting, isConnected, isDisconnected])
-
+  // scene building
   useEffect(() => {
     const ctx = gsap.context(() => {
       // clouds animation
@@ -99,7 +91,7 @@ export const SceneTwo = () => {
           {
             xPercent: 100,
             willChange: 'transform',
-            duration: 20,
+            duration: 25,
             ease: 'power1.inOut',
           },
           i / 4
@@ -109,11 +101,11 @@ export const SceneTwo = () => {
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: '#home-hero',
-            endTrigger: '#home-city',
-            start: 'bottom bottom',
+            trigger: '#home-city',
+            start: 'top bottom',
             end: 'top top',
             scrub: true,
+            refreshPriority: 98,
           },
           defaults: {
             ease: 'none',
@@ -168,7 +160,7 @@ export const SceneTwo = () => {
           75
         )
       // pin section 2 - fade in
-      if (soundsArray.length > 0) {
+      if (soundsArray.length > 0 && q2) {
         gsap
           .timeline({
             scrollTrigger: {
@@ -188,22 +180,20 @@ export const SceneTwo = () => {
             },
           })
           .to(
-            soundsArray[0],
+            [soundsArray[0], soundsArray[1]],
             {
               volume: 0,
               duration: 30,
             },
             0
           )
-          .fromTo(
-            soundsArray[1],
-            { volume: 0 },
-            {
-              volume: 0.5,
-              duration: 30,
-            },
-            0
-          )
+          .call(() => {
+            if (soundsArray[2].muted) {
+              soundsArray[2].muted = false
+              soundsArray[2].play()
+            }
+          })
+          .from(soundsArray[2], { volume: 0, duration: 30 }, 0)
           .from(
             '.clouds > *',
             {
@@ -228,16 +218,6 @@ export const SceneTwo = () => {
             },
             7.5
           )
-          // .to(
-          //   '.city-container',
-          //   {
-          //     '--filter': 1.5,
-          //     willChange: 'none',
-          //     stagger: 0,
-          //     ease: 'none',
-          //   },
-          //   20
-          // )
           .from(
             '.city-container .buildings-center > *',
             {
@@ -285,23 +265,19 @@ export const SceneTwo = () => {
             'buildingsCenterDone-=5'
           )
           .from(
-            '.q2-container',
+            q2.position,
             {
-              yPercent: 100,
+              y: -8,
               duration: 100,
               ease: 'power1',
             },
             'buildingsCenterDone+=10'
           )
-          .fromTo(
+          .from(
             '.city-container .buildings-logo > *',
             {
               autoAlpha: 0,
               yPercent: -100,
-            },
-            {
-              autoAlpha: 1,
-              yPercent: 2,
               duration: 30,
               ease: 'expo',
             },
@@ -330,20 +306,12 @@ export const SceneTwo = () => {
             '.city-container .buildings-logo > *',
             {
               yPercent: -100,
+              autoAlpha: 0,
               duration: 45,
               ease: 'power1.inOut',
             },
             'buildingsDone'
           )
-          // .from(
-          //   '.q2-container',
-          //   {
-          //     yPercent: 100,
-          //     duration: 45,
-          //     ease: 'expo.inOut',
-          //   },
-          //   'buildingsDone'
-          // )
           .to(
             '.city-container',
             {
@@ -358,36 +326,127 @@ export const SceneTwo = () => {
       }
     })
 
+    doEntryAnimation()
+
     return () => ctx.revert()
-  }, [scrollLenis, soundsArray])
+  }, [scrollLenis, soundsArray, q2])
 
   useEffect(() => {
-    if (soundsArray.length > 0) {
-      if (isSoundEnabled) {
-        // sound ambient space
-        soundsArray[1].muted = false
-        soundsArray[1].play()
-      } else {
-        // sound ambient space
-        soundsArray[1].muted = true
-        soundsArray[1].pause()
-      }
+    if (!entryTl.current) {
+      entryTl.current = gsap
+        .timeline({
+          paused: true,
+          repeat: -1,
+          repeatDelay: 1,
+          defaults: {
+            duration: 3,
+            ease: 'none',
+          },
+        })
+        .fromTo(
+          updater,
+          {
+            entryExp: 0,
+          },
+          {
+            entryExp: 1,
+            duration: 1.25,
+            repeat: 1,
+            onUpdate: () => {
+              setCurrExpression(Math.round(updater.entryExp))
+            },
+          }
+        )
+        .to(updater, {
+          entryExp: 4,
+          onUpdate: () => {
+            setCurrExpression(Math.round(updater.entryExp))
+          },
+        })
     }
-  }, [isSoundEnabled, soundsArray])
+    if (!failureTl.current) {
+      failureTl.current = gsap
+        .timeline({
+          paused: true,
+          defaults: {
+            duration: 10,
+            ease: 'none',
+          },
+        })
+        .fromTo(
+          updater,
+          {
+            failureExp: 5,
+          },
+          {
+            failureExp: 20,
+            onUpdate: () => {
+              setCurrExpression(Math.round(updater.failureExp))
+            },
+          }
+        )
+    }
+    if (!successTl.current) {
+    }
+    if (!transactTl.current) {
+      transactTl.current = gsap
+        .timeline({
+          repeat: -1,
+          paused: true,
+          defaults: {
+            duration: 3.5,
+            ease: 'none',
+          },
+        })
+        .fromTo(
+          updater,
+          {
+            transactionExp: 21,
+          },
+          {
+            transactionExp: 28,
+            onUpdate: () => {
+              setCurrExpression(Math.round(updater.transactionExp))
+            },
+          }
+        )
+    }
+  }, [entryTl, failureTl, successTl, transactTl])
+
+  function doEntryAnimation() {
+    successTl.current && successTl.current?.restart().pause()
+    transactTl.current && transactTl.current?.restart().pause()
+    failureTl.current && failureTl.current?.restart().pause()
+    if (entryTl.current && !entryTl.current.isActive()) {
+      entryTl.current.play()
+    }
+  }
 
   function doSuccessAnimation() {
-    // 2 = success
-    setCurrExpression(2)
+    entryTl.current && entryTl.current?.restart().pause()
+    transactTl.current && transactTl.current?.restart().pause()
+    failureTl.current && failureTl.current?.restart().pause()
+    if (successTl.current && !successTl.current.isActive()) {
+      successTl.current.play()
+    }
   }
 
   function doTransactionAnimation() {
-    // 4 = transaction
-    setCurrExpression(4)
+    successTl.current && successTl.current?.restart().pause()
+    entryTl.current && entryTl.current?.restart().pause()
+    failureTl.current && failureTl.current?.restart().pause()
+    if (transactTl.current && !transactTl.current.isActive()) {
+      transactTl.current.play()
+    }
   }
 
   function doFailureAnimation() {
-    // 3 = failure
-    setCurrExpression(3)
+    successTl.current && successTl.current?.restart().pause()
+    transactTl.current && transactTl.current?.restart().pause()
+    entryTl.current && entryTl.current?.restart().pause()
+    if (failureTl.current) {
+      failureTl.current.play()
+    }
   }
 
   return (
@@ -457,70 +516,173 @@ export const SceneTwo = () => {
           <Building src={img35} />
         </div>
         <div className='buildings buildings-logo'>
-          <Building src={img36} />
+          <h2>pluto</h2>
         </div>
       </div>
-      <div className='q2-container'>
-        <div className='scene'>
-          <div className='scene-exp-img-mask'>
-            <Q2MaskCanvas currExp={currExpression} />
-          </div>
-          <Image
-            src='/assets/q2/q2_body.png'
-            alt='Q2 mascot'
-            fill
-            sizes='(max-width: 768px) 45vw,
-              (max-width: 1200px) 65vw,
-              75vw'
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-            }}
-          />
-          <Image
-            src='/assets/q2/q2_band.png'
-            alt='Q2 band'
-            fill
-            sizes='(max-width: 768px) 45vw,
-              (max-width: 1200px) 65vw,
-              75vw'
-            className='main-img-band'
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-            }}
-          />
-          <div className='scene-wallet-mask'>
-            <ConnectWallet />
-          </div>
+      <div className='q2-canvas-container'>
+        <div className='canvas-button-container'>
+          <ConnectWallet />
         </div>
+        <Canvas
+          dpr={[1, 1.5]}
+          gl={{
+            antialias: false,
+          }}
+        >
+          <Q2 setInstance={setQ2} currExp={currExpression} />
+        </Canvas>
       </div>
-      {/*  */}
       <div className='buttons-container'>
         <button onClick={() => doSuccessAnimation()}>Success animation</button>
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
         </button>
         <button onClick={() => doFailureAnimation()}>Failure animation</button>
-        <button onClick={() => setCurrExpression(0)}>Reset animation</button>
+        <button onClick={() => doEntryAnimation()}>Reset animation</button>
       </div>
     </div>
   )
 }
 
-const Building = ({ src, className }: { src: any; className?: string }) => {
+const Building = ({ src }: { src: any }) => {
   return (
     <Image
       src={src}
       alt='building'
       className='building-container'
-      placeholder='blur'
-      sizes='(max-width: 768px) 45vw,
-              (max-width: 1200px) 65vw,
-              75vw'
+      fill
       style={{
         objectFit: 'cover',
       }}
+      sizes='(max-width: 768px) 45vw,
+              (max-width: 1200px) 65vw,
+              85vw'
     />
+  )
+}
+
+const Q2 = (props: any) => {
+  const q2 = useRef(null)
+  // images
+  // mesh
+  const q2Geometry = useMemo(() => {
+    return new PlaneGeometry(1, 1.6)
+  }, [])
+  const bandGeometry = useMemo(() => {
+    return new PlaneGeometry(1, 1)
+  }, [])
+  // texture base
+  const [body, bodyAlpha, band] = useTexture([
+    '/assets/scene1/Q2.png',
+    '/assets/scene1/Q2_alpha.jpg',
+    '/assets/scene1/Q2_band.png',
+  ])
+
+  useEffect(() => {
+    props.setInstance(q2.current)
+  }, [q2])
+
+  return (
+    <group scale={5} ref={q2} position={[0, -2, 0]}>
+      <mesh geometry={q2Geometry}>
+        <meshBasicMaterial map={body} alphaMap={bodyAlpha} alphaTest={0.5} />
+      </mesh>
+      <Expressions
+        geometry={bandGeometry}
+        scale={[0.52, 0.45, 1]}
+        position={[0, 0.2, 0.0045]}
+        childGeometry={q2Geometry}
+        currExp={props.currExp}
+      />
+      <mesh
+        geometry={bandGeometry}
+        scale={[0.52, 0.45, 1]}
+        position={[0, 0.2, 0.005]}
+      >
+        <meshBasicMaterial map={band} transparent needsUpdate />
+        <Html
+          className='canvas-text-container'
+          center
+          transform
+          sprite
+          distanceFactor={1.5}
+        >
+          <div className='button-container'>
+            <button
+              className='button'
+              onClick={() => {
+                //@ts-ignore
+                document
+                  .querySelector('.canvas-button-container button')
+                  //@ts-ignore
+                  .click()
+              }}
+            ></button>
+          </div>
+        </Html>
+      </mesh>
+    </group>
+  )
+}
+
+const Expressions = (props: any) => {
+  const expressions: any = useRef(null)
+  const expression: any = useRef(null)
+
+  const mask = useTexture('/assets/scene1/Q2_mask.jpg')
+
+  const expArray = useTexture([
+    '/assets/scene2/expressions/entry/exp-1.png',
+    '/assets/scene2/expressions/entry/exp-2.png',
+    '/assets/scene2/expressions/entry/exp-3.png',
+    '/assets/scene2/expressions/entry/exp-4.png',
+    '/assets/scene2/expressions/entry/exp-5.png',
+    '/assets/scene2/expressions/failure/exp-1.png',
+    '/assets/scene2/expressions/failure/exp-2.png',
+    '/assets/scene2/expressions/failure/exp-3.png',
+    '/assets/scene2/expressions/failure/exp-4.png',
+    '/assets/scene2/expressions/failure/exp-5.png',
+    '/assets/scene2/expressions/failure/exp-6.png',
+    '/assets/scene2/expressions/failure/exp-7.png',
+    '/assets/scene2/expressions/failure/exp-8.png',
+    '/assets/scene2/expressions/failure/exp-9.png',
+    '/assets/scene2/expressions/failure/exp-10.png',
+    '/assets/scene2/expressions/failure/exp-11.png',
+    '/assets/scene2/expressions/failure/exp-12.png',
+    '/assets/scene2/expressions/failure/exp-13.png',
+    '/assets/scene2/expressions/failure/exp-14.png',
+    '/assets/scene2/expressions/failure/exp-15.png',
+    '/assets/scene2/expressions/failure/exp-16.png',
+    '/assets/scene2/expressions/transact/exp-1.png',
+    '/assets/scene2/expressions/transact/exp-2.png',
+    '/assets/scene2/expressions/transact/exp-3.png',
+    '/assets/scene2/expressions/transact/exp-4.png',
+    '/assets/scene2/expressions/transact/exp-5.png',
+    '/assets/scene2/expressions/transact/exp-6.png',
+    '/assets/scene2/expressions/transact/exp-7.png',
+  ])
+
+  return (
+    <mesh ref={expressions} {...props}>
+      <meshBasicMaterial alphaMap={mask} transparent needsUpdate>
+        {/* @ts-ignore */}
+        <RenderTexture attach='map' frames={1}>
+          <PerspectiveCamera makeDefault position={[0, 0, 1]} />
+          <mesh
+            geometry={props.childGeometry}
+            scale={[2.75, 1.15, 1]}
+            position={[0, 0.2, 0]}
+            ref={expression}
+          >
+            <meshBasicMaterial
+              map={expArray[props.currExp]}
+              // alphaMap={expMaskArray[props.currExp]}
+              transparent
+              needsUpdate
+            />
+          </mesh>
+        </RenderTexture>
+      </meshBasicMaterial>
+    </mesh>
   )
 }
