@@ -107,6 +107,13 @@ export const SceneOne = () => {
         unscrollableTl.current = gsap
           .timeline({
             paused: true,
+            onComplete: () => {
+              gsap.to('.canvas-scroll', {
+                autoAlpha: 1,
+                duration: 1.25,
+                ease: 'expo',
+              })
+            },
           })
           .to(
             lights[0],
@@ -121,7 +128,7 @@ export const SceneOne = () => {
             planet.children[0].position,
             { y: 0.02 },
             {
-              y: -0.25,
+              y: -0.35,
               duration: 33.5,
               ease: 'power1',
             },
@@ -305,6 +312,28 @@ export const SceneOne = () => {
               refreshPriority: 99,
             },
           })
+
+          .to(
+            updater,
+            {
+              currImage: 33,
+              duration: 33,
+              ease: 'none',
+              onUpdate: () => {
+                setImage(Math.round(updater.currImage))
+              },
+            },
+            0
+          )
+          .to(
+            '.canvas-scroll',
+            {
+              autoAlpha: 0,
+              duration: 15,
+              ease: 'none',
+            },
+            0
+          )
           .call(
             () => {
               if (lastSecondTime === 0) {
@@ -317,18 +346,6 @@ export const SceneOne = () => {
             },
             undefined,
             1
-          )
-          .to(
-            updater,
-            {
-              currImage: 33,
-              duration: 33,
-              ease: 'none',
-              onUpdate: () => {
-                setImage(Math.round(updater.currImage))
-              },
-            },
-            0
           )
           .to(
             images.material,
@@ -421,6 +438,28 @@ export const SceneOne = () => {
     setExp,
   ])
 
+  useEffect(() => {
+    gsap
+      .timeline({
+        repeat: -1,
+        yoyo: true,
+      })
+      .fromTo(
+        '.canvas-scroll .scroll-arrow',
+        {
+          yPercent: -45,
+        },
+        {
+          yPercent: 45,
+          ease: 'power1.inOut',
+          duration: 1.5,
+          stagger: {
+            amount: 0.45,
+          },
+        }
+      )
+  }, [])
+
   function handleStartClick() {
     // sound manager
     setSoundStatus(true)
@@ -464,6 +503,11 @@ export const SceneOne = () => {
   return (
     <section className='canvas-container'>
       <Loader onLoaded={() => handleStartClick()} />
+      <div className='canvas-scroll'>
+        <div className='scroll-arrow'></div>
+        <div className='scroll-arrow'></div>
+        <div className='scroll-arrow'></div>
+      </div>
       <Canvas
         dpr={[1, 1.5]}
         gl={{
@@ -774,10 +818,12 @@ const Kiwi = (props: any) => {
   const kiwi: any = useRef(null)
   const lightContainer: any = useRef(null)
   const [light, set] = useState<any>()
+  const [hovered, setHovered] = useState(false)
 
-  const [kiwiMap, kiwiAlpha] = useTexture([
+  const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
     '/assets/scene1/Kiwi.png',
     '/assets/scene1/Kiwi_alpha.jpg',
+    '/assets/scene1/Kiwi_alt.png',
   ])
 
   useEffect(() => {
@@ -788,18 +834,25 @@ const Kiwi = (props: any) => {
     <group>
       <mesh {...props} ref={kiwi}>
         <meshStandardMaterial
-          map={kiwiMap}
+          map={hovered ? kiwiAlt : kiwiMap}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
         />
       </mesh>
       <group ref={lightContainer}>
-        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.75}>
+        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.65}>
           <circleGeometry args={[0.2, 32]} />
-          <meshBasicMaterial color='yellow' />
+          <meshBasicMaterial color='lightyellow' />
         </mesh>
       </group>
-
+      <mesh
+        position={[0, 0.425, 0.2]}
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+      >
+        <planeGeometry args={[0.16, 0.16]} />
+        <meshBasicMaterial visible={false} />
+      </mesh>
       <EffectComposer multisampling={0}>
         {/* <Bloom /> */}
         {light && (
@@ -809,7 +862,7 @@ const Kiwi = (props: any) => {
             density={0.9}
             decay={0.94}
             weight={0.5}
-            exposure={0.8}
+            exposure={0.4}
             clampMax={1}
           />
         )}

@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { useGlobalContext } from '@/provider/globalProvider'
 
 export const Mouse = () => {
+  const { isSoundEnabled, setSoundStatus } = useGlobalContext()
   // const [cursorStyle, setCursorStyle] = useState('auto')
   const pointerTl: any = useRef()
   const soundTl: any = useRef()
@@ -79,12 +80,40 @@ export const Mouse = () => {
           },
           0
         )
+    })
 
+    return () => ctx.revert()
+  }, [pointerTl])
+
+  const handleClick = () => {
+    setSoundStatus(true)
+  }
+
+  useEffect(() => {
+    if (!soundTl.current) {
+      gsap.fromTo(
+        '.mouse-wave li',
+        {
+          scaleY: 0.1,
+        },
+        {
+          scaleY: 1,
+          duration: 0.75,
+          repeat: -1,
+          yoyo: true,
+          stagger: {
+            grid: 'auto',
+            from: 'center',
+            amount: 0.5,
+          },
+          ease: 'back.inOut',
+        }
+      )
       soundTl.current = gsap
         .timeline({
-          paused: true,
           defaults: {
             ease: 'back.inOut',
+            duration: 1.5,
           },
         })
         .to(
@@ -108,10 +137,15 @@ export const Mouse = () => {
           },
           0
         )
-    })
 
-    return () => ctx.revert()
-  }, [pointerTl, soundTl])
+      window.addEventListener('click', handleClick)
+    }
+
+    if (isSoundEnabled && soundTl.current) {
+      soundTl.current.reverse()
+      window.removeEventListener('click', handleClick)
+    }
+  }, [soundTl, isSoundEnabled])
 
   return (
     <div id='mouse'>
