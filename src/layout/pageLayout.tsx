@@ -9,6 +9,7 @@ import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import SEO from '@/components/SEO'
 import { useGlobalContext } from '@/provider/globalProvider'
 import { AspectRatioManager } from '@/components/aspectRatioManager'
+import { Mouse } from '@/components/mouse'
 
 interface pageProps {
   pageTitle?: string
@@ -21,12 +22,14 @@ export const PageLayout = (props: pageProps) => {
   const router = useRouter()
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     // init smooth scroll
     const lenis = new Lenis({
       normalizeWheel: true,
     })
 
     lenis.on('scroll', ScrollTrigger.update)
+    lenis.stop()
 
     function raf(time: number) {
       lenis.raf(time)
@@ -49,6 +52,7 @@ export const PageLayout = (props: pageProps) => {
     <main>
       <SEO title={props.pageTitle || 'Pluto'} desc={props.pageDesc || ''} />
       <AspectRatioManager />
+      <Mouse />
       {props.children}
     </main>
   )

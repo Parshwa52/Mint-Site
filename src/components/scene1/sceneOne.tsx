@@ -1,5 +1,10 @@
 import { useGlobalContext } from '@/provider/globalProvider'
-import { PerspectiveCamera, RenderTexture, useTexture } from '@react-three/drei'
+import {
+  PerspectiveCamera,
+  RenderTexture,
+  useProgress,
+  useTexture,
+} from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, GodRays } from '@react-three/postprocessing'
 import { gsap } from 'gsap'
@@ -11,10 +16,12 @@ import {
   PlaneGeometry,
   RepeatWrapping,
   Texture,
+  DefaultLoadingManager,
 } from 'three'
 
 export const SceneOne = () => {
   const { scrollLenis, setSoundStatus, soundsArray } = useGlobalContext()
+  // const { active, progress, errors, item, loaded, total } = useProgress()
 
   const unscrollableTl = useRef<any>(null)
   const scrollableTl = useRef<any>(null)
@@ -37,7 +44,6 @@ export const SceneOne = () => {
     let lastTime = 0
     let lastSecondTime = 0
 
-    scrollLenis?.stop()
     const ctx = gsap.context(() => {
       if (
         q2 &&
@@ -105,7 +111,7 @@ export const SceneOne = () => {
           .to(
             lights[0],
             {
-              intensity: 0.1,
+              intensity: 0.025,
               duration: 6,
               ease: 'power1.in',
             },
@@ -115,8 +121,8 @@ export const SceneOne = () => {
             planet.children[0].position,
             { y: 0.02 },
             {
-              y: -0.16,
-              duration: 30,
+              y: -0.25,
+              duration: 33.5,
               ease: 'power1',
             },
             0
@@ -421,7 +427,6 @@ export const SceneOne = () => {
     soundsArray[0].muted = false
     soundsArray[0].play()
     setTimeout(() => {
-      console.log('entered')
       soundsArray[1].muted = false
       soundsArray[1].play()
       gsap.from(soundsArray[1], {
@@ -448,24 +453,17 @@ export const SceneOne = () => {
           unscrollableTl.current?.play()
         },
       })
-      .to('.canvas-text-container', {
+      .to('.canvas-loader', {
         autoAlpha: 0,
         duration: 1.25,
         ease: 'power4.inOut',
       })
-      .set('.canvas-text-container', { display: 'none' })
+      .set('.canvas-loader', { display: 'none' })
   }
 
   return (
     <section className='canvas-container'>
-      <div className='canvas-text-container'>
-        <p>
-          Please enable sound for the best experience on our website. Thank you!
-        </p>
-        <button onClick={() => handleStartClick()}>
-          Click to start the adventure
-        </button>
-      </div>
+      <Loader onLoaded={() => handleStartClick()} />
       <Canvas
         dpr={[1, 1.5]}
         gl={{
@@ -484,6 +482,84 @@ export const SceneOne = () => {
         <Lights setInstance={setLights} />
       </Canvas>
     </section>
+  )
+}
+
+const Loader = ({ onLoaded }: { onLoaded: Function }) => {
+  useEffect(() => {
+    let loadStack = 0
+    gsap.to('.canvas-loader .spinner', {
+      rotate: 360,
+      duration: 5,
+      ease: 'none',
+      repeat: -1,
+    })
+    gsap.to('.canvas-loader .spinner', {
+      borderRadius: '50%',
+      duration: 2.5,
+      ease: 'none',
+      repeat: -1,
+      yoyo: true,
+    })
+
+    const tl = gsap
+      .timeline({ paused: true })
+      .to('.canvas-loader .spinner', {
+        scale: 0,
+        duration: 1.25,
+        ease: 'back.inOut',
+      })
+      // .set('.canvas-loader .loader-screen', {
+      //   display: 'none',
+      // })
+      .to('.canvas-loader .loader-screen', {
+        autoAlpha: 0,
+      })
+      .fromTo(
+        '.canvas-loader .start-screen > *',
+        {
+          autoAlpha: 0,
+          yPercent: 50,
+        },
+        {
+          autoAlpha: 1,
+          yPercent: 0,
+          duration: 1.25,
+          stagger: {
+            amount: 0.5,
+          },
+          ease: 'back.inOut',
+          willChange: 'transform, opacity',
+        }
+      )
+
+    DefaultLoadingManager.onLoad = function () {
+      loadStack++
+      if (loadStack > 1) {
+        tl.play()
+        console.log('playing')
+      }
+
+      console.log(loadStack, 'loaded')
+    }
+
+    DefaultLoadingManager.onError = function (url) {
+      console.log('There was an error loading ' + url)
+    }
+  }, [])
+
+  return (
+    <div className='canvas-loader'>
+      <div className='loader-screen'>
+        <div className='spinner'></div>
+      </div>
+      <div className='start-screen'>
+        <p>
+          Please enable sound for the best experience on our website. Thank you!
+        </p>
+        <button onClick={() => onLoaded()}>Click to start the adventure</button>
+      </div>
+    </div>
   )
 }
 
@@ -718,9 +794,9 @@ const Kiwi = (props: any) => {
         />
       </mesh>
       <group ref={lightContainer}>
-        <mesh ref={set} position={[-0.005, 0.575, -0.5]}>
+        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.75}>
           <circleGeometry args={[0.2, 32]} />
-          <meshBasicMaterial />
+          <meshBasicMaterial color='yellow' />
         </mesh>
       </group>
 
@@ -756,7 +832,7 @@ const Planet = (props: any) => {
   }, [planet])
 
   return (
-    <group scale={25} position={[0, -5, 0]} ref={planet}>
+    <group scale={15} position={[0, -5, 0]} ref={planet}>
       <mesh geometry={q2Geometry} position={[0, 0, 0.02]}>
         <planeGeometry args={[1, 1]} />
         <meshStandardMaterial
@@ -779,7 +855,7 @@ const Lights = (props: any) => {
 
   return (
     <>
-      <pointLight intensity={1} position={[0, 2.3, 0.3]} ref={pointLight} />
+      <pointLight intensity={0} position={[0, 2.3, 0.3]} ref={pointLight} />
       <ambientLight intensity={0} ref={ambientLight} />
     </>
   )

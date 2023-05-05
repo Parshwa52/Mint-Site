@@ -92,7 +92,7 @@ export const SceneTwo = () => {
             xPercent: 100,
             willChange: 'transform',
             duration: 25,
-            ease: 'power1.inOut',
+            ease: 'none',
           },
           i / 4
         )
@@ -551,12 +551,12 @@ const Building = ({ src }: { src: any }) => {
       alt='building'
       className='building-container'
       fill
-      style={{
-        objectFit: 'cover',
-      }}
+      // style={{
+      //   objectFit: 'cover',
+      // }}
       sizes='(max-width: 768px) 45vw,
               (max-width: 1200px) 65vw,
-              85vw'
+              75vw'
     />
   )
 }
@@ -616,6 +616,8 @@ const Q2 = (props: any) => {
                   .querySelector('.canvas-button-container button')
                   //@ts-ignore
                   .click()
+
+                document.body.style.cursor = 'auto'
               }}
             ></button>
           </div>

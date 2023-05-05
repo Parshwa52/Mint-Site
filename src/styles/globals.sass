@@ -8,6 +8,8 @@
 @import './functions/z-index'
 @import './extends/extends-manager'
 @import './components/aspectRatioManager'
+@import './components/mouse'
+@import './components/loader'
 
 @import "~tailwindcss/base"
 @import "~tailwindcss/components"
@@ -29,6 +31,7 @@ body
   color: $clr-primary
   @extend .content-font
   -ms-overflow-style: none
+  cursor: none
   &::-webkit-scrollbar
     display: none
 
