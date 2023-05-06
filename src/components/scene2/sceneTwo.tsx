@@ -56,7 +56,6 @@ import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
 
 export const SceneTwo = () => {
-  const { connector } = useAccount()
   const { isSoundEnabled, scrollLenis, soundsArray } = useGlobalContext()
   const scene2 = useRef<HTMLDivElement>(null)
   const entryTl = useRef<any>()
@@ -66,14 +65,46 @@ export const SceneTwo = () => {
   const [q2, setQ2] = useState<any>(null)
   const [currExpression, setCurrExpression] = useState(0)
   const updater = {
-    entryExp: currExpression,
-    failureExp: currExpression,
-    successExp: currExpression,
-    transactionExp: currExpression,
+    entryExp: 0,
+    failureExp: 0,
+    successExp: 0,
+    transactionExp: 0,
   }
 
+  // function wheel(event: WheelEvent) {
+  //   let delta = 0
+  //   if (event.deltaY) {
+  //     delta = event.deltaY / 120
+  //   } else if (event.detail) {
+  //     delta = -event.detail / 3
+  //   }
+
+  //   if (delta < 0) {
+  //     delta = -1
+  //   } else if (delta > 0) {
+  //     delta = 1
+  //   }
+
+  //   console.log(delta)
+
+  //   if (event.preventDefault) {
+  //     event.preventDefault()
+  //     window.scrollTo(0, document.body.scrollTop + delta)
+  //   }
+  // }
+
+  // function controlSpeed(enable: boolean) {
+  //   // remove
+  //   scrollLenis?.start()
+  //   window.addEventListener('wheel', wheel, { passive: false })
+  // }
+
   // scene building
+
   useEffect(() => {
+    // ! Remove this if there is SceneOne
+    scrollLenis?.start()
+
     const ctx = gsap.context(() => {
       // clouds animation
       const cloudsTl = gsap.timeline({
@@ -364,13 +395,55 @@ export const SceneTwo = () => {
           },
         })
     }
-    if (!failureTl.current) {
+    if (!successTl.current) {
+      successTl.current = gsap
+        .timeline({
+          paused: true,
+          defaults: { duration: 2.5, ease: 'none' },
+        })
+        .call(
+          () => {
+            setCurrExpression(28)
+          },
+          undefined,
+          0
+        )
+        .fromTo(
+          updater,
+          {
+            successExp: 29,
+          },
+          {
+            successExp: 31,
+            repeat: -1,
+            onUpdate: () => {
+              setCurrExpression(Math.round(updater.successExp))
+            },
+          },
+          2.5
+        )
+    }
+    if (!failureTl.current && successTl.current) {
       failureTl.current = gsap
         .timeline({
           paused: true,
           defaults: {
             duration: 10,
             ease: 'none',
+          },
+          onComplete: () => {
+            successTl.current.play()
+
+            // gsap.to(updater, {
+            //   successExp: 29,
+            //   duration: 0.5,
+            //   onUpdate: () => {
+            //     setCurrExpression(Math.round(updater.successExp))
+            //   },
+            //   onComplete: () => {
+            //     successTl.current.play()
+            //   },
+            // })
           },
         })
         .fromTo(
@@ -385,8 +458,10 @@ export const SceneTwo = () => {
             },
           }
         )
-    }
-    if (!successTl.current) {
+        .addLabel('failureEnd')
+        .to(updater, {
+          duration: 0.1,
+        })
     }
     if (!transactTl.current) {
       transactTl.current = gsap
@@ -427,7 +502,7 @@ export const SceneTwo = () => {
     transactTl.current && transactTl.current?.restart().pause()
     failureTl.current && failureTl.current?.restart().pause()
     if (successTl.current && !successTl.current.isActive()) {
-      successTl.current.play()
+      doFailureAnimation(true)
     }
   }
 
@@ -440,12 +515,13 @@ export const SceneTwo = () => {
     }
   }
 
-  function doFailureAnimation() {
+  function doFailureAnimation(isSuccess: boolean) {
     successTl.current && successTl.current?.restart().pause()
     transactTl.current && transactTl.current?.restart().pause()
     entryTl.current && entryTl.current?.restart().pause()
     if (failureTl.current) {
-      failureTl.current.play()
+      if (isSuccess) failureTl.current.restart().play()
+      else failureTl.current.restart().tweenTo('failureEnd')
     }
   }
 
@@ -537,7 +613,9 @@ export const SceneTwo = () => {
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
         </button>
-        <button onClick={() => doFailureAnimation()}>Failure animation</button>
+        <button onClick={() => doFailureAnimation(false)}>
+          Failure animation
+        </button>
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
       </div>
     </div>
@@ -662,6 +740,9 @@ const Expressions = (props: any) => {
     '/assets/scene2/expressions/transact/exp-5.png',
     '/assets/scene2/expressions/transact/exp-6.png',
     '/assets/scene2/expressions/transact/exp-7.png',
+    '/assets/scene2/expressions/success/exp-1.png',
+    '/assets/scene2/expressions/success/exp-2.png',
+    '/assets/scene2/expressions/success/exp-3.png',
   ])
 
   return (

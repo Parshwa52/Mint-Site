@@ -814,6 +814,7 @@ const VoyagerImages = (props: any) => {
 }
 
 const Kiwi = (props: any) => {
+  const { isSoundEnabled } = useGlobalContext()
   // const light: any = useRef(null)
   const kiwi: any = useRef(null)
   const lightContainer: any = useRef(null)
@@ -829,6 +830,14 @@ const Kiwi = (props: any) => {
   useEffect(() => {
     props.setInstance([kiwi.current, lightContainer.current.children[0]])
   }, [lightContainer, kiwi])
+
+  useEffect(() => {
+    if (isSoundEnabled && hovered) {
+      const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
+      audio.currentTime = 0
+      audio.play()
+    }
+  }, [isSoundEnabled, hovered])
 
   return (
     <group>
