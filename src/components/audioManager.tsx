@@ -39,14 +39,6 @@ export const AudioManager = () => {
         <source src='/assets/sounds/Loop_Space_Drone.mp3' type='audio/mp3' />
       </audio>
       <audio
-        id='audio-kiwi'
-        style={{
-          display: 'none',
-        }}
-      >
-        <source src='/assets/sounds/Kiwi_Expression.mp3' type='audio/mp3' />
-      </audio>
-      <audio
         id='audio-2'
         loop
         muted
@@ -55,6 +47,14 @@ export const AudioManager = () => {
         }}
       >
         <source src='/assets/sounds/Loop_Pluto_World.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-kiwi'
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Kiwi_Expression.mp3' type='audio/mp3' />
       </audio>
     </>
   )
