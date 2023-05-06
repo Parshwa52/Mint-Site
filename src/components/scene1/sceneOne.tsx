@@ -1,10 +1,5 @@
 import { useGlobalContext } from '@/provider/globalProvider'
-import {
-  PerspectiveCamera,
-  RenderTexture,
-  useProgress,
-  useTexture,
-} from '@react-three/drei'
+import { PerspectiveCamera, RenderTexture, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, GodRays } from '@react-three/postprocessing'
 import { gsap } from 'gsap'
@@ -115,6 +110,25 @@ export const SceneOne = () => {
               })
             },
           })
+          .from(
+            ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
+            {
+              yPercent: -100,
+              scale: 1.1,
+              duration: 3,
+            },
+            0
+          )
+          .from(
+            '#ui .ui-part.ui-bottom',
+            {
+              yPercent: 100,
+              scale: 1.1,
+              duration: 3,
+            },
+            0
+          )
+          .to('#ui', { opacity: 1, duration: 3, ease: 'expo.inOut' }, 0)
           .to(
             lights[0],
             {

@@ -1,0 +1,28 @@
+#sound-button
+  display: none
+  width: 42px
+  height: 42px
+  mix-blend-mode: exclusion
+    // border-radius: 10px
+    // border: 2px solid $clr-primary
+  overflow: hidden
+  cursor: pointer
+  pointer-events: all
+  .button-wave
+    @extend %flex-center
+    gap: 3px
+    width: 100%
+    height: 100%
+    padding: 0
+    margin: 0
+    list-style: none
+    li
+      padding: 0
+      margin: 0
+      height: 50%
+      width: 1px
+      background-color: white
+      &:first-child, &:last-child
+        height: 25%
+        &:nth-child(2), &:nth-child(5)
+          height: 35%
