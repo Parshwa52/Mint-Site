@@ -56,7 +56,7 @@ import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
 
 export const SceneTwo = () => {
-  const { scrollLenis, soundsArray } = useGlobalContext()
+  const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext()
   const scene2 = useRef<HTMLDivElement>(null)
   const entryTl = useRef<any>()
   const failureTl = useRef<any>()
@@ -215,12 +215,6 @@ export const SceneTwo = () => {
             },
             0
           )
-          .call(() => {
-            if (soundsArray[2].muted) {
-              soundsArray[2].muted = false
-              soundsArray[2].play()
-            }
-          })
           .from(soundsArray[2], { volume: 0, duration: 30 }, 0)
           .from(
             '.clouds > *',
@@ -659,6 +653,7 @@ const Q2 = (props: any) => {
 
   return (
     <group scale={5} ref={q2} position={[0, -2, 0]}>
+      <Kiwi geometry={q2Geometry} />
       <mesh geometry={q2Geometry}>
         <meshBasicMaterial map={body} alphaMap={bodyAlpha} alphaTest={0.5} />
       </mesh>
@@ -764,5 +759,45 @@ const Expressions = (props: any) => {
         </RenderTexture>
       </meshBasicMaterial>
     </mesh>
+  )
+}
+
+const Kiwi = (props: any) => {
+  const { isSoundEnabled } = useGlobalContext()
+  const kiwi: any = useRef(null)
+  const [hovered, setHovered] = useState(false)
+
+  const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
+    '/assets/scene1/Kiwi.png',
+    '/assets/scene1/Kiwi_alpha.jpg',
+    '/assets/scene1/Kiwi_alt.png',
+  ])
+
+  useEffect(() => {
+    if (isSoundEnabled && hovered) {
+      const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
+      audio.currentTime = 0
+      audio.play()
+    }
+  }, [isSoundEnabled, hovered])
+
+  return (
+    <group>
+      <mesh {...props} ref={kiwi}>
+        <meshBasicMaterial
+          map={hovered ? kiwiAlt : kiwiMap}
+          alphaMap={kiwiAlpha}
+          alphaTest={0.5}
+        />
+      </mesh>
+      <mesh
+        position={[0, 0.425, 0.2]}
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+      >
+        <planeGeometry args={[0.16, 0.16]} />
+        <meshBasicMaterial visible={false} />
+      </mesh>
+    </group>
   )
 }

@@ -15,7 +15,7 @@ import {
 } from 'three'
 
 export const SceneOne = () => {
-  const { scrollLenis, setSoundStatus, soundsArray } = useGlobalContext()
+  const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext()
   // const { active, progress, errors, item, loaded, total } = useProgress()
 
   const unscrollableTl = useRef<any>(null)
@@ -103,6 +103,8 @@ export const SceneOne = () => {
           .timeline({
             paused: true,
             onComplete: () => {
+              document.body.style.height = 'auto'
+              document.body.style.overflow = 'auto'
               gsap.to('.canvas-scroll', {
                 autoAlpha: 1,
                 duration: 1.25,
@@ -475,18 +477,23 @@ export const SceneOne = () => {
   }, [])
 
   function handleStartClick() {
-    // sound manager
-    soundsArray[0].muted = false
-    soundsArray[0].play()
     setTimeout(() => {
-      soundsArray[1].muted = false
-      soundsArray[1].play()
-      gsap.from(soundsArray[1], {
-        volume: 0,
-        duration: 1.25,
-        ease: 'none',
+      document.querySelectorAll('audio').forEach((audio) => {
+        audio.muted = false
       })
-    }, 74000)
+      // sound manager
+      soundsArray[0].play()
+      soundsArray[2].play()
+
+      setTimeout(() => {
+        soundsArray[1].play()
+        gsap.from(soundsArray[1], {
+          volume: 0,
+          duration: 1.25,
+          ease: 'none',
+        })
+      }, 74000)
+    }, 250)
 
     // sound button
     gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
@@ -594,14 +601,7 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       loadStack++
       if (loadStack > 1) {
         tl.play()
-        console.log('playing')
       }
-
-      console.log(loadStack, 'loaded')
-    }
-
-    DefaultLoadingManager.onError = function (url) {
-      console.log('There was an error loading ' + url)
     }
   }, [])
 

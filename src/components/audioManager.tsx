@@ -18,7 +18,6 @@ export const AudioManager = () => {
     <>
       <audio
         id='audio-0'
-        muted
         style={{
           display: 'none',
         }}
@@ -31,7 +30,6 @@ export const AudioManager = () => {
       <audio
         id='audio-1'
         loop
-        muted
         style={{
           display: 'none',
         }}
@@ -41,7 +39,6 @@ export const AudioManager = () => {
       <audio
         id='audio-2'
         loop
-        muted
         style={{
           display: 'none',
         }}

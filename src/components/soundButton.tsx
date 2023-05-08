@@ -5,7 +5,7 @@ import { useGlobalContext } from '@/provider/globalProvider'
 export const SoundButton = () => {
   const { isSoundEnabled, setSoundStatus } = useGlobalContext()
   const soundTl = useRef<GSAPTimeline>()
-  const latestVolume = useRef<number[]>([])
+  const latestVolume = useRef<boolean[]>([])
 
   useEffect(() => {
     const button = document.querySelector('#sound-button') as HTMLDivElement
@@ -44,21 +44,19 @@ export const SoundButton = () => {
   }, [])
 
   useEffect(() => {
-    console.log(soundTl.current, isSoundEnabled)
     if (soundTl.current) {
       if (isSoundEnabled) {
         soundTl.current.play()
         const audios = document.querySelectorAll('audio')
         audios.forEach((audio, i) => {
-          latestVolume.current.push(audio.volume)
-          audio.volume = latestVolume.current[i]
+          audio.muted = latestVolume.current[i]
         })
       } else {
         soundTl.current.pause()
         const audios = document.querySelectorAll('audio')
-        audios.forEach((audio) => {
-          latestVolume.current.push(audio.volume)
-          audio.volume = 0
+        audios.forEach((audio, i) => {
+          latestVolume.current[i] = audio.muted
+          audio.muted = true
         })
         gsap.to('#sound-button .button-wave li', {
           scaleY: 0.25,
@@ -77,7 +75,6 @@ export const SoundButton = () => {
       id='sound-button'
       onClick={() => {
         setSoundStatus(!isSoundEnabled)
-        console.log('clicked once')
       }}
     >
       <ul className='button-wave'>
