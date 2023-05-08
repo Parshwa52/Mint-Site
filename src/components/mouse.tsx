@@ -87,6 +87,7 @@ export const Mouse = () => {
 
   const handleClick = () => {
     setSoundStatus(true)
+    window.removeEventListener('click', handleClick)
   }
 
   useEffect(() => {
@@ -143,7 +144,6 @@ export const Mouse = () => {
 
     if (isSoundEnabled && soundTl.current) {
       soundTl.current.reverse()
-      window.removeEventListener('click', handleClick)
     }
   }, [soundTl, isSoundEnabled])
 

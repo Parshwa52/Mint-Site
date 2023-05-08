@@ -44,6 +44,7 @@ export const SoundButton = () => {
   }, [])
 
   useEffect(() => {
+    console.log(soundTl.current, isSoundEnabled)
     if (soundTl.current) {
       if (isSoundEnabled) {
         soundTl.current.play()
@@ -76,6 +77,7 @@ export const SoundButton = () => {
       id='sound-button'
       onClick={() => {
         setSoundStatus(!isSoundEnabled)
+        console.log('clicked once')
       }}
     >
       <ul className='button-wave'>

@@ -120,7 +120,7 @@ export const SceneOne = () => {
             0
           )
           .from(
-            '#ui .ui-part.ui-bottom',
+            '#ui .ui-part.ui-lower',
             {
               yPercent: 100,
               scale: 1.1,
@@ -476,7 +476,6 @@ export const SceneOne = () => {
 
   function handleStartClick() {
     // sound manager
-    setSoundStatus(true)
     soundsArray[0].muted = false
     soundsArray[0].play()
     setTimeout(() => {
