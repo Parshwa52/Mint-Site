@@ -102,9 +102,6 @@ export const SceneTwo = () => {
   // scene building
 
   useEffect(() => {
-    // ! Remove this if there is SceneOne
-    scrollLenis?.start()
-
     const ctx = gsap.context(() => {
       // clouds animation
       const cloudsTl = gsap.timeline({
