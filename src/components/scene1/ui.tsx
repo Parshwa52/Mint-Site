@@ -1,5 +1,4 @@
 import Image from 'next/image'
-
 import topPanel from '@/assets/ui/1/Top Panel.png'
 import midTopPanel from '@/assets/ui/1/Mid top panel.png'
 import midPanel from '@/assets/ui/1/Mid Panels.png'
@@ -7,6 +6,7 @@ import lowerPanel from '@/assets/ui/1/Lower panel.png'
 import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { SoundButton } from '../soundButton'
+import { Split } from '@/utils/split'
 
 export const UI = () => {
   useEffect(() => {
@@ -38,9 +38,12 @@ export const UI = () => {
           <div className='ui-img'>
             <Image src={midPanel} alt='ui mid' />
             <div className='ui-text'>
-              <p>
-                Ea enim consectetur cupidatat aute nulla reprehenderit
-                reprehenderit ipsum fugiat minim.
+              <p id='text-1'>
+                <Split
+                  splitWords
+                  splitChars
+                  textToSplit='I have the perfect place for you. Let me take you to the world of Pluto.'
+                />
               </p>
               <ul className='ui-text-sounds'>
                 <li />

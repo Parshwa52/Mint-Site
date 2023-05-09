@@ -4,7 +4,6 @@ import { useGlobalContext } from '@/provider/globalProvider'
 
 export const Mouse = () => {
   const { isSoundEnabled, setSoundStatus } = useGlobalContext()
-  // const [cursorStyle, setCursorStyle] = useState('auto')
   const pointerTl: any = useRef()
   const soundTl: any = useRef()
   let cursorStyle = 'auto'
@@ -170,6 +169,15 @@ export const Mouse = () => {
           <li />
           <li />
         </ul>
+        {/* Scroll */}
+        <p className='mouse-scroll-text text-bottom'>Scroll</p>
+        <div className='mouse-center mouse-scroll'>
+          <ul className='scroll'>
+            <li />
+            <li />
+            <li />
+          </ul>
+        </div>
       </div>
     </div>
   )

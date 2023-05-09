@@ -15,8 +15,7 @@ import {
 } from 'three'
 
 export const SceneOne = () => {
-  const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext()
-  // const { active, progress, errors, item, loaded, total } = useProgress()
+  const { scrollLenis, soundsArray } = useGlobalContext()
 
   const unscrollableTl = useRef<any>(null)
   const scrollableTl = useRef<any>(null)
@@ -27,11 +26,13 @@ export const SceneOne = () => {
   const [voyager, setVoyager] = useState<any>(null)
   const [lights, setLights] = useState<any>(null)
   const [images, setImages] = useState<any>(null)
+  const [expressions, setExpressions] = useState<any>(null)
   const [currImage, setImage] = useState(0)
   const [currExp, setExp] = useState(0)
 
   useEffect(() => {
     const updater = {
+      currPreImage: 0,
       currImage: 0,
       currExp: 0,
       currExp2: 6,
@@ -46,6 +47,7 @@ export const SceneOne = () => {
         voyager &&
         kiwi &&
         lights &&
+        expressions &&
         !unscrollableTl.current &&
         !scrollableTl.current
       ) {
@@ -98,6 +100,28 @@ export const SceneOne = () => {
           duration: 7.5,
           ease: 'none',
         })
+        // typing
+        const typingTl = gsap
+          .timeline({ paused: true })
+          .to(
+            '#ui .ui-text ul',
+            {
+              autoAlpha: 1,
+              duration: 1.25,
+              ease: 'expo.inOut',
+            },
+            0
+          )
+          .from(
+            '#ui #text-1 span span',
+            {
+              display: 'none',
+              duration: 0.1,
+              stagger: 0.05,
+              ease: 'none',
+            },
+            0
+          )
         // unscrollableTl
         unscrollableTl.current = gsap
           .timeline({
@@ -140,21 +164,31 @@ export const SceneOne = () => {
             },
             0
           )
+          .from(
+            kiwi[1].scale,
+            {
+              x: 0,
+              y: 0,
+              duration: 8.5,
+              ease: 'power1.inOut',
+            },
+            8
+          )
           .fromTo(
             planet.children[0].position,
-            { y: 0.02 },
+            { y: 0.015 },
             {
               y: -0.35,
-              duration: 33.5,
-              ease: 'power1',
+              duration: 45,
+              ease: 'none',
             },
             0
           )
           .from(
             q2.position,
             {
-              y: -5,
-              duration: 11,
+              y: -3,
+              duration: 10,
               ease: 'power1',
             },
             5
@@ -166,7 +200,16 @@ export const SceneOne = () => {
               duration: 10,
               ease: 'power1.inOut',
             },
-            12
+            5
+          )
+          .from(
+            expressions.material,
+            {
+              opacity: 0,
+              duration: 2,
+              ease: 'back.inOut',
+            },
+            10
           )
           .to(
             lights[1],
@@ -177,59 +220,70 @@ export const SceneOne = () => {
             },
             16.5
           )
-          .from(
-            kiwi[1].scale,
+          .fromTo(
+            kiwi[0].position,
             {
-              x: 0.25,
-              y: 0.25,
-              duration: 8.5,
-              ease: 'power1.inOut',
+              y: -0.2,
+            },
+            {
+              y: 0.05,
+              duration: 12,
+              ease: 'power1',
             },
             16.5
           )
-          .from(
-            [kiwi[0].position, kiwi[1].position],
+          .to(
+            kiwi[1].position,
             {
-              y: -0.5,
-              duration: 11.5,
-              ease: 'back',
+              y: '+=0.05',
+              duration: 12,
+              ease: 'power1',
             },
             16.5
+          )
+          .to(
+            kiwi[1].position,
+            {
+              y: 0.575,
+              duration: 3.5,
+              ease: 'power1.inOut',
+            },
+            29
+          )
+          .to(
+            kiwi[1].scale,
+            {
+              x: 0.6,
+              y: 0.6,
+              duration: 3.5,
+              ease: 'power1.inOut',
+            },
+            29
+          )
+          .to(
+            kiwi[0].position,
+            {
+              y: 0,
+              duration: 3.5,
+              ease: 'power1.inOut',
+            },
+            29
           )
           .to(
             kiwi[0].position,
             {
               z: 0.01,
-              duration: 5,
-              ease: 'expo',
+              duration: 1,
+              ease: 'power2.inOut',
             },
-            25
-          )
-          .to(
-            kiwi[1].position,
-            {
-              z: -0.25,
-              duration: 5,
-              ease: 'power1.inOut',
-            },
-            25
-          )
-          .to(
-            kiwi[1].scale,
-            {
-              x: 0.5,
-              y: 0.5,
-              duration: 5,
-              ease: 'power1.inOut',
-            },
-            25
+            29
           )
           .from(
             voyager.position,
             {
               y: 3,
               x: 10,
-              duration: 13.5,
+              duration: 13,
               ease: 'power1',
             },
             33.5
@@ -237,8 +291,8 @@ export const SceneOne = () => {
           .from(
             voyager.rotation,
             {
-              x: Math.PI * 1.5,
-              duration: 13.5,
+              x: Math.PI,
+              duration: 7,
               ease: 'power2.inOut',
             },
             33.5
@@ -277,22 +331,6 @@ export const SceneOne = () => {
           )
           .call(
             () => {
-              unscrollableTl.current.reversed()
-                ? scrollLenis?.stop()
-                : scrollLenis?.start()
-            },
-            undefined,
-            45.65
-          )
-          .set(
-            planet,
-            {
-              visible: false,
-            },
-            45.65
-          )
-          .call(
-            () => {
               if (lastTime === 1) {
                 setExp(4)
                 images.visible = true
@@ -308,12 +346,40 @@ export const SceneOne = () => {
               }
             },
             undefined,
-            45.65
+            45.5
           )
           .from(
             images.material,
-            { opacity: 0, duration: 0.5, ease: 'back.inOut' },
-            45.65
+            { opacity: 0, duration: 1, ease: 'power2.inOut' },
+            45.5
+          )
+          .to(
+            updater,
+            {
+              currPreImage: 4,
+              duration: 1.5,
+              ease: 'none',
+              onUpdate: () => {
+                setImage(Math.round(updater.currPreImage))
+              },
+            },
+            46.5
+          )
+          .call(
+            () => {
+              unscrollableTl.current.reversed()
+                ? scrollLenis?.stop()
+                : scrollLenis?.start()
+            },
+            undefined,
+            48
+          )
+          .set(
+            planet,
+            {
+              visible: false,
+            },
+            48
           )
         // scrollableTl
         scrollableTl.current = gsap
@@ -326,9 +392,20 @@ export const SceneOne = () => {
               scrub: true,
               pin: true,
               refreshPriority: 99,
+              onEnter: () => {
+                typingTl.play()
+              },
+              onEnterBack: () => {
+                typingTl.play()
+              },
+              onLeave: () => {
+                typingTl.reverse()
+              },
+              onLeaveBack: () => {
+                typingTl.reverse()
+              },
             },
           })
-
           .to(
             updater,
             {
@@ -338,6 +415,15 @@ export const SceneOne = () => {
               onUpdate: () => {
                 setImage(Math.round(updater.currImage))
               },
+            },
+            0
+          )
+          .to(
+            '#mouse .mouse-scroll-text',
+            {
+              autoAlpha: 1,
+              duration: 1.25,
+              ease: 'expo.inOut',
             },
             0
           )
@@ -409,7 +495,7 @@ export const SceneOne = () => {
           .to(
             kiwi[1].position,
             {
-              y: 0.4,
+              y: 0,
               duration: 15,
               ease: 'power1.inOut',
             },
@@ -420,8 +506,8 @@ export const SceneOne = () => {
             {
               x: 0,
               y: 0,
-              duration: 25,
-              ease: 'power2.inOut',
+              duration: 15,
+              ease: 'power1.inOut',
             },
             55
           )
@@ -450,6 +536,8 @@ export const SceneOne = () => {
     setVoyager,
     images,
     setImages,
+    expressions,
+    setExpressions,
     setImage,
     setExp,
   ])
@@ -538,6 +626,7 @@ export const SceneOne = () => {
           setInstance={setQ2}
           setKiwiInstance={setKiwi}
           setImagesInstance={setImages}
+          setExpressionsInstance={setExpressions}
           currImage={currImage}
           currExp={currExp}
         />
@@ -550,8 +639,71 @@ export const SceneOne = () => {
 }
 
 const Loader = ({ onLoaded }: { onLoaded: Function }) => {
+  const [totalLoaded, setTotalLoaded] = useState(0)
+  const [mediaLoaded, setMediaLoaded] = useState(0)
+  let mediaLoaded2 = 0
+
   useEffect(() => {
-    let loadStack = 0
+    console.log(mediaLoaded, totalLoaded)
+    if (mediaLoaded >= totalLoaded) {
+      gsap
+        .timeline()
+        .to('.canvas-loader .spinner', {
+          scale: 0,
+          duration: 1.25,
+          ease: 'back.inOut',
+        })
+        .to('.canvas-loader .loader-screen', {
+          autoAlpha: 0,
+        })
+        .fromTo(
+          '.canvas-loader .start-screen > *',
+          {
+            autoAlpha: 0,
+            yPercent: 50,
+          },
+          {
+            autoAlpha: 1,
+            yPercent: 0,
+            duration: 1.25,
+            stagger: {
+              amount: 0.5,
+            },
+            ease: 'back.inOut',
+            willChange: 'transform, opacity',
+          }
+        )
+    }
+  }, [mediaLoaded, totalLoaded])
+
+  useEffect(() => {
+    // const sounds = document.querySelectorAll('audio')
+    // sounds.forEach((audio) => {
+    //   if (audio.complete) {
+    //     setMediaLoaded(++mediaLoaded2)
+    //     console.log('audio completed')
+    //   } else {
+    //     audio.oncanplaythrough = function () {
+    //       setMediaLoaded(++mediaLoaded2)
+    //       console.log('audio loaded')
+    //     }
+    //   }
+    // })
+    const images = document.querySelectorAll('img')
+    images.forEach((img) => {
+      if (img.complete) {
+        setMediaLoaded(++mediaLoaded2)
+        console.log('img completed')
+      } else {
+        img.onload = function () {
+          setMediaLoaded(++mediaLoaded2)
+          console.log('img loaded')
+        }
+      }
+    })
+
+    setTotalLoaded(images.length)
+
     gsap.to('.canvas-loader .spinner', {
       rotate: 360,
       duration: 5,
@@ -566,43 +718,12 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       yoyo: true,
     })
 
-    const tl = gsap
-      .timeline({ paused: true })
-      .to('.canvas-loader .spinner', {
-        scale: 0,
-        duration: 1.25,
-        ease: 'back.inOut',
-      })
-      // .set('.canvas-loader .loader-screen', {
-      //   display: 'none',
-      // })
-      .to('.canvas-loader .loader-screen', {
-        autoAlpha: 0,
-      })
-      .fromTo(
-        '.canvas-loader .start-screen > *',
-        {
-          autoAlpha: 0,
-          yPercent: 50,
-        },
-        {
-          autoAlpha: 1,
-          yPercent: 0,
-          duration: 1.25,
-          stagger: {
-            amount: 0.5,
-          },
-          ease: 'back.inOut',
-          willChange: 'transform, opacity',
-        }
-      )
+    // const tl = gsap
 
-    DefaultLoadingManager.onLoad = function () {
-      loadStack++
-      if (loadStack > 1) {
-        tl.play()
-      }
-    }
+    // DefaultLoadingManager.onLoad = function () {
+    //   console.log('tl playing')
+
+    // }
   }, [])
 
   return (
@@ -611,10 +732,12 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         <div className='spinner'></div>
       </div>
       <div className='start-screen'>
-        <p>
-          Please enable sound for the best experience on our website. Thank you!
-        </p>
-        <button onClick={() => onLoaded()}>Click to start the adventure</button>
+        <p>Enable sound for the best experience on our website.</p>
+        <p>Please scroll slowly for the best experience.</p>
+        <p>Thank you!</p>
+        <button onClick={() => onLoaded()}>
+          Start the adventure (I will remove this button)
+        </button>
       </div>
     </div>
   )
@@ -660,6 +783,7 @@ const Q2 = (props: any) => {
         position={[0, 0.2, 0.0045]}
         childGeometry={q2Geometry}
         currExp={props.currExp}
+        setInstance={props.setExpressionsInstance}
       />
       <mesh
         geometry={bandGeometry}
@@ -703,6 +827,8 @@ const Expressions = (props: any) => {
   )
 
   useEffect(() => {
+    props.setInstance(expressions.current)
+
     tl.current = gsap
       .timeline({
         repeat: -1,
@@ -828,11 +954,11 @@ const VoyagerImages = (props: any) => {
 
 const Kiwi = (props: any) => {
   const { isSoundEnabled } = useGlobalContext()
-  // const light: any = useRef(null)
   const kiwi: any = useRef(null)
   const lightContainer: any = useRef(null)
   const [light, set] = useState<any>()
   const [hovered, setHovered] = useState(false)
+  const [isHoverable, setHoverable] = useState(false)
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
     '/assets/scene1/Kiwi.png',
@@ -845,16 +971,16 @@ const Kiwi = (props: any) => {
   }, [lightContainer, kiwi])
 
   useEffect(() => {
-    if (isSoundEnabled && hovered) {
+    if (isSoundEnabled && hovered && isHoverable) {
       const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
       audio.currentTime = 0
       audio.play()
     }
-  }, [isSoundEnabled, hovered])
+  }, [isSoundEnabled, hovered, isHoverable])
 
   return (
-    <group>
-      <mesh {...props} ref={kiwi}>
+    <group ref={kiwi}>
+      <mesh {...props}>
         <meshStandardMaterial
           map={hovered ? kiwiAlt : kiwiMap}
           alphaMap={kiwiAlpha}
@@ -862,9 +988,10 @@ const Kiwi = (props: any) => {
         />
       </mesh>
       <group ref={lightContainer}>
-        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.65}>
-          <circleGeometry args={[0.2, 32]} />
-          <meshBasicMaterial color='lightyellow' />
+        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.6}>
+          {/* <planeGeometry args={[0.3, 0.5, 1, 1]} /> */}
+          <circleGeometry args={[0.2, 24]} />
+          <meshBasicMaterial color='#b97264' />
         </mesh>
       </group>
       <mesh
@@ -880,11 +1007,11 @@ const Kiwi = (props: any) => {
         {light && (
           <GodRays
             sun={light}
-            samples={64}
-            density={0.9}
-            decay={0.94}
+            samples={128}
+            density={1}
+            decay={0.98}
             weight={0.5}
-            exposure={0.4}
+            exposure={0.75}
             clampMax={1}
           />
         )}
@@ -931,7 +1058,7 @@ const Lights = (props: any) => {
   return (
     <>
       <pointLight intensity={0} position={[0, 2.3, 0.3]} ref={pointLight} />
-      <ambientLight intensity={0} ref={ambientLight} />
+      <ambientLight intensity={0.01} ref={ambientLight} />
     </>
   )
 }

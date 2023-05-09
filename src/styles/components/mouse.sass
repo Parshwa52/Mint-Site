@@ -48,6 +48,18 @@
             border: 2px dashed white
             border-bottom: none
             border-radius: 5rem 5rem 0 0
+      &.mouse-scroll
+        position: absolute
+        top: 50%
+        left: 0
+        width: 100%
+        height: 100%
+        @extend %flex-center
+        gap: 5px
+        padding: 0
+        margin: 0
+        list-style: none
+        transform: translateY(-50%) rotate(180deg)!important
       &.mouse-wave
         position: absolute
         top: 50%
@@ -72,7 +84,9 @@
             height: 35%
           &:nth-child(3)
             height: 50%
-    .mouse-wave-text
+    .mouse-scroll-text
+      opacity: 0
+    .mouse-wave-text, .mouse-scroll-text
       position: absolute
       font-family: $content-font
       @include fontSize('xs')

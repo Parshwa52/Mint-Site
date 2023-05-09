@@ -23,6 +23,7 @@ import img1 from '@/assets/placements/1_Cloud1.png'
 import img2 from '@/assets/placements/2_Cloud2.png'
 import img3 from '@/assets/placements/3_Cloud3.png'
 import img4 from '@/assets/placements/4_Base.png'
+import img4extra from '@/assets/placements/4_Base_blurred.png'
 import img5 from '@/assets/placements/5_Cloud4.png'
 import img6 from '@/assets/placements/6_Cloud5.png'
 import img7 from '@/assets/placements/7_Cloud6.png'
@@ -102,27 +103,28 @@ export const SceneTwo = () => {
   // scene building
 
   useEffect(() => {
+    // scrollLenis?.start()
     const ctx = gsap.context(() => {
       // clouds animation
-      const cloudsTl = gsap.timeline({
-        paused: true,
-        repeat: -1,
-        reversed: true,
-      })
+      // const cloudsTl = gsap.timeline({
+      //   paused: true,
+      //   repeat: -1,
+      //   reversed: true,
+      // })
 
       gsap.utils.toArray('.clouds > *').forEach((cloud: any, i) => {
-        cloudsTl.fromTo(
+        gsap.fromTo(
           cloud,
           {
             xPercent: -100,
           },
           {
             xPercent: 100,
-            willChange: 'transform',
-            duration: 25,
+            duration: 20,
             ease: 'none',
-          },
-          i / 4
+            repeat: -1,
+            delay: i * 2,
+          }
         )
       })
       // pin section 1 - fade out
@@ -144,6 +146,14 @@ export const SceneTwo = () => {
           {
             autoAlpha: 0,
             duration: 100,
+          },
+          0
+        )
+        .to(
+          ['#audio-0', '#audio-1'],
+          {
+            volume: 0,
+            duration: 25,
           },
           0
         )
@@ -187,8 +197,10 @@ export const SceneTwo = () => {
           },
           75
         )
+        .from('#audio-2', { volume: 0, duration: 25 }, 75)
+
       // pin section 2 - fade in
-      if (soundsArray.length > 0 && q2) {
+      if (q2) {
         gsap
           .timeline({
             scrollTrigger: {
@@ -207,15 +219,6 @@ export const SceneTwo = () => {
               ease: 'power1',
             },
           })
-          .to(
-            [soundsArray[0], soundsArray[1]],
-            {
-              volume: 0,
-              duration: 30,
-            },
-            0
-          )
-          .from(soundsArray[2], { volume: 0, duration: 30 }, 0)
           .from(
             '.clouds > *',
             {
@@ -224,17 +227,11 @@ export const SceneTwo = () => {
             },
             0
           )
-          .call(
-            () => {
-              cloudsTl.reversed() ? cloudsTl.play() : cloudsTl.reverse()
-            },
-            undefined,
-            1
-          )
           .from(
-            '.background > *',
+            '.background > *:first-child',
             {
               yPercent: 100,
+              stagger: 0,
               autoAlpha: 0,
               scale: 1.25,
             },
@@ -248,6 +245,13 @@ export const SceneTwo = () => {
               scale: 1.25,
             },
             20
+          )
+          .from(
+            '.background > *:last-child',
+            {
+              autoAlpha: 0,
+            },
+            27.5
           )
           .from(
             '.city-container .buildings-center-left > *',
@@ -308,8 +312,7 @@ export const SceneTwo = () => {
           .from(
             '.city-container .buildings-hover-left > *',
             {
-              yPercent: 100,
-              xPercent: -50,
+              xPercent: -100,
               duration: 50,
             },
             'buildingsCenterDone+=30'
@@ -317,8 +320,7 @@ export const SceneTwo = () => {
           .from(
             '.city-container .buildings-hover-right > *',
             {
-              yPercent: 100,
-              xPercent: 50,
+              xPercent: 100,
               duration: 50,
             },
             'buildingsCenterDone+=30'
@@ -424,17 +426,6 @@ export const SceneTwo = () => {
           },
           onComplete: () => {
             successTl.current.play()
-
-            // gsap.to(updater, {
-            //   successExp: 29,
-            //   duration: 0.5,
-            //   onUpdate: () => {
-            //     setCurrExpression(Math.round(updater.successExp))
-            //   },
-            //   onComplete: () => {
-            //     successTl.current.play()
-            //   },
-            // })
           },
         })
         .fromTo(
@@ -521,18 +512,17 @@ export const SceneTwo = () => {
       <div className='city-container'>
         <div className='clouds'>
           <Building src={img1} />
+          <Building src={img5} />
+          <Building src={img7} />
           <Building src={img2} />
+          <Building src={img6} />
           <Building src={img3} />
+          <Building src={img8} />
+          <Building src={img9} />
         </div>
         <div className='background'>
           <Building src={img4} />
-        </div>
-        <div className='clouds'>
-          <Building src={img5} />
-          <Building src={img6} />
-          <Building src={img7} />
-          <Building src={img8} />
-          <Building src={img9} />
+          <Building src={img4extra} />
         </div>
         <div className='buildings buildings-center-right'>
           <Building src={img11} />
@@ -610,6 +600,23 @@ export const SceneTwo = () => {
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
       </div>
     </div>
+  )
+}
+
+const Clouds = ({ src }: { src: any }) => {
+  return (
+    <Image
+      src={src}
+      alt='clouds'
+      className='building-container'
+      fill
+      style={{
+        objectFit: 'cover',
+      }}
+      sizes='(max-width: 768px) 40vw,
+              (max-width: 1200px) 50vw,
+              60vw'
+    />
   )
 }
 
@@ -782,7 +789,7 @@ const Kiwi = (props: any) => {
   }, [isSoundEnabled, hovered])
 
   return (
-    <group>
+    <group position={[0, 0, 0.01]}>
       <mesh {...props} ref={kiwi}>
         <meshBasicMaterial
           map={hovered ? kiwiAlt : kiwiMap}
@@ -791,7 +798,7 @@ const Kiwi = (props: any) => {
         />
       </mesh>
       <mesh
-        position={[0, 0.425, 0.2]}
+        position={[0, 0.49, 0.2]}
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
