@@ -511,14 +511,14 @@ export const SceneTwo = () => {
     <div className='scene scene-2' ref={scene2}>
       <div className='city-container'>
         <div className='clouds'>
-          <Building src={img1} />
-          <Building src={img5} />
-          <Building src={img7} />
-          <Building src={img2} />
-          <Building src={img6} />
-          <Building src={img3} />
-          <Building src={img8} />
-          <Building src={img9} />
+          <Clouds src={img1} />
+          <Clouds src={img5} />
+          <Clouds src={img7} />
+          <Clouds src={img2} />
+          <Clouds src={img6} />
+          <Clouds src={img3} />
+          <Clouds src={img8} />
+          <Clouds src={img9} />
         </div>
         <div className='background'>
           <Building src={img4} />
@@ -610,9 +610,10 @@ const Clouds = ({ src }: { src: any }) => {
       alt='clouds'
       className='building-container'
       fill
-      style={{
-        objectFit: 'cover',
-      }}
+      unoptimized
+      // style={{
+      //   objectFit: 'cover',
+      // }}
       sizes='(max-width: 768px) 40vw,
               (max-width: 1200px) 50vw,
               60vw'
@@ -627,6 +628,7 @@ const Building = ({ src }: { src: any }) => {
       alt='building'
       className='building-container'
       fill
+      unoptimized
       // style={{
       //   objectFit: 'cover',
       // }}

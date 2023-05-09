@@ -11,7 +11,6 @@ import {
   PlaneGeometry,
   RepeatWrapping,
   Texture,
-  DefaultLoadingManager,
 } from 'three'
 
 export const SceneOne = () => {
@@ -677,27 +676,13 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
   }, [mediaLoaded, totalLoaded])
 
   useEffect(() => {
-    // const sounds = document.querySelectorAll('audio')
-    // sounds.forEach((audio) => {
-    //   if (audio.complete) {
-    //     setMediaLoaded(++mediaLoaded2)
-    //     console.log('audio completed')
-    //   } else {
-    //     audio.oncanplaythrough = function () {
-    //       setMediaLoaded(++mediaLoaded2)
-    //       console.log('audio loaded')
-    //     }
-    //   }
-    // })
     const images = document.querySelectorAll('img')
     images.forEach((img) => {
       if (img.complete) {
         setMediaLoaded(++mediaLoaded2)
-        console.log('img completed')
       } else {
         img.onload = function () {
           setMediaLoaded(++mediaLoaded2)
-          console.log('img loaded')
         }
       }
     })
@@ -717,13 +702,6 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       repeat: -1,
       yoyo: true,
     })
-
-    // const tl = gsap
-
-    // DefaultLoadingManager.onLoad = function () {
-    //   console.log('tl playing')
-
-    // }
   }, [])
 
   return (

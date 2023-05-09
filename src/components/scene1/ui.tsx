@@ -36,7 +36,7 @@ export const UI = () => {
         <Image src={midTopPanel} alt='ui mid' className='ui-part ui-top' />
         <div className='ui-part ui-mid'>
           <div className='ui-img'>
-            <Image src={midPanel} alt='ui mid' />
+            <Image src={midPanel} alt='ui mid' className='ui-img-img' />
             <div className='ui-text'>
               <p id='text-1'>
                 <Split
