@@ -156,8 +156,7 @@ export const Mouse = () => {
         <div className='mouse-center'>
           <div className='center-normal dot'></div>
           {/* Pointer */}
-          <div className='center-normal border border-top'></div>
-          <div className='center-normal border border-bottom'></div>
+          <div className='center-normal border'></div>
         </div>
         {/* Sound */}
         <p className='mouse-wave-text text-top'>Click for</p>

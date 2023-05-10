@@ -22,6 +22,8 @@
       position: relative
       height: 100%
       width: 100%
+      border-radius: 50%
+      overflow: hidden
       @extend %flex-center
       .center-normal
         position: relative
@@ -32,8 +34,18 @@
           border-radius: 50%
         &.border
           position: absolute
-          height: 18%
-          width: 50%
+          height: 75%
+          width: 75%
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          border: 2px dashed white
+          border-radius: 50%
+          mask-image: url(/assets/cursor-mask.png)
+          mask-size: cover
+          mask-position: center center
+          mask-clip: border-box
+          mask-repeat: no-repeat
           &.border-top
             bottom: 20%
             left: 50%

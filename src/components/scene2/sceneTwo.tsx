@@ -57,7 +57,7 @@ import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
 
 export const SceneTwo = () => {
-  const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext()
+  const { scrollLenis, soundsArray } = useGlobalContext()
   const scene2 = useRef<HTMLDivElement>(null)
   const entryTl = useRef<any>()
   const failureTl = useRef<any>()

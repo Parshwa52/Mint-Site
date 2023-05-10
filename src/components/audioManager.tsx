@@ -2,7 +2,7 @@ import { useGlobalContext } from '@/provider/globalProvider'
 import { useEffect } from 'react'
 
 export const AudioManager = () => {
-  const { soundsArray } = useGlobalContext()
+  const { soundsArray, isSoundEnabled } = useGlobalContext()
 
   useEffect(() => {
     const audios = document.querySelectorAll('audio')
@@ -10,14 +10,25 @@ export const AudioManager = () => {
     audios.forEach((audio) => {
       audio.volume = 0.5
       audio.pause()
+      audio.muted = true
       soundsArray.push(audio)
     })
   }, [])
+
+  useEffect(() => {
+    const audios = document.querySelectorAll('audio')
+
+    audios.forEach((audio) => {
+      if (isSoundEnabled) audio.muted = false
+      else audio.muted = true
+    })
+  }, [isSoundEnabled])
 
   return (
     <>
       <audio
         id='audio-0'
+        muted
         style={{
           display: 'none',
         }}
@@ -29,6 +40,7 @@ export const AudioManager = () => {
       </audio>
       <audio
         id='audio-1'
+        muted
         loop
         style={{
           display: 'none',
@@ -38,6 +50,7 @@ export const AudioManager = () => {
       </audio>
       <audio
         id='audio-2'
+        muted
         loop
         style={{
           display: 'none',
@@ -47,6 +60,7 @@ export const AudioManager = () => {
       </audio>
       <audio
         id='audio-kiwi'
+        muted
         style={{
           display: 'none',
         }}

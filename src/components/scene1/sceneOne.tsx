@@ -564,23 +564,18 @@ export const SceneOne = () => {
   }, [])
 
   function handleStartClick() {
-    setTimeout(() => {
-      document.querySelectorAll('audio').forEach((audio) => {
-        audio.muted = false
-      })
-      // sound manager
-      soundsArray[0].play()
-      soundsArray[2].play()
+    // sound manager
+    soundsArray[0].play()
+    soundsArray[2].play()
 
-      setTimeout(() => {
-        soundsArray[1].play()
-        gsap.from(soundsArray[1], {
-          volume: 0,
-          duration: 1.25,
-          ease: 'none',
-        })
-      }, 74000)
-    }, 250)
+    setTimeout(() => {
+      soundsArray[1].play()
+      gsap.from(soundsArray[1], {
+        volume: 0,
+        duration: 1.25,
+        ease: 'none',
+      })
+    }, 74000)
 
     // sound button
     gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
@@ -646,7 +641,11 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
     console.log(mediaLoaded, totalLoaded)
     if (mediaLoaded >= totalLoaded) {
       gsap
-        .timeline()
+        .timeline({
+          // onComplete: () => {
+          //   onLoaded()
+          // },
+        })
         .to('.canvas-loader .spinner', {
           scale: 0,
           duration: 1.25,
@@ -710,12 +709,12 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         <div className='spinner'></div>
       </div>
       <div className='start-screen'>
-        <p>Enable sound for the best experience on our website.</p>
-        <p>Please scroll slowly for the best experience.</p>
+        <p>
+          Enable sound for the best experience on our website. <br />
+          Please scroll slowly for the best experience.
+        </p>
         <p>Thank you!</p>
-        <button onClick={() => onLoaded()}>
-          Start the adventure (I will remove this button)
-        </button>
+        <button onClick={() => onLoaded()}>Start the adventure</button>
       </div>
     </div>
   )
@@ -778,6 +777,7 @@ const Expressions = (props: any) => {
   const expressions: any = useRef(null)
   const expression: any = useRef(null)
   const tl = useRef<GSAPTimeline>()
+  const camera = useRef()
 
   const mask = useTexture('/assets/scene1/Q2_mask.jpg')
 
@@ -803,6 +803,22 @@ const Expressions = (props: any) => {
       })
     }
   )
+
+  useEffect(() => {
+    if (expression.current) {
+      const handleCamera = () => {
+        if (window.innerWidth / window.innerHeight < 1.5) {
+          const minus = 1.5 - window.innerWidth / window.innerHeight / 2
+          expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
+        } else {
+          expression.current.scale.set(2.75, 1.15, 1)
+        }
+      }
+
+      window.addEventListener('resize', handleCamera)
+      handleCamera()
+    }
+  }, [expression])
 
   useEffect(() => {
     props.setInstance(expressions.current)
@@ -852,7 +868,7 @@ const Expressions = (props: any) => {
       <meshBasicMaterial alphaMap={mask} transparent needsUpdate>
         {/* @ts-ignore */}
         <RenderTexture attach='map' frames={1}>
-          <PerspectiveCamera makeDefault position={[0, 0, 1]} />
+          <PerspectiveCamera makeDefault position={[0, 0, 1]} ref={camera} />
           <mesh
             geometry={props.childGeometry}
             scale={[2.75, 1.15, 1]}
@@ -861,6 +877,7 @@ const Expressions = (props: any) => {
           >
             <meshBasicMaterial
               map={expArray[props.currExp]}
+              color='white'
               // alphaMap={expMaskArray[props.currExp]}
               transparent
               needsUpdate
