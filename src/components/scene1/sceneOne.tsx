@@ -28,6 +28,7 @@ export const SceneOne = () => {
   const [expressions, setExpressions] = useState<any>(null)
   const [currImage, setImage] = useState(0)
   const [currExp, setExp] = useState(0)
+  const [isKiwiHoverable, setKiwiHoverable] = useState(false)
 
   useEffect(() => {
     const updater = {
@@ -275,6 +276,13 @@ export const SceneOne = () => {
               duration: 1,
               ease: 'power2.inOut',
             },
+            29
+          )
+          .call(
+            () => {
+              setKiwiHoverable(true)
+            },
+            undefined,
             29
           )
           .from(
@@ -611,7 +619,7 @@ export const SceneOne = () => {
         <div className='scroll-arrow'></div>
       </div>
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 1.25]}
         gl={{
           antialias: false,
         }}
@@ -621,6 +629,7 @@ export const SceneOne = () => {
           setKiwiInstance={setKiwi}
           setImagesInstance={setImages}
           setExpressionsInstance={setExpressions}
+          isKiwiHoverable={isKiwiHoverable}
           currImage={currImage}
           currExp={currExp}
         />
@@ -743,7 +752,11 @@ const Q2 = (props: any) => {
 
   return (
     <group scale={5} ref={q2} position={[0, -1, 0]}>
-      <Kiwi geometry={q2Geometry} setInstance={props.setKiwiInstance} />
+      <Kiwi
+        geometry={q2Geometry}
+        setInstance={props.setKiwiInstance}
+        isKiwiHoverable={props.isKiwiHoverable}
+      />
       <mesh geometry={q2Geometry}>
         <meshStandardMaterial map={body} alphaMap={bodyAlpha} alphaTest={0.5} />
       </mesh>
@@ -953,7 +966,6 @@ const Kiwi = (props: any) => {
   const lightContainer: any = useRef(null)
   const [light, set] = useState<any>()
   const [hovered, setHovered] = useState(false)
-  const [isHoverable, setHoverable] = useState(false)
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
     '/assets/scene1/Kiwi.png',
@@ -966,12 +978,13 @@ const Kiwi = (props: any) => {
   }, [lightContainer, kiwi])
 
   useEffect(() => {
-    if (isSoundEnabled && hovered && isHoverable) {
+    console.log(props.isKiwiHoverable)
+    if (isSoundEnabled && hovered && props.isKiwiHoverable) {
       const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
       audio.currentTime = 0
       audio.play()
     }
-  }, [isSoundEnabled, hovered, isHoverable])
+  }, [isSoundEnabled, hovered, props.isKiwiHoverable])
 
   return (
     <group ref={kiwi}>

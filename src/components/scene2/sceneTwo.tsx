@@ -581,7 +581,7 @@ export const SceneTwo = () => {
           <ConnectWallet />
         </div>
         <Canvas
-          dpr={[1, 1.5]}
+          dpr={[1, 1.25]}
           gl={{
             antialias: false,
           }}
@@ -745,6 +745,22 @@ const Expressions = (props: any) => {
     '/assets/scene2/expressions/success/exp-2.png',
     '/assets/scene2/expressions/success/exp-3.png',
   ])
+
+  useEffect(() => {
+    if (expression.current) {
+      const handleCamera = () => {
+        if (window.innerWidth / window.innerHeight < 1.5) {
+          const minus = 1.5 - window.innerWidth / window.innerHeight / 2
+          expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
+        } else {
+          expression.current.scale.set(2.75, 1.15, 1)
+        }
+      }
+
+      window.addEventListener('resize', handleCamera)
+      handleCamera()
+    }
+  }, [expression])
 
   return (
     <mesh ref={expressions} {...props}>
