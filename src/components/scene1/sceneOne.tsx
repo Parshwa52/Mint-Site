@@ -1031,6 +1031,7 @@ const Kiwi = (props: any) => {
           map={hovered ? kiwiAlt : kiwiMap}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
+          needsUpdate
         />
       </mesh>
       <group ref={lightContainer}>

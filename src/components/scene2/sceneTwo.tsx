@@ -166,7 +166,7 @@ export const SceneTwo = () => {
           ['#audio-0', '#audio-1'],
           {
             volume: 0,
-            duration: 25,
+            duration: 50,
           },
           0
         )
@@ -210,7 +210,7 @@ export const SceneTwo = () => {
           },
           75
         )
-        .from('#audio-2', { volume: 0, duration: 25 }, 75)
+        .from('#audio-2', { volume: 0, duration: 50 }, 50)
 
       // pin section 2 - fade in
       if (q2) {
@@ -232,6 +232,15 @@ export const SceneTwo = () => {
               ease: 'power1',
             },
           })
+          .from(
+            q2.position,
+            {
+              y: -8,
+              duration: 100,
+              ease: 'power1',
+            },
+            0
+          )
           .to(
             '#mouse .border-background',
             {
@@ -312,15 +321,15 @@ export const SceneTwo = () => {
             },
             'buildingsCenterDone-=5'
           )
-          .from(
-            q2.position,
-            {
-              y: -8,
-              duration: 100,
-              ease: 'power1',
-            },
-            'buildingsCenterDone+=10'
-          )
+          // .from(
+          //   q2.position,
+          //   {
+          //     y: -8,
+          //     duration: 100,
+          //     ease: 'power1',
+          //   },
+          //   'buildingsCenterDone+=10'
+          // )
           .from(
             '.city-container .buildings-logo > *',
             {
@@ -836,6 +845,7 @@ const Kiwi = (props: any) => {
           map={hovered ? kiwiAlt : kiwiMap}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
+          needsUpdate
         />
       </mesh>
       <mesh
