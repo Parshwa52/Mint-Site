@@ -113,14 +113,24 @@ export const SceneOne = () => {
             0
           )
           .from(
-            '#ui #text-1 span span',
+            '#ui #text-1 .phrase-1 span span',
             {
               display: 'none',
               duration: 0.1,
-              stagger: 0.05,
+              stagger: 0.1,
               ease: 'none',
             },
             0
+          )
+          .from(
+            '#ui #text-1 .phrase-2 span span',
+            {
+              display: 'none',
+              duration: 0.1,
+              stagger: 0.1,
+              ease: 'none',
+            },
+            '>+=1'
           )
         // unscrollableTl
         unscrollableTl.current = gsap
@@ -214,11 +224,11 @@ export const SceneOne = () => {
           .from(
             expressions.material,
             {
-              opacity: 0,
+              opacity: 0.25,
               duration: 2,
-              ease: 'back.inOut',
+              ease: 'expo.inOut',
             },
-            10
+            12
           )
           .to(
             lights[1],
@@ -239,7 +249,7 @@ export const SceneOne = () => {
               duration: 12,
               ease: 'power1',
             },
-            16.5
+            17
           )
           .to(
             kiwi[1].position,
@@ -248,7 +258,7 @@ export const SceneOne = () => {
               duration: 12,
               ease: 'power1',
             },
-            16.5
+            17
           )
           .to(
             kiwi[1].position,
@@ -257,17 +267,17 @@ export const SceneOne = () => {
               duration: 3.5,
               ease: 'power1.inOut',
             },
-            29
+            29.5
           )
           .to(
             kiwi[1].scale,
             {
-              x: 0.6,
-              y: 0.6,
+              x: 0.575,
+              y: 0.575,
               duration: 3.5,
               ease: 'power1.inOut',
             },
-            29
+            29.5
           )
           .to(
             kiwi[0].position,
@@ -276,7 +286,7 @@ export const SceneOne = () => {
               duration: 3.5,
               ease: 'power1.inOut',
             },
-            29
+            29.5
           )
           .to(
             kiwi[0].position,
@@ -285,14 +295,14 @@ export const SceneOne = () => {
               duration: 1,
               ease: 'power2.inOut',
             },
-            29
+            29.5
           )
           .call(
             () => {
               setKiwiHoverable(true)
             },
             undefined,
-            29
+            29.5
           )
           .from(
             voyager.position,
@@ -397,6 +407,8 @@ export const SceneOne = () => {
             },
             48
           )
+
+        let lastscroll = 0
         // scrollableTl
         scrollableTl.current = gsap
           .timeline({
@@ -408,12 +420,12 @@ export const SceneOne = () => {
               scrub: true,
               pin: true,
               refreshPriority: 99,
-              onEnter: () => {
-                typingTl.play()
-              },
-              onEnterBack: () => {
-                typingTl.play()
-              },
+              // onEnter: () => {
+              //   typingTl.play()
+              // },
+              // onEnterBack: () => {
+              //   typingTl.play()
+              // },
               onLeave: () => {
                 typingTl.reverse()
               },
@@ -473,6 +485,16 @@ export const SceneOne = () => {
             },
             undefined,
             1
+          )
+          .call(
+            () => {
+              if (scrollableTl.current.progress() > lastscroll) typingTl.play()
+              else typingTl.reverse()
+
+              lastscroll = scrollableTl.current.progress()
+            },
+            undefined,
+            33
           )
           .to(
             images.material,
@@ -740,13 +762,7 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         onClick={() => onLoaded()}
         style={{ cursor: 'pointer' }}
       >
-        <p>
-          Enable sound for the best experience on our website. <br />
-          Please scroll slowly for the best experience.
-        </p>
-        <p>Click anywhere to start.</p>
-        <p>Thank you!</p>
-        {/* <button style={{ display: 'none' }}>Start the adventure</button> */}
+        <p>Please scroll slowly through the website for the best experience.</p>
       </div>
     </div>
   )
@@ -1018,7 +1034,7 @@ const Kiwi = (props: any) => {
         />
       </mesh>
       <group ref={lightContainer}>
-        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.6}>
+        <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.585}>
           {/* <planeGeometry args={[0.3, 0.5, 1, 1]} /> */}
           <circleGeometry args={[0.2, 24]} />
           <meshBasicMaterial color='#b97264' />

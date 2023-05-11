@@ -38,13 +38,22 @@ export const UI = () => {
           <div className='ui-img'>
             <Image src={midPanel} alt='ui mid' className='ui-img-img' />
             <div className='ui-text'>
-              <p id='text-1'>
-                <Split
-                  splitWords
-                  splitChars
-                  textToSplit='I have the perfect place for you. Let me take you to the world of Pluto.'
-                />
-              </p>
+              <div id='text-1'>
+                <p className='phrase-1'>
+                  <Split
+                    splitWords
+                    splitChars
+                    textToSplit='I have the perfect place for you.'
+                  />
+                </p>
+                <p className='phrase-2'>
+                  <Split
+                    splitWords
+                    splitChars
+                    textToSplit='Let me take you to the world of Pluto.'
+                  />
+                </p>
+              </div>
               <ul className='ui-text-sounds'>
                 <li />
                 <li />

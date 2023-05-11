@@ -26,9 +26,9 @@ import img4 from '@/assets/placements/4_Base.png'
 import img4extra from '@/assets/placements/4_Base_blurred.png'
 import img5 from '@/assets/placements/5_Cloud4.png'
 import img6 from '@/assets/placements/6_Cloud5.png'
-import img7 from '@/assets/placements/7_Cloud6.png'
-import img8 from '@/assets/placements/8_Cloud7.png'
-import img9 from '@/assets/placements/9_Cloud8.png'
+// import img7 from '@/assets/placements/7_Cloud6.png'
+// import img8 from '@/assets/placements/8_Cloud7.png'
+// import img9 from '@/assets/placements/9_Cloud8.png'
 import img10 from '@/assets/placements/13_Octopus_leftmost_Building.png'
 import img11 from '@/assets/placements/14_Octopus_rightmost_Building.png'
 import img12 from '@/assets/placements/11_Octopus_left_Building.png'
@@ -112,21 +112,34 @@ export const SceneTwo = () => {
       //   reversed: true,
       // })
 
-      gsap.utils.toArray('.clouds > *').forEach((cloud: any, i) => {
-        gsap.fromTo(
-          cloud,
-          {
-            xPercent: -100,
-          },
-          {
-            xPercent: 100,
-            duration: 20,
-            ease: 'none',
-            repeat: -1,
-            delay: i * 2,
-          }
-        )
-      })
+      gsap.fromTo(
+        '.clouds',
+        {
+          xPercent: -100,
+        },
+        {
+          xPercent: 100,
+          duration: 20,
+          repeat: -1,
+          ease: 'none',
+        }
+      )
+
+      // gsap.utils.toArray('.clouds > *').forEach((cloud: any, i) => {
+      //   gsap.fromTo(
+      //     cloud,
+      //     {
+      //       xPercent: -100,
+      //     },
+      //     {
+      //       xPercent: 100,
+      //       duration: 20,
+      //       ease: 'none',
+      //       repeat: -1,
+      //       delay: i * 2,
+      //     }
+      //   )
+      // })
       // pin section 1 - fade out
       gsap
         .timeline({
@@ -522,12 +535,12 @@ export const SceneTwo = () => {
         <div className='clouds'>
           <Clouds src={img1} />
           <Clouds src={img5} />
-          <Clouds src={img7} />
+          {/* <Clouds src={img7} /> */}
           <Clouds src={img2} />
           <Clouds src={img6} />
           <Clouds src={img3} />
-          <Clouds src={img8} />
-          <Clouds src={img9} />
+          {/* <Clouds src={img8} /> */}
+          {/* <Clouds src={img9} /> */}
         </div>
         <div className='background'>
           <Building src={img4} />
@@ -617,15 +630,16 @@ const Clouds = ({ src }: { src: any }) => {
     <Image
       src={src}
       alt='clouds'
-      className='building-container'
+      className='building-container clouds-container'
       fill
       unoptimized
-      // style={{
-      //   objectFit: 'cover',
-      // }}
-      sizes='(max-width: 768px) 40vw,
-              (max-width: 1200px) 50vw,
-              60vw'
+      style={{
+        objectFit: 'contain',
+        objectPosition: 'center top',
+      }}
+      // sizes='(max-width: 768px) 40vw,
+      //         (max-width: 1200px) 50vw,
+      //         60vw'
     />
   )
 }
@@ -641,9 +655,9 @@ const Building = ({ src }: { src: any }) => {
       // style={{
       //   objectFit: 'cover',
       // }}
-      sizes='(max-width: 768px) 45vw,
-              (max-width: 1200px) 65vw,
-              75vw'
+      // sizes='(max-width: 768px) 45vw,
+      //         (max-width: 1200px) 65vw,
+      //         75vw'
     />
   )
 }
