@@ -219,6 +219,15 @@ export const SceneTwo = () => {
               ease: 'power1',
             },
           })
+          .to(
+            '#mouse .border-background',
+            {
+              scaleX: 1,
+              ease: 'none',
+              duration: 100,
+            },
+            0
+          )
           .from(
             '.clouds > *',
             {

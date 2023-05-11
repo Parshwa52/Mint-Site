@@ -46,20 +46,6 @@
           mask-position: center center
           mask-clip: border-box
           mask-repeat: no-repeat
-          &.border-top
-            bottom: 20%
-            left: 50%
-            transform: translate(-50%, 0)
-            border: 2px dashed white
-            border-top: none
-            border-radius: 0 0 5rem 5rem
-          &.border-bottom
-            top: 20%
-            left: 50%
-            transform: translate(-50%, 0)
-            border: 2px dashed white
-            border-bottom: none
-            border-radius: 5rem 5rem 0 0
       &.mouse-scroll
         position: absolute
         top: 50%
@@ -121,19 +107,30 @@
     transform: rotate(-45deg)
     > *
       position: absolute
+      top: 0
       left: 0
-      height: 50%
+      height: 100%
       width: 100%
     .mouse-left-border
-      top: 0
-      border: 3px solid #d996e7
-      border-bottom: none
-      border-radius: 5rem 5rem 0 0
+      mask-image: url(/assets/cursor-border-mask-top.png)
+      mask-size: cover
+      mask-position: center center
+      mask-clip: border-box
+      mask-repeat: no-repeat
+      .border-background
+        height: 100%
+        width: 100%
+        background-color: #d996e7
+        transform: scaleX(0)
+        transform-origin: left center
+
     .mouse-right-border
-      bottom: 0
-      border: 2px solid white
-      border-top: none
-      border-radius: 0 0 5rem 5rem
+      background-color: white
+      mask-image: url(/assets/cursor-border-mask-bottom.png)
+      mask-size: cover
+      mask-position: center center
+      mask-clip: border-box
+      mask-repeat: no-repeat
   > div
     @extend %flex-center
     overflow: hidden

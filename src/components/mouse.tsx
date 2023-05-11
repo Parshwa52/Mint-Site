@@ -149,7 +149,9 @@ export const Mouse = () => {
   return (
     <div id='mouse'>
       <div className='mouse-decoration'>
-        <div className='mouse-left-border'></div>
+        <div className='mouse-left-border'>
+          <div className='border-background'></div>
+        </div>
         <div className='mouse-right-border'></div>
       </div>
       <div className='mouse-container'>

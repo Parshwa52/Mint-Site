@@ -136,6 +136,15 @@ export const SceneOne = () => {
               })
             },
           })
+          .to(
+            '#mouse .border-background',
+            {
+              scaleX: 0.4,
+              ease: 'none',
+              duration: 47,
+            },
+            0
+          )
           .from(
             ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
             {
@@ -413,6 +422,15 @@ export const SceneOne = () => {
               },
             },
           })
+          .to(
+            '#mouse .border-background',
+            {
+              scaleX: 0.7,
+              ease: 'none',
+              duration: 100,
+            },
+            0
+          )
           .to(
             updater,
             {
@@ -717,13 +735,18 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       <div className='loader-screen'>
         <div className='spinner'></div>
       </div>
-      <div className='start-screen'>
+      <div
+        className='start-screen'
+        onClick={() => onLoaded()}
+        style={{ cursor: 'pointer' }}
+      >
         <p>
           Enable sound for the best experience on our website. <br />
           Please scroll slowly for the best experience.
         </p>
+        <p>Click anywhere to start.</p>
         <p>Thank you!</p>
-        <button onClick={() => onLoaded()}>Start the adventure</button>
+        {/* <button style={{ display: 'none' }}>Start the adventure</button> */}
       </div>
     </div>
   )
@@ -978,7 +1001,6 @@ const Kiwi = (props: any) => {
   }, [lightContainer, kiwi])
 
   useEffect(() => {
-    console.log(props.isKiwiHoverable)
     if (isSoundEnabled && hovered && props.isKiwiHoverable) {
       const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
       audio.currentTime = 0
