@@ -242,7 +242,7 @@ export const SceneTwo = () => {
             0
           )
           .to(
-            '#mouse .border-background',
+            '#mouse .border-bottom .border-background',
             {
               scaleX: 1,
               ease: 'none',

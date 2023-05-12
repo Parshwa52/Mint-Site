@@ -108,7 +108,8 @@
       left: 0
       height: 100%
       width: 100%
-    .mouse-left-border
+    .mouse-left-border.border-top
+      z-index: 2
       mask-image: url(/assets/cursor-border-mask-top.png)
       mask-size: cover
       mask-position: center center
@@ -120,10 +121,23 @@
         background-color: #d996e7
         transform: scaleX(0)
         transform-origin: left center
-
-    .mouse-right-border
-      background-color: white
+    .mouse-left-border.border-bottom
+      z-index: 2
       mask-image: url(/assets/cursor-border-mask-bottom.png)
+      mask-size: cover
+      mask-position: center center
+      mask-clip: border-box
+      mask-repeat: no-repeat
+      .border-background
+        height: 100%
+        width: 100%
+        background-color: #d996e7
+        transform: scaleX(0)
+        transform-origin: right center
+    .mouse-right-border
+      z-index: 1
+      background-color: white
+      mask-image: url(/assets/cursor-border-mask.png)
       mask-size: cover
       mask-position: center center
       mask-clip: border-box

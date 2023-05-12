@@ -158,9 +158,9 @@ export const SceneOne = () => {
               0
             )
             .to(
-              '#mouse .border-background',
+              '#mouse .border-top .border-background',
               {
-                scaleX: 0.4,
+                scaleX: 0.5,
                 ease: 'expo.inOut',
                 duration: 1.25,
               },
@@ -275,9 +275,9 @@ export const SceneOne = () => {
               },
             })
             .to(
-              '#mouse .border-background',
+              '#mouse .border-top .border-background',
               {
-                scaleX: 0.4,
+                scaleX: 0.5,
                 ease: 'none',
                 duration: 47,
               },
@@ -587,9 +587,9 @@ export const SceneOne = () => {
           // }
           // scrollableTl.current
           .to(
-            '#mouse .border-background',
+            '#mouse .border-top .border-background',
             {
-              scaleX: 0.7,
+              scaleX: 1,
               ease: 'none',
               duration: 100,
             },
