@@ -10,6 +10,7 @@
     "test": "next build && next start"
   },
   "dependencies": {
+    "@biconomy/hyphen": "^1.1.6",
     "@rainbow-me/rainbowkit": "^0.12.4",
     "@react-three/drei": "^9.66.6",
     "@react-three/fiber": "^8.13.0",
