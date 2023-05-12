@@ -44,24 +44,10 @@ const SEO = (props: SEOProps) => {
       />
       <meta httpEquiv='content-type' content='text/html; charset=utf-8' />
       {/* Favicons metatags */}
-      <link
-        rel='icon'
-        type='image/png'
-        sizes='16x16'
-        href='/icons/favicon.ico'
-      />
-      <link
-        rel='icon'
-        type='image/png'
-        sizes='32x32'
-        href='/icons/favicon.ico'
-      />
-      <link
-        rel='apple-touch-icon'
-        sizes='180x180'
-        href='/icons/favicocon.ico'
-      />
-      <link rel='mask-icon' color={SEOThemeColor} href='/icons/favicocon.ico' />
+      <link rel='icon' type='image/png' sizes='16x16' href='/favicon.png' />
+      <link rel='icon' type='image/png' sizes='32x32' href='/favicon.png' />
+      <link rel='apple-touch-icon' sizes='180x180' href='/favicon.png' />
+      <link rel='mask-icon' color={SEOThemeColor} href='/favicon.png' />
       <meta name='msapplication-TileColor' content={SEOThemeColor} />
       <meta name='theme-color' content={SEOThemeColor} />
       {/* Social metatags */}

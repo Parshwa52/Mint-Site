@@ -31,6 +31,8 @@ export const SceneOne = () => {
   const [isKiwiHoverable, setKiwiHoverable] = useState(false)
 
   useEffect(() => {
+    // Local storage to not play again first animation
+    const ls = localStorage.getItem('kubrick') || ''
     const updater = {
       currPreImage: 0,
       currImage: 0,
@@ -133,280 +135,413 @@ export const SceneOne = () => {
             '>+=1'
           )
         // unscrollableTl
-        unscrollableTl.current = gsap
-          .timeline({
-            paused: true,
-            onComplete: () => {
-              document.body.style.height = 'auto'
-              document.body.style.overflow = 'auto'
-              gsap.to('.canvas-scroll', {
-                autoAlpha: 1,
-                duration: 1.25,
-                ease: 'expo',
-              })
-            },
-          })
-          .to(
-            '#mouse .border-background',
-            {
-              scaleX: 0.4,
-              ease: 'none',
-              duration: 47,
-            },
-            0
-          )
-          .from(
-            ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
-            {
-              yPercent: -100,
-              scale: 1.1,
-              duration: 3,
-            },
-            0
-          )
-          .from(
-            '#ui .ui-part.ui-lower',
-            {
-              yPercent: 100,
-              scale: 1.1,
-              duration: 3,
-            },
-            0
-          )
-          .to('#ui', { opacity: 1, duration: 3, ease: 'expo.inOut' }, 0)
-          .to(
-            lights[0],
-            {
-              intensity: 0.025,
-              duration: 6,
-              ease: 'power1.in',
-            },
-            0
-          )
-          .from(
-            kiwi[1].scale,
-            {
-              x: 0,
-              y: 0,
-              duration: 8.5,
-              ease: 'power1.inOut',
-            },
-            8
-          )
-          .fromTo(
-            planet.children[0].position,
-            { y: 0.015 },
-            {
-              y: -0.35,
-              duration: 45,
-              ease: 'none',
-            },
-            0
-          )
-          .from(
-            q2.position,
-            {
-              y: -3,
-              duration: 10,
-              ease: 'power1',
-            },
-            5
-          )
-          .to(
-            lights[0],
-            {
-              intensity: 0.05,
-              duration: 10,
-              ease: 'power1.inOut',
-            },
-            5
-          )
-          .from(
-            expressions.material,
-            {
-              opacity: 0.25,
-              duration: 2,
-              ease: 'expo.inOut',
-            },
-            12
-          )
-          .to(
-            lights[1],
-            {
-              intensity: 3,
-              duration: 20,
-              ease: 'power1.inOut',
-            },
-            16.5
-          )
-          .fromTo(
-            kiwi[0].position,
-            {
-              y: -0.2,
-            },
-            {
-              y: 0.05,
-              duration: 12,
-              ease: 'power1',
-            },
-            17
-          )
-          .to(
-            kiwi[1].position,
-            {
-              y: '+=0.05',
-              duration: 12,
-              ease: 'power1',
-            },
-            17
-          )
-          .to(
-            kiwi[1].position,
-            {
-              y: 0.575,
-              duration: 3.5,
-              ease: 'power1.inOut',
-            },
-            29.5
-          )
-          .to(
-            kiwi[1].scale,
-            {
-              x: 0.575,
-              y: 0.575,
-              duration: 3.5,
-              ease: 'power1.inOut',
-            },
-            29.5
-          )
-          .to(
-            kiwi[0].position,
-            {
-              y: 0,
-              duration: 3.5,
-              ease: 'power1.inOut',
-            },
-            29.5
-          )
-          .to(
-            kiwi[0].position,
-            {
-              z: 0.01,
-              duration: 1,
-              ease: 'power2.inOut',
-            },
-            29.5
-          )
-          .call(
-            () => {
-              setKiwiHoverable(true)
-            },
-            undefined,
-            29.5
-          )
-          .from(
-            voyager.position,
-            {
-              y: 3,
-              x: 10,
-              duration: 13,
-              ease: 'power1',
-            },
-            33.5
-          )
-          .from(
-            voyager.rotation,
-            {
-              x: Math.PI,
-              duration: 7,
-              ease: 'power2.inOut',
-            },
-            33.5
-          )
-          .call(
-            () => {
-              if (expressionTl.isActive()) {
-                expressionTl.pause()
-                setExp(2)
-              } else expressionTl.play()
-            },
-            undefined,
-            35
-          )
-          .to(
-            lights[0],
-            {
-              intensity: 0.15,
-              duration: 10,
-              ease: 'power1.inOut',
-            },
-            35
-          )
-          .call(
-            () => {
-              if (lastTime === 0) {
-                setExp(3)
-                lastTime = 1
-              } else {
-                setExp(2)
-                lastTime = 0
-              }
-            },
-            undefined,
-            39.5
-          )
-          .call(
-            () => {
-              if (lastTime === 1) {
-                setExp(4)
-                images.visible = true
-                lastTime = 2
-                // refresh scroll trigger
-                const scrollTrigger = ScrollTrigger.getById('scrollable')
-                scrollTrigger?.refresh()
-                scrollTrigger?.update()
-              } else {
-                setExp(3)
-                images.visible = false
-                lastTime = 1
-              }
-            },
-            undefined,
-            45.5
-          )
-          .from(
-            images.material,
-            { opacity: 0, duration: 1, ease: 'power2.inOut' },
-            45.5
-          )
-          .to(
-            updater,
-            {
-              currPreImage: 4,
-              duration: 1.5,
-              ease: 'none',
-              onUpdate: () => {
-                setImage(Math.round(updater.currPreImage))
+        if (ls === 'true') {
+          unscrollableTl.current = gsap
+            .timeline({
+              paused: true,
+              onComplete: () => {
+                document.body.style.height = 'auto'
+                document.body.style.overflow = 'auto'
+                gsap.to('.canvas-scroll', {
+                  autoAlpha: 1,
+                  duration: 1.25,
+                  ease: 'expo',
+                })
               },
-            },
-            46.5
-          )
-          .call(
-            () => {
-              unscrollableTl.current.reversed()
-                ? scrollLenis?.stop()
-                : scrollLenis?.start()
-            },
-            undefined,
-            48
-          )
-          .set(
-            planet,
-            {
-              visible: false,
-            },
-            48
-          )
+            })
+            .set(planet.children[0].material, { visible: false })
+            .set(
+              kiwi[0].position,
+              {
+                z: 0.01,
+              },
+              0
+            )
+            .to(
+              '#mouse .border-background',
+              {
+                scaleX: 0.4,
+                ease: 'expo.inOut',
+                duration: 1.25,
+              },
+              0
+            )
+            .from(
+              ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
+              {
+                yPercent: -100,
+                scale: 1.1,
+                ease: 'expo',
+                duration: 1.5,
+              },
+              0
+            )
+            .from(
+              '#ui .ui-part.ui-lower',
+              {
+                yPercent: 100,
+                scale: 1.1,
+                ease: 'expo',
+                duration: 1.5,
+              },
+              0
+            )
+            .to('#ui', { opacity: 1, duration: 0.75, ease: 'expo.inOut' }, 0)
+            .to(
+              lights[0],
+              {
+                intensity: 0.15,
+                duration: 2,
+                ease: 'power1.inOut',
+              },
+              0.5
+            )
+            .to(
+              lights[1],
+              {
+                intensity: 3,
+                duration: 2,
+                ease: 'power1.inOut',
+              },
+              0.5
+            )
+            .call(
+              () => {
+                setKiwiHoverable(true)
+              },
+              undefined,
+              0.5
+            )
+            .from(
+              kiwi[1].scale,
+              {
+                x: 0,
+                y: 0,
+                duration: 2.25,
+                ease: 'expo',
+              },
+              0.5
+            )
+            .from(
+              expressions.material,
+              {
+                opacity: 0,
+                duration: 1.5,
+                ease: 'back',
+              },
+              1
+            )
+            .fromTo(
+              images.material,
+              { opacity: 0 },
+              { opacity: 1, duration: 1.25, ease: 'power2.inOut' },
+              1.5
+            )
+            // .to(
+            //   updater,
+            //   {
+            //     currPreImage: 4,
+            //     duration: 1,
+            //     ease: 'none',
+            //     onUpdate: () => {
+            //       setImage(Math.round(updater.currPreImage))
+            //     },
+            //   },
+            //   1.5
+            // )
+            .call(
+              () => {
+                unscrollableTl.current.reversed()
+                  ? scrollLenis?.stop()
+                  : scrollLenis?.start()
+              },
+              undefined,
+              1.5
+            )
+        } else {
+          unscrollableTl.current = gsap
+            .timeline({
+              paused: true,
+              onComplete: () => {
+                document.body.style.height = 'auto'
+                document.body.style.overflow = 'auto'
+                gsap.to('.canvas-scroll', {
+                  autoAlpha: 1,
+                  duration: 1.25,
+                  ease: 'expo',
+                })
+                // set local storage
+                localStorage.setItem('kubrick', 'true')
+              },
+            })
+            .to(
+              '#mouse .border-background',
+              {
+                scaleX: 0.4,
+                ease: 'none',
+                duration: 47,
+              },
+              0
+            )
+            .from(
+              ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
+              {
+                yPercent: -100,
+                scale: 1.1,
+                duration: 3,
+              },
+              0
+            )
+            .from(
+              '#ui .ui-part.ui-lower',
+              {
+                yPercent: 100,
+                scale: 1.1,
+                duration: 3,
+              },
+              0
+            )
+            .to('#ui', { opacity: 1, duration: 3, ease: 'expo.inOut' }, 0)
+            .to(
+              lights[0],
+              {
+                intensity: 0.025,
+                duration: 6,
+                ease: 'power1.in',
+              },
+              0
+            )
+            .from(
+              kiwi[1].scale,
+              {
+                x: 0,
+                y: 0,
+                duration: 8.5,
+                ease: 'power1.inOut',
+              },
+              8
+            )
+            .fromTo(
+              planet.children[0].position,
+              { y: 0.015 },
+              {
+                y: -0.35,
+                duration: 45,
+                ease: 'none',
+              },
+              0
+            )
+            .from(
+              q2.position,
+              {
+                y: -3,
+                duration: 10,
+                ease: 'power1',
+              },
+              5
+            )
+            .to(
+              lights[0],
+              {
+                intensity: 0.05,
+                duration: 10,
+                ease: 'power1.inOut',
+              },
+              5
+            )
+            .from(
+              expressions.material,
+              {
+                opacity: 0.25,
+                duration: 2,
+                ease: 'expo.inOut',
+              },
+              12
+            )
+            .to(
+              lights[1],
+              {
+                intensity: 3,
+                duration: 20,
+                ease: 'power1.inOut',
+              },
+              16.5
+            )
+            .fromTo(
+              kiwi[0].position,
+              {
+                y: -0.2,
+              },
+              {
+                y: 0.05,
+                duration: 12,
+                ease: 'power1',
+              },
+              17
+            )
+            .to(
+              kiwi[1].position,
+              {
+                y: '+=0.05',
+                duration: 12,
+                ease: 'power1',
+              },
+              17
+            )
+            .to(
+              kiwi[1].position,
+              {
+                y: 0.575,
+                duration: 3.5,
+                ease: 'power1.inOut',
+              },
+              29.5
+            )
+            .to(
+              kiwi[1].scale,
+              {
+                x: 0.575,
+                y: 0.575,
+                duration: 3.5,
+                ease: 'power1.inOut',
+              },
+              29.5
+            )
+            .to(
+              kiwi[0].position,
+              {
+                y: 0,
+                duration: 3.5,
+                ease: 'power1.inOut',
+              },
+              29.5
+            )
+            .to(
+              kiwi[0].position,
+              {
+                z: 0.01,
+                duration: 1,
+                ease: 'power2.inOut',
+              },
+              29.5
+            )
+            .call(
+              () => {
+                setKiwiHoverable(true)
+              },
+              undefined,
+              29.5
+            )
+            .from(
+              voyager.position,
+              {
+                y: 3,
+                x: 10,
+                duration: 13,
+                ease: 'power1',
+              },
+              33.5
+            )
+            .from(
+              voyager.rotation,
+              {
+                x: Math.PI,
+                duration: 7,
+                ease: 'power2.inOut',
+              },
+              33.5
+            )
+            .call(
+              () => {
+                if (expressionTl.isActive()) {
+                  expressionTl.pause()
+                  setExp(2)
+                } else expressionTl.play()
+              },
+              undefined,
+              35
+            )
+            .to(
+              lights[0],
+              {
+                intensity: 0.15,
+                duration: 10,
+                ease: 'power1.inOut',
+              },
+              35
+            )
+            .call(
+              () => {
+                if (lastTime === 0) {
+                  setExp(3)
+                  lastTime = 1
+                } else {
+                  setExp(2)
+                  lastTime = 0
+                }
+              },
+              undefined,
+              39.5
+            )
+            .call(
+              () => {
+                if (lastTime === 1) {
+                  setExp(4)
+                  images.visible = true
+                  lastTime = 2
+                  // refresh scroll trigger
+                  const scrollTrigger = ScrollTrigger.getById('scrollable')
+                  scrollTrigger?.refresh()
+                  scrollTrigger?.update()
+                } else {
+                  setExp(3)
+                  images.visible = false
+                  lastTime = 1
+                }
+              },
+              undefined,
+              45.5
+            )
+            .from(
+              images.material,
+              { opacity: 0, duration: 1, ease: 'power2.inOut' },
+              45.5
+            )
+            .to(
+              updater,
+              {
+                currPreImage: 4,
+                duration: 1.5,
+                ease: 'none',
+                onUpdate: () => {
+                  setImage(Math.round(updater.currPreImage))
+                },
+              },
+              46.5
+            )
+            .call(
+              () => {
+                unscrollableTl.current.reversed()
+                  ? scrollLenis?.stop()
+                  : scrollLenis?.start()
+              },
+              undefined,
+              48
+            )
+            .set(
+              planet,
+              {
+                visible: false,
+              },
+              48
+            )
+        }
+
+        // if (ls === 'true') {
+        //   unscrollableTl.current.progress(1)
+        // }
+
+        // if
 
         let lastscroll = 0
         // scrollableTl
@@ -420,9 +555,12 @@ export const SceneOne = () => {
               scrub: true,
               pin: true,
               refreshPriority: 99,
-              // onEnter: () => {
-              //   typingTl.play()
-              // },
+              onEnter: () => {
+                if (ls === 'true') {
+                  expressionTl.pause()
+                  images.visible = true
+                }
+              },
               // onEnterBack: () => {
               //   typingTl.play()
               // },
@@ -430,10 +568,24 @@ export const SceneOne = () => {
                 typingTl.reverse()
               },
               onLeaveBack: () => {
-                typingTl.reverse()
+                if (ls === 'true') expressionTl.play()
               },
             },
           })
+          // if (ls === 'true') {
+          //   scrollableTl.current.call(
+          //     () => {
+          //       if (scrollableTl.current.progress() > lastscroll)
+          //         expressionTl.pause()
+          //       else expressionTl.play()
+
+          //       lastscroll = scrollableTl.current.progress()
+          //     },
+          //     undefined,
+          //     0
+          //   )
+          // }
+          // scrollableTl.current
           .to(
             '#mouse .border-background',
             {
@@ -613,17 +765,24 @@ export const SceneOne = () => {
 
   function handleStartClick() {
     // sound manager
-    soundsArray[0].play()
+    const ls = localStorage.getItem('kubrick') || ''
+
     soundsArray[2].play()
 
-    setTimeout(() => {
+    if (ls === 'true') {
+      soundsArray[0].volume = 0
       soundsArray[1].play()
-      gsap.from(soundsArray[1], {
-        volume: 0,
-        duration: 1.25,
-        ease: 'none',
-      })
-    }, 74000)
+    } else {
+      soundsArray[0].play()
+      setTimeout(() => {
+        soundsArray[1].play()
+        gsap.from(soundsArray[1], {
+          volume: 0,
+          duration: 1.25,
+          ease: 'none',
+        })
+      }, 74000)
+    }
 
     // sound button
     gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
