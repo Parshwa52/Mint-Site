@@ -544,6 +544,7 @@ export const SceneOne = () => {
         // if
 
         let lastscroll = 0
+        let lastImgDuration = 40
         // scrollableTl
         scrollableTl.current = gsap
           .timeline({
@@ -598,8 +599,8 @@ export const SceneOne = () => {
           .to(
             updater,
             {
-              currImage: 33,
-              duration: 33,
+              currImage: 70,
+              duration: lastImgDuration,
               ease: 'none',
               onUpdate: () => {
                 setImage(Math.round(updater.currImage))
@@ -646,12 +647,12 @@ export const SceneOne = () => {
               lastscroll = scrollableTl.current.progress()
             },
             undefined,
-            33
+            lastImgDuration
           )
           .to(
             images.material,
             { opacity: 0, duration: 2, ease: 'back.inOut' },
-            33
+            lastImgDuration
           )
           .to(
             voyager.position,
@@ -661,7 +662,7 @@ export const SceneOne = () => {
               duration: 36,
               ease: 'power1.in',
             },
-            34
+            lastImgDuration + 1
           )
           .to(
             voyager.rotation,
@@ -670,7 +671,7 @@ export const SceneOne = () => {
               duration: 36,
               ease: 'power2.inOut',
             },
-            34
+            lastImgDuration + 1
           )
           .call(
             () => {
@@ -680,7 +681,7 @@ export const SceneOne = () => {
               } else expressionLastTl.play()
             },
             undefined,
-            35
+            lastImgDuration + 2
           )
           .to(
             q2.position,
@@ -689,7 +690,7 @@ export const SceneOne = () => {
               duration: 20,
               ease: 'power2.in',
             },
-            50
+            lastImgDuration + 7
           )
           .to(
             kiwi[1].position,
@@ -698,7 +699,7 @@ export const SceneOne = () => {
               duration: 15,
               ease: 'power1.inOut',
             },
-            55
+            lastImgDuration + 12
           )
           .to(
             kiwi[1].scale,
@@ -708,7 +709,7 @@ export const SceneOne = () => {
               duration: 15,
               ease: 'power1.inOut',
             },
-            55
+            lastImgDuration + 12
           )
       }
 
@@ -1106,40 +1107,74 @@ const VoyagerImages = (props: any) => {
   const mask = useTexture('/assets/scene1/Mask_1.jpg')
 
   const imagesArray = useTexture([
-    '/assets/scene1/voyager/1.jpg',
-    '/assets/scene1/voyager/2.jpg',
-    '/assets/scene1/voyager/3.jpg',
-    '/assets/scene1/voyager/4.jpg',
-    '/assets/scene1/voyager/5.jpg',
-    '/assets/scene1/voyager/6.jpg',
-    '/assets/scene1/voyager/7.jpg',
-    '/assets/scene1/voyager/8.jpg',
-    '/assets/scene1/voyager/9.jpg',
-    '/assets/scene1/voyager/10.jpg',
-    '/assets/scene1/voyager/11.jpg',
-    '/assets/scene1/voyager/12.jpg',
-    '/assets/scene1/voyager/13.jpg',
-    '/assets/scene1/voyager/14.jpg',
-    '/assets/scene1/voyager/15.jpg',
-    '/assets/scene1/voyager/16.jpg',
-    '/assets/scene1/voyager/17.jpg',
-    '/assets/scene1/voyager/18.jpg',
-    '/assets/scene1/voyager/19.jpg',
-    '/assets/scene1/voyager/20.jpg',
-    '/assets/scene1/voyager/21.jpg',
-    '/assets/scene1/voyager/22.jpg',
-    '/assets/scene1/voyager/23.jpg',
-    '/assets/scene1/voyager/24.jpg',
-    '/assets/scene1/voyager/25.jpg',
-    '/assets/scene1/voyager/26.jpg',
-    '/assets/scene1/voyager/27.jpg',
-    '/assets/scene1/voyager/28.jpg',
-    '/assets/scene1/voyager/29.jpg',
-    '/assets/scene1/voyager/30.jpg',
-    '/assets/scene1/voyager/31.jpg',
-    '/assets/scene1/voyager/32.jpg',
-    '/assets/scene1/voyager/33.jpg',
-    '/assets/scene1/voyager/34.jpg',
+    '/assets/scene1/voyager/voyager-01.jpg',
+    '/assets/scene1/voyager/voyager-02.jpg',
+    '/assets/scene1/voyager/voyager-03.jpg',
+    '/assets/scene1/voyager/voyager-04.jpg',
+    '/assets/scene1/voyager/voyager-05.jpg',
+    '/assets/scene1/voyager/voyager-06.jpg',
+    '/assets/scene1/voyager/voyager-07.jpg',
+    '/assets/scene1/voyager/voyager-08.jpg',
+    '/assets/scene1/voyager/voyager-09.jpg',
+    '/assets/scene1/voyager/voyager-10.jpg',
+    '/assets/scene1/voyager/voyager-11.jpg',
+    '/assets/scene1/voyager/voyager-12.jpg',
+    '/assets/scene1/voyager/voyager-13.jpg',
+    '/assets/scene1/voyager/voyager-14.jpg',
+    '/assets/scene1/voyager/voyager-15.jpg',
+    '/assets/scene1/voyager/voyager-16.jpg',
+    '/assets/scene1/voyager/voyager-17.jpg',
+    '/assets/scene1/voyager/voyager-18.jpg',
+    '/assets/scene1/voyager/voyager-19.jpg',
+    '/assets/scene1/voyager/voyager-20.jpg',
+    '/assets/scene1/voyager/voyager-21.jpg',
+    '/assets/scene1/voyager/voyager-22.jpg',
+    '/assets/scene1/voyager/voyager-23.jpg',
+    '/assets/scene1/voyager/voyager-24.jpg',
+    '/assets/scene1/voyager/voyager-25.jpg',
+    '/assets/scene1/voyager/voyager-26.jpg',
+    '/assets/scene1/voyager/voyager-27.jpg',
+    '/assets/scene1/voyager/voyager-28.jpg',
+    '/assets/scene1/voyager/voyager-29.jpg',
+    '/assets/scene1/voyager/voyager-30.jpg',
+    '/assets/scene1/voyager/voyager-31.jpg',
+    '/assets/scene1/voyager/voyager-32.jpg',
+    '/assets/scene1/voyager/voyager-33.jpg',
+    '/assets/scene1/voyager/voyager-34.jpg',
+    '/assets/scene1/voyager/voyager-35.jpg',
+    '/assets/scene1/voyager/voyager-36.jpg',
+    '/assets/scene1/voyager/voyager-37.jpg',
+    '/assets/scene1/voyager/voyager-38.jpg',
+    '/assets/scene1/voyager/voyager-39.jpg',
+    '/assets/scene1/voyager/voyager-40.jpg',
+    '/assets/scene1/voyager/voyager-41.jpg',
+    '/assets/scene1/voyager/voyager-42.jpg',
+    '/assets/scene1/voyager/voyager-43.jpg',
+    '/assets/scene1/voyager/voyager-44.jpg',
+    '/assets/scene1/voyager/voyager-45.jpg',
+    '/assets/scene1/voyager/voyager-46.jpg',
+    '/assets/scene1/voyager/voyager-47.jpg',
+    '/assets/scene1/voyager/voyager-49.jpg',
+    '/assets/scene1/voyager/voyager-50.jpg',
+    '/assets/scene1/voyager/voyager-51.jpg',
+    '/assets/scene1/voyager/voyager-52.jpg',
+    '/assets/scene1/voyager/voyager-53.jpg',
+    '/assets/scene1/voyager/voyager-54.jpg',
+    '/assets/scene1/voyager/voyager-55.jpg',
+    '/assets/scene1/voyager/voyager-56.jpg',
+    '/assets/scene1/voyager/voyager-57.jpg',
+    '/assets/scene1/voyager/voyager-58.jpg',
+    '/assets/scene1/voyager/voyager-59.jpg',
+    '/assets/scene1/voyager/voyager-60.jpg',
+    '/assets/scene1/voyager/voyager-61.jpg',
+    '/assets/scene1/voyager/voyager-62.jpg',
+    '/assets/scene1/voyager/voyager-63.jpg',
+    '/assets/scene1/voyager/voyager-64.jpg',
+    '/assets/scene1/voyager/voyager-65.jpg',
+    '/assets/scene1/voyager/voyager-66.jpg',
+    '/assets/scene1/voyager/voyager-67.jpg',
+    '/assets/scene1/voyager/voyager-68.jpg',
+    '/assets/scene1/voyager/voyager-69.jpg',
   ])
 
   useEffect(() => {
