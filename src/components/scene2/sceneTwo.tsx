@@ -224,7 +224,6 @@ export const SceneTwo = () => {
               scrub: true,
             },
             defaults: {
-              willChange: 'transform,opacity',
               duration: 25,
               stagger: {
                 amount: 15,

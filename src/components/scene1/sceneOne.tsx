@@ -877,7 +877,6 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
               amount: 0.5,
             },
             ease: 'back.inOut',
-            willChange: 'transform, opacity',
           }
         )
     }
