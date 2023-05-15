@@ -824,6 +824,7 @@ export const SceneOne = () => {
         gl={{
           antialias: false,
         }}
+        id='canvas-one'
       >
         <Q2
           setInstance={setQ2}
@@ -849,7 +850,6 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
   let mediaLoaded2 = 0
 
   useEffect(() => {
-    console.log(mediaLoaded, totalLoaded, threejsLoaded)
     if (
       mediaLoaded >= totalLoaded &&
       mediaLoaded > 0 &&
@@ -862,6 +862,7 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
           //   onLoaded()
           // },
         })
+
         .to('.canvas-loader .spinner', {
           scale: 0,
           duration: 1.25,
@@ -885,6 +886,15 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
             },
             ease: 'back.inOut',
           }
+        )
+        .from(
+          '#canvas-one',
+          {
+            autoAlpha: 0,
+            duration: 1.25,
+            ease: 'back.inOut',
+          },
+          '>-=50%'
         )
     }
   }, [mediaLoaded, totalLoaded, threejsLoaded])
