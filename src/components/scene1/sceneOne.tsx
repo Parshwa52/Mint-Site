@@ -960,9 +960,9 @@ const Q2 = (props: any) => {
   }, [])
   // texture base
   const [body, bodyAlpha, band] = useTexture([
-    '/assets/scene1/Q2.png',
+    '/assets/scene1/Q2_space.png',
     '/assets/scene1/Q2_alpha.jpg',
-    '/assets/scene1/Q2_band.png',
+    '/assets/scene1/Q2_band_space.png',
   ])
 
   useEffect(() => {
