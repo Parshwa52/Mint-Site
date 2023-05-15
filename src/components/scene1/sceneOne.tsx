@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
+  DefaultLoadingManager,
   DoubleSide,
   NearestFilter,
   PlaneGeometry,
@@ -842,13 +843,19 @@ export const SceneOne = () => {
 }
 
 const Loader = ({ onLoaded }: { onLoaded: Function }) => {
+  const [threejsLoaded, setThreejsLoaded] = useState(false)
   const [totalLoaded, setTotalLoaded] = useState(0)
   const [mediaLoaded, setMediaLoaded] = useState(0)
   let mediaLoaded2 = 0
 
   useEffect(() => {
-    console.log(mediaLoaded, totalLoaded)
-    if (mediaLoaded >= totalLoaded) {
+    console.log(mediaLoaded, totalLoaded, threejsLoaded)
+    if (
+      mediaLoaded >= totalLoaded &&
+      mediaLoaded > 0 &&
+      totalLoaded > 0 &&
+      threejsLoaded
+    ) {
       gsap
         .timeline({
           // onComplete: () => {
@@ -880,7 +887,7 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
           }
         )
     }
-  }, [mediaLoaded, totalLoaded])
+  }, [mediaLoaded, totalLoaded, threejsLoaded])
 
   useEffect(() => {
     const images = document.querySelectorAll('img')
@@ -909,6 +916,10 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       repeat: -1,
       yoyo: true,
     })
+
+    DefaultLoadingManager.onLoad = function () {
+      setThreejsLoaded(true)
+    }
   }, [])
 
   return (

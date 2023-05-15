@@ -8,7 +8,7 @@ import { gsap } from 'gsap'
 import { SoundButton } from '../soundButton'
 import { Split } from '@/utils/split'
 
-export const UI = () => {
+export const UI = ({ visible }: { visible?: boolean }) => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('#ui .ui-text-sounds li', {
@@ -30,7 +30,12 @@ export const UI = () => {
   }, [])
 
   return (
-    <div id='ui'>
+    <div
+      id='ui'
+      style={{
+        opacity: visible ? 1 : 0,
+      }}
+    >
       <div className='ui-container'>
         <Image src={topPanel} alt='ui top' className='ui-part ui-top' />
         <Image src={midTopPanel} alt='ui mid' className='ui-part ui-top' />
@@ -54,7 +59,12 @@ export const UI = () => {
                   />
                 </p>
               </div>
-              <ul className='ui-text-sounds'>
+              <ul
+                className='ui-text-sounds'
+                style={{
+                  opacity: visible ? 1 : 0,
+                }}
+              >
                 <li />
                 <li />
                 <li />

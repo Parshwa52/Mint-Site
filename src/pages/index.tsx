@@ -4,6 +4,7 @@ import { HomepageCity } from '@/sections/city'
 import { UI } from '@/components/scene1/ui'
 // custom components
 import { HomepageHero } from '@/sections/hero'
+import { AudioManager } from '@/components/audioManager'
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <HomepageHero />
       <HomepageCity />
       <UI />
+      <AudioManager />
       {/* <Mouse /> */}
       {/* <SoundButton /> */}
     </PageLayout>

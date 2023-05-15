@@ -55,6 +55,7 @@ import img32 from '@/assets/placements/32_Clouds12.png'
 import img33 from '@/assets/placements/33_Clouds13.png'
 import img34 from '@/assets/placements/34_Clouds14.png'
 import img35 from '@/assets/placements/35_Clouds15.png'
+import { useRouter } from 'next/router'
 
 export const SceneTwo = () => {
   const { scrollLenis, soundsArray } = useGlobalContext()
@@ -660,9 +661,9 @@ const Building = ({ src }: { src: any }) => {
       className='building-container'
       fill
       unoptimized
-      // style={{
-      //   objectFit: 'cover',
-      // }}
+      style={{
+        objectFit: 'cover',
+      }}
       // sizes='(max-width: 768px) 45vw,
       //         (max-width: 1200px) 65vw,
       //         75vw'
@@ -671,6 +672,7 @@ const Building = ({ src }: { src: any }) => {
 }
 
 const Q2 = (props: any) => {
+  const router = useRouter()
   const q2 = useRef(null)
   // images
   // mesh
@@ -690,6 +692,26 @@ const Q2 = (props: any) => {
   useEffect(() => {
     props.setInstance(q2.current)
   }, [q2])
+
+  function handleClick() {
+    //@ts-ignore
+    // document
+    //   .querySelector('.canvas-button-container button')
+    //   //@ts-ignore
+    //   .click()
+
+    // document.body.style.cursor = 'auto'
+
+    setTimeout(() => {
+      gsap.to('body', {
+        autoAlpha: 0,
+        duration: 1.25,
+        onComplete: () => {
+          router.push('/mint')
+        },
+      })
+    }, 1000)
+  }
 
   return (
     <group scale={5} ref={q2} position={[0, -2, 0]}>
@@ -718,18 +740,7 @@ const Q2 = (props: any) => {
           distanceFactor={1.5}
         >
           <div className='button-container'>
-            <button
-              className='button'
-              onClick={() => {
-                //@ts-ignore
-                document
-                  .querySelector('.canvas-button-container button')
-                  //@ts-ignore
-                  .click()
-
-                document.body.style.cursor = 'auto'
-              }}
-            ></button>
+            <button className='button' onClick={() => handleClick()}></button>
           </div>
         </Html>
       </mesh>

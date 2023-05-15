@@ -182,6 +182,10 @@ export const Mouse = () => {
             <li />
           </ul>
         </div>
+        {/* Drag */}
+        {/* <p className='mouse-drag-text text-top'>+</p>
+        <p className='mouse-drag-text text-bottom'>-</p>
+        <p className='mouse-drag-text text-center'>Drag</p> */}
       </div>
     </div>
   )
