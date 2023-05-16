@@ -34,6 +34,13 @@ function Socket({}: Props) {
         // Make sure network is Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
+        // @ts-ignore
+        if (chainId !== 137) {
+          console.warn("Switch to Polygon Chain");
+          return;
+        }
+
+        // Approve WETH on Polygon to NFT Contract
         // Mint
         console.log("Mint call reached");
       }
@@ -74,11 +81,22 @@ function Socket({}: Props) {
         // Make sure network is Ethereum
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
 
+        if (chainId !== 1) {
+          console.warn("Switch to Ethereum Chain");
+          return;
+        }
+
         // Bridge Native ETH to Polygon
         await bridgeFromETHToPolygon(signer.data as Signer, true);
 
         // Switch to Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
+
+        // @ts-ignore
+        if (chainId !== 137) {
+          console.warn("Switch to Polygon Chain");
+          return;
+        }
 
         // Approve WETH on Polygon to NFT Contract
         // Mint
