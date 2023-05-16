@@ -1,5 +1,9 @@
 import { mintAmount, targetAmount } from "@/constants";
-import { bridgeFromETHToPolygon, getBalances } from "@/utils/socketBridge";
+import {
+  approveWETHForNFT,
+  bridgeFromETHToPolygon,
+  getBalances,
+} from "@/utils/socketBridge";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Signer } from "ethers";
 import React from "react";
@@ -119,6 +123,10 @@ function Socket({}: Props) {
     }
   }
 
+  function checkAllowance() {
+    approveWETHForNFT(signer.data as Signer);
+  }
+
   return (
     <section className="p-10 min-h-screen bg-white text-black cursor-default">
       <ConnectButton />
@@ -126,7 +134,14 @@ function Socket({}: Props) {
         className="m-2 p-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
         onClick={() => bridge()}
       >
-        Click
+        Click to bridge
+      </button>
+
+      <button
+        className="m-2 p-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
+        onClick={() => checkAllowance()}
+      >
+        Check allowance
       </button>
     </section>
   );

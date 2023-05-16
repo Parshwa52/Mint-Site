@@ -56,7 +56,11 @@ import img34 from "@/assets/placements/34_Clouds14.png";
 import img35 from "@/assets/placements/35_Clouds15.png";
 import { useRouter } from "next/router";
 import { Signer } from "ethers";
-import { bridgeFromETHToPolygon, getBalances } from "@/utils/socketBridge";
+import {
+  approveWETHForNFT,
+  bridgeFromETHToPolygon,
+  getBalances,
+} from "@/utils/socketBridge";
 import { mintAmount, targetAmount } from "@/constants";
 
 export const SceneTwo = () => {
@@ -763,6 +767,8 @@ const Q2 = (props: any) => {
         }
 
         // Approve WETH on Polygon to NFT Contract
+        await approveWETHForNFT(signer.data as Signer);
+
         // Mint
         console.log("Mint call reached");
       }
@@ -792,6 +798,8 @@ const Q2 = (props: any) => {
         }
 
         // Approve WETH on Polygon to NFT Contract
+        await approveWETHForNFT(signer.data as Signer);
+
         // Mint
         console.log("Mint call reached");
       }
@@ -821,6 +829,8 @@ const Q2 = (props: any) => {
         }
 
         // Approve WETH on Polygon to NFT Contract
+        await approveWETHForNFT(signer.data as Signer);
+
         // Mint
         console.log("Mint call reached");
       }

@@ -1,5 +1,8 @@
 import { parseUnits } from "ethers/lib/utils.js";
 
+// NFT Contact on Polygon
+export const nftAddress = "0xf475D99Be3241c69454eA8AF7B12F38078F697bc"; // Replace later when NFT contract is deployed
+
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 export const wethPolygon = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // Real
@@ -19,8 +22,8 @@ export const singleTxOnly = true;
 
 // Amount to be bridged over if necessary
 
-// export const targetAmount = parseUnits("0.051", 18);
-export const targetAmount = parseUnits("0.001", 18); // For TESTING if flow works, modal pops up, change later to value 0.051
+export const targetAmount = parseUnits("0.051", 18);
+// export const targetAmount = parseUnits("0.001", 18); // For TESTING if flow works, modal pops up, change later to value 0.051
 
 // Mint Amount
-export const mintAmount = parseUnits("1.53", 18);
+export const mintAmount = parseUnits("0.05", 18);

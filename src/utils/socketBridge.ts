@@ -10,6 +10,8 @@ import {
   fromAssetAddressNative,
   fromAssetAddressWETH,
   fromChainId,
+  mintAmount,
+  nftAddress,
   singleTxOnly,
   sort,
   targetAmount,
@@ -181,6 +183,9 @@ export async function bridgeFromETHToPolygon(signer: Signer, isNative = true) {
   });
 }
 
+/**
+ * Get the necessary balances for checking bridging & minting conditions
+ */
 export async function getBalances(signer: Signer) {
   const userAddress = await signer.getAddress();
 
@@ -232,4 +237,22 @@ export async function getBalances(signer: Signer) {
     wethBalanceETHFormatted,
     wethBalancePolygonFormatted,
   };
+}
+
+/**
+ * Approve WETH for NFT Contract on Polygon
+ */
+export async function approveWETHForNFT(signer: Signer) {
+  const wethContract = new Contract(wethPolygon, wethABI, signer);
+
+  // Check if at least "mintAmount" is allowed
+  const allowance: BigNumber = await wethContract.allowance(
+    await signer.getAddress(),
+    nftAddress
+  );
+
+  // If allowance is lower than mint amount, approve more WETH
+  if (!allowance.gte(mintAmount)) {
+    await wethContract.approve(nftAddress, ethers.constants.MaxUint256);
+  }
 }
