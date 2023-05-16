@@ -1,11 +1,15 @@
 import { parseUnits } from "ethers/lib/utils.js";
 
+// RPC URLs used for fetching multi-chain balances
+export const rpc_ethereum = "https://eth.llamarpc.com";
+export const rpc_polygon = "https://polygon.llamarpc.com";
+
 // NFT Contact on Polygon
 export const nftAddress = "0xf475D99Be3241c69454eA8AF7B12F38078F697bc"; // Replace later when NFT contract is deployed
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-export const wethPolygon = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // Real
+export const wethPolygon = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
 
 // Bridging Params
 export const fromChainId = 1;

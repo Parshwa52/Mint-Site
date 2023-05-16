@@ -12,6 +12,8 @@ import {
   fromChainId,
   mintAmount,
   nftAddress,
+  rpc_ethereum,
+  rpc_polygon,
   singleTxOnly,
   sort,
   targetAmount,
@@ -190,12 +192,8 @@ export async function getBalances(signer: Signer) {
   const userAddress = await signer.getAddress();
 
   // Set up providers for each chain
-  const providerEthereum = new ethers.providers.JsonRpcProvider(
-    "https://eth.llamarpc.com"
-  );
-  const providerPolygon = new ethers.providers.JsonRpcProvider(
-    "https://polygon.llamarpc.com"
-  );
+  const providerEthereum = new ethers.providers.JsonRpcProvider(rpc_ethereum);
+  const providerPolygon = new ethers.providers.JsonRpcProvider(rpc_polygon);
 
   // WETH Contract on Ethereum
   const wethContractETH = new Contract(wethETH, wethABI, providerEthereum);
