@@ -1,8 +1,8 @@
 import Image from 'next/image'
-import topPanel from '@/assets/ui/1/Top Panel.png'
-import midTopPanel from '@/assets/ui/1/Mid top panel.png'
-import midPanel from '@/assets/ui/1/Mid Panels.png'
-import lowerPanel from '@/assets/ui/1/Lower panel.png'
+import topPanel from '@/assets/ui/world/top-panel.png'
+import midTopPanel from '@/assets/ui/1/mid-panel.png'
+import midPanel from '@/assets/ui/world/mid-panel.png'
+import lowerPanel from '@/assets/ui/world/lower-panel.png'
 import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { SoundButton } from '../soundButton'
@@ -32,13 +32,14 @@ export const UI = ({ visible }: { visible?: boolean }) => {
   return (
     <div
       id='ui'
+      className='ui-space'
       style={{
         opacity: visible ? 1 : 0,
       }}
     >
       <div className='ui-container'>
         <Image src={topPanel} alt='ui top' className='ui-part ui-top' />
-        <Image src={midTopPanel} alt='ui mid' className='ui-part ui-top' />
+        {/* <Image src={midTopPanel} alt='ui mid' className='ui-part ui-top' /> */}
         <div className='ui-part ui-mid'>
           <div className='ui-img'>
             <Image src={midPanel} alt='ui mid' className='ui-img-img' />

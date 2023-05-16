@@ -116,6 +116,16 @@ export const SceneOne = () => {
             0
           )
           .from(
+            '#ui #text-1',
+            {
+              autoAlpha: 0,
+              duration: 0.1,
+              stagger: 0.1,
+              ease: 'none',
+            },
+            0
+          )
+          .from(
             '#ui #text-1 .phrase-1 span span',
             {
               display: 'none',

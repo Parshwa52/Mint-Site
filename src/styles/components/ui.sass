@@ -27,7 +27,7 @@
           position: relative
           width: 100%
           height: 100%
-          color: white
+          color: var(--color)
           .ui-img-img
             width: 100%
           .ui-text
@@ -45,7 +45,20 @@
             > *
               margin-bottom: auto
             > div
-              width: 100%
+              width: fit-content
+              margin-right: auto
+              p
+                width: fit-content
+                position: relative
+                &::after
+                  content: ''
+                  position: absolute
+                  inset: 0 0 0 0
+                  z-index: -1
+                  background-color: var(--color)
+                  opacity: .2
+                  border-radius: 20%
+                  filter: blur(5px)
             ul
               opacity: 0
               height: 25px
@@ -57,7 +70,7 @@
               li
                 height: 100%
                 width: 1px
-                background-color: white
+                background-color: var(--color)
           .ui-sounds
             position: absolute
             top: -35%
@@ -69,5 +82,20 @@
             justify-content: flex-end
             gap: 25px
             @extend %p-inline
+            > p
+              position: relative
+              &::after
+                content: ''
+                position: absolute
+                inset: 0 0 0 0
+                z-index: -1
+                background-color: var(--color)
+                opacity: .2
+                border-radius: 20%
+                filter: blur(5px)
+
       &.ui-lower
         bottom: 0
+  &.ui-space
+    --color: #DCD2FF
+    // color: #DCD2FF
