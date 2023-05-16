@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 // Rainbow & Wagmi
 import ConnectWallet from "../ui/ConnectWallet";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId, useSigner, useSwitchNetwork } from "wagmi";
 // THREE
 import { Canvas } from "@react-three/fiber";
 import {
@@ -55,6 +55,9 @@ import img33 from "@/assets/placements/33_Clouds13.png";
 import img34 from "@/assets/placements/34_Clouds14.png";
 import img35 from "@/assets/placements/35_Clouds15.png";
 import { useRouter } from "next/router";
+import { Signer } from "ethers";
+import { bridgeFromETHToPolygon, getBalances } from "@/utils/socketBridge";
+import { mintAmount, targetAmount } from "@/constants";
 
 export const SceneTwo = () => {
   const { scrollLenis, soundsArray } = useGlobalContext();
@@ -706,16 +709,27 @@ const Q2 = (props: any) => {
     "/assets/scene1/Q2_band.png",
   ]);
 
+  // Wallet Connection Variables
+  const { isConnected } = useAccount();
+  const signer = useSigner();
+  const switchNetwork = useSwitchNetwork();
+  const chainId = useChainId();
+
   useEffect(() => {
     props.setInstance(q2.current);
   }, [q2]);
 
   function handleClick() {
-    //@ts-ignore
-    document
-      .querySelector(".canvas-button-container button")
+    if (isConnected) {
+      // Bridge and Mint Process
+      bridgeAndMint();
+    } else {
       //@ts-ignore
-      .click();
+      document
+        .querySelector(".canvas-button-container button")
+        //@ts-ignore
+        .click();
+    }
 
     document.body.style.cursor = "auto";
 
@@ -728,6 +742,103 @@ const Q2 = (props: any) => {
     //     },
     //   })
     // }, 1000)
+  }
+
+  async function bridgeAndMint() {
+    const { ethereumBalance, wethBalanceETH, wethBalancePolygon } =
+      await getBalances(signer.data as Signer);
+
+    try {
+      //////////////////////////////////////
+      // Case 1: User Has WETH on Polygon //
+      //////////////////////////////////////
+      if (wethBalancePolygon.gte(mintAmount)) {
+        // Make sure network is Polygon
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
+
+        // @ts-ignore
+        if (chainId !== 137) {
+          console.warn("Switch to Polygon Chain");
+          return;
+        }
+
+        // Approve WETH on Polygon to NFT Contract
+        // Mint
+        console.log("Mint call reached");
+      }
+
+      ///////////////////////////////////////////////
+      // Case 2: User has WETH on Ethereum Network //
+      ///////////////////////////////////////////////
+      else if (wethBalanceETH.gte(targetAmount)) {
+        // Make sure network is Ethereum
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
+
+        if (chainId !== 1) {
+          console.warn("Switch to Ethereum Chain");
+          return;
+        }
+
+        // Bridge WETH to Polygon
+        await bridgeFromETHToPolygon(signer.data as Signer, false);
+
+        // Switch to Polygon
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
+
+        // @ts-ignore
+        if (chainId !== 137) {
+          console.warn("Switch to Polygon Chain");
+          return;
+        }
+
+        // Approve WETH on Polygon to NFT Contract
+        // Mint
+        console.log("Mint call reached");
+      }
+
+      //////////////////////////////////////////////
+      // Case 3: User has ETH on Ethereum Network //
+      //////////////////////////////////////////////
+      else if (ethereumBalance.gte(targetAmount)) {
+        // Make sure network is Ethereum
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
+
+        if (chainId !== 1) {
+          console.warn("Switch to Ethereum Chain");
+          return;
+        }
+
+        // Bridge Native ETH to Polygon
+        await bridgeFromETHToPolygon(signer.data as Signer, true);
+
+        // Switch to Polygon
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
+
+        // @ts-ignore
+        if (chainId !== 137) {
+          console.warn("Switch to Polygon Chain");
+          return;
+        }
+
+        // Approve WETH on Polygon to NFT Contract
+        // Mint
+        console.log("Mint call reached");
+      }
+
+      /////////////////////////////////////////
+      // Case 4: User has insufficient funds //
+      /////////////////////////////////////////
+      else {
+        console.warn("Not enough funds on Polygon or Ethereum ");
+      }
+
+      console.log("Bridge and Mint Process Done");
+    } catch (e) {
+      console.error(
+        "Error during bridge and mint process. Possible that user rejected txn",
+        e
+      );
+    }
   }
 
   return (

@@ -19,8 +19,8 @@ export const singleTxOnly = true;
 
 // Amount to be bridged over if necessary
 
-export const targetAmount = parseUnits("0.051", 18);
-// export const targetAmount = parseUnits("0.001", 18); // For TESTING if flow works, modal pops up, change later to value 0.051
+// export const targetAmount = parseUnits("0.051", 18);
+export const targetAmount = parseUnits("0.001", 18); // For TESTING if flow works, modal pops up, change later to value 0.051
 
 // Mint Amount
 export const mintAmount = parseUnits("1.53", 18);
