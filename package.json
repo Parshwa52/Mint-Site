@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@biconomy/hyphen": "^1.1.6",
+    "@headlessui/react": "^1.7.14",
     "@rainbow-me/rainbowkit": "^0.12.4",
     "@react-three/drei": "^9.68.3",
     "@react-three/fiber": "^8.13.0",

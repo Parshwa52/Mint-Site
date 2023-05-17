@@ -173,9 +173,6 @@ export async function bridgeFromETHToPolygon(signer: Signer, isNative = true) {
           clearInterval(txStatus);
 
           resolve("OK");
-
-          // Now ask user to switch chain to Polygon if not done already
-          // Then execute WETH Approval on Polygon and after that, Mint NFT
         }
       }, 5000);
     } catch (e) {
@@ -250,7 +247,7 @@ export async function approveWETHForNFT(signer: Signer) {
   );
 
   // If allowance is lower than mint amount, approve more WETH
-  if (!allowance.gte(mintAmount)) {
+  if (allowance.lt(mintAmount)) {
     await wethContract.approve(nftAddress, ethers.constants.MaxUint256);
   }
 }

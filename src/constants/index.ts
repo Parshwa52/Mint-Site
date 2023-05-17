@@ -1,3 +1,4 @@
+import { ModalData } from "@/provider/uiProvider";
 import { parseUnits } from "ethers/lib/utils.js";
 
 // RPC URLs used for fetching multi-chain balances
@@ -25,9 +26,24 @@ export const sort = "output"; // "output" | "gas" | "time"
 export const singleTxOnly = true;
 
 // Amount to be bridged over if necessary
-
-export const targetAmount = parseUnits("0.051", 18);
-// export const targetAmount = parseUnits("0.001", 18); // For TESTING if flow works, modal pops up, change later to value 0.051
+const targetAmountNumber = 0.051; // In WETH
+export const targetAmount = parseUnits(targetAmountNumber.toString(), 18);
 
 // Mint Amount
-export const mintAmount = parseUnits("0.05", 18);
+const mintAmountNumber = 0.05; // In WETH
+export const mintAmount = parseUnits(mintAmountNumber.toString(), 18);
+
+// Popup Modal Data
+export const INSUFFICIENT_FUNDS_DATA: ModalData = {
+  title: "Insufficient Funds",
+  text: `You need ${mintAmountNumber} WETH on Polygon for minting. Or at least ${targetAmountNumber} WETH/ETH on Ethereum to bridge over to Polygon.`,
+};
+
+export const BRIDGE_LATENCY_DATA: ModalData = {
+  title: "Bridging Warning",
+  text: `
+          Due to bridging latency, there might be a chance the
+          transaction will fail. We urge you to make the transaction
+          from Polygon itself to avoid this.
+  `,
+};
