@@ -9,11 +9,19 @@ const Mint = () => {
   const [state, setState] = useState(false)
 
   useEffect(() => {
+    setTimeout(() => {
+      fadeOut()
+      hideDrag()
+    }, 10000)
+    showDrag()
+
     gsap.to('body', {
       autoAlpha: 1,
       duration: 1.5,
       ease: 'expo',
     })
+
+    gsap.set('.ui-world', { display: 'block' })
   }, [])
 
   function fadeOut() {
@@ -39,11 +47,29 @@ const Mint = () => {
     })
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      fadeOut()
-    }, 5000)
-  }, [])
+  function showDrag() {
+    gsap
+      .timeline()
+      .set('.mouse-drag-text', {
+        display: 'block',
+      })
+      .from('.mouse-drag-text', {
+        autoAlpha: 0,
+        ease: 'expo',
+      })
+  }
+
+  function hideDrag() {
+    gsap
+      .timeline()
+      .from('.mouse-drag-text', {
+        autoAlpha: 0,
+        ease: 'expo',
+      })
+      .set('.mouse-drag-text', {
+        display: 'block',
+      })
+  }
 
   return (
     <PageLayout

@@ -43,6 +43,7 @@
             @extend %flex-center
             flex-direction: column
             gap: 25px
+            display: none
             > *
               margin-bottom: auto
             > div
@@ -94,8 +95,17 @@
                 opacity: .2
                 border-radius: 20%
                 filter: blur(5px)
-
       &.ui-lower
         bottom: 0
-  &.ui-world
-    display: none
+    &.ui-space
+      // display: none
+    &.ui-world
+      display: none
+      .ui-part
+        .ui-img
+          .ui-text
+            p
+              color: white!important
+          .ui-sounds
+            > p
+              color: white!important

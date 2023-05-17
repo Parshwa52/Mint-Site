@@ -12,14 +12,14 @@ const VideoScreen: React.FC<Props> = ({}) => {
             "url('https://www.bandisoft.com/honeycam/help/file_format/sample.webp')",
         }}
       />
-      <div className='absolute items-center justify-end flex w-full top-0 p-4 '>
+      {/* <div className='absolute items-center justify-end flex w-full top-0 p-4 '>
         <a
           href='#'
           className='mr-4 text-[22px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600'
         >
           0x132yg312g3g13
         </a>
-      </div>
+      </div> */}
 
       <div className='absolute items-center justify-center flex w-full mt-[130px] top-0 p-4 '>
         <a
@@ -34,7 +34,6 @@ const VideoScreen: React.FC<Props> = ({}) => {
         <a href='#' className='mr-4'>
           View on OpenSea
         </a>
-        <a href='#'>Watch Video</a>
       </div>
     </div>
   )

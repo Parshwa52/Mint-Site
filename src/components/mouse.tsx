@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGlobalContext } from '@/provider/globalProvider'
+import { useRouter } from 'next/router'
 
 export const Mouse = () => {
+  const router = useRouter()
   const { isSoundEnabled, setSoundStatus } = useGlobalContext()
   const pointerTl: any = useRef()
   const soundTl: any = useRef()
@@ -90,7 +92,10 @@ export const Mouse = () => {
   }
 
   useEffect(() => {
-    if (!soundTl.current) {
+    if (router.asPath !== '/') {
+      gsap.set(['.mouse-wave', '.mouse-wave-text'], { display: 'none' })
+    }
+    if (!soundTl.current && router.asPath === '/') {
       gsap.fromTo(
         '.mouse-wave li',
         {
@@ -141,10 +146,10 @@ export const Mouse = () => {
       window.addEventListener('click', handleClick)
     }
 
-    if (isSoundEnabled && soundTl.current) {
+    if (isSoundEnabled && soundTl.current && router.asPath === '/') {
       soundTl.current.reverse()
     }
-  }, [soundTl, isSoundEnabled])
+  }, [soundTl, isSoundEnabled, router])
 
   return (
     <div id='mouse'>
@@ -165,7 +170,7 @@ export const Mouse = () => {
         </div>
         {/* Sound */}
         <p className='mouse-wave-text text-top'>Click for</p>
-        <p className='mouse-wave-text text-bottom'>sound</p>
+        <p className='mouse-wave-text text-bottom'>Sound</p>
         <ul className='mouse-center mouse-wave'>
           <li />
           <li />
@@ -174,18 +179,11 @@ export const Mouse = () => {
           <li />
         </ul>
         {/* Scroll */}
-        <p className='mouse-scroll-text text-bottom'>Scroll</p>
-        <div className='mouse-center mouse-scroll'>
-          <ul className='scroll'>
-            <li />
-            <li />
-            <li />
-          </ul>
-        </div>
+        <div className='mouse-center mouse-scroll'>Scroll</div>
         {/* Drag */}
-        {/* <p className='mouse-drag-text text-top'>+</p>
+        <p className='mouse-drag-text text-top'>+</p>
         <p className='mouse-drag-text text-bottom'>-</p>
-        <p className='mouse-drag-text text-center'>Drag</p> */}
+        <p className='mouse-drag-text text-center'>Drag</p>
       </div>
     </div>
   )

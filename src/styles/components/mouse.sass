@@ -36,7 +36,7 @@
           top: 50%
           left: 50%
           transform: translate(-50%, -50%)
-          border: 2px dashed white
+          border: 3px dashed white
           border-radius: 50%
           mask-image: url(/assets/cursor-mask.png)
           mask-size: cover
@@ -45,6 +45,8 @@
           mask-repeat: no-repeat
       &.mouse-scroll
         position: absolute
+        color: white
+        @include fontSize('xs')
         top: 50%
         left: 0
         width: 100%
@@ -53,8 +55,9 @@
         gap: 5px
         padding: 0
         margin: 0
+        opacity: 0
         list-style: none
-        transform: translateY(-50%) rotate(180deg)!important
+        transform: translateY(-50%) rotate(0deg)!important
       &.mouse-wave
         position: absolute
         top: 50%
@@ -81,6 +84,7 @@
             height: 50%
     .mouse-scroll-text
       opacity: 0
+      background-color: red
     .mouse-wave-text, .mouse-scroll-text
       position: absolute
       font-family: $content-font
@@ -142,6 +146,23 @@
       mask-position: center center
       mask-clip: border-box
       mask-repeat: no-repeat
+  .mouse-drag-text
+    position: absolute
+    width: 100%
+    left: 0
+    text-align: center
+    color: white
+    display: none
+    @extend %flex-center
+    &.text-top
+      top: -40%
+    &.text-center
+      top: 50%
+      line-height: 1
+      transform: translateY(-50%)
+    &.text-bottom
+      bottom: -35%
+
   > div
     @extend %flex-center
     overflow: hidden

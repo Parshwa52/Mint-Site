@@ -620,7 +620,16 @@ export const SceneOne = () => {
             0
           )
           .to(
-            '#mouse .mouse-scroll-text',
+            '#mouse .dot',
+            {
+              autoAlpha: 0,
+              duration: 1.25,
+              ease: 'expo.inOut',
+            },
+            0
+          )
+          .to(
+            '#mouse .mouse-scroll',
             {
               autoAlpha: 1,
               duration: 1.25,
@@ -649,6 +658,24 @@ export const SceneOne = () => {
             },
             undefined,
             1
+          )
+          .to(
+            '#mouse .dot',
+            {
+              autoAlpha: 1,
+              duration: 1.25,
+              ease: 'expo.inOut',
+            },
+            lastImgDuration
+          )
+          .to(
+            '#mouse .mouse-scroll',
+            {
+              autoAlpha: 0,
+              duration: 1.25,
+              ease: 'expo.inOut',
+            },
+            lastImgDuration
           )
           .call(
             () => {
@@ -910,6 +937,9 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
   }, [mediaLoaded, totalLoaded, threejsLoaded])
 
   useEffect(() => {
+    gsap.set(['.ui-space', '.ui-world'], {
+      display: 'block',
+    })
     const images = document.querySelectorAll('img')
     images.forEach((img) => {
       if (img.complete) {
