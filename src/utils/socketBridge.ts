@@ -30,7 +30,10 @@ import wethABI from "@/json/WETH.json";
 /**
  * Bridge a fixed amount of ETH (0.051 ETH) from Ethereum to Polygon
  */
-export async function bridgeFromETHToPolygon(signer: Signer, isNative = true) {
+export async function bridgeFromETHToPolygon(
+  signer: Signer,
+  isNative = true
+): Promise<string> {
   return new Promise(async (resolve, reject) => {
     if (!signer.provider) {
       console.error("Could not find provider on signer");
@@ -155,26 +158,9 @@ export async function bridgeFromETHToPolygon(signer: Signer, isNative = true) {
 
       console.log("Bridging Transaction Hash: ", txnHash);
 
+      resolve(txnHash);
+
       console.groupEnd();
-
-      // Checks status of transaction every 5 secs
-      const txStatus = setInterval(async () => {
-        const status = await getBridgeStatus(txnHash, fromChainId, toChainId);
-
-        console.log(
-          `SOURCE TX : ${status.result.sourceTxStatus}\nDEST TX : ${status.result.destinationTxStatus}`
-        );
-
-        if (status.result.destinationTxStatus == "COMPLETED") {
-          console.log(
-            "DEST TX HASH :",
-            status.result.destinationTransactionHash
-          );
-          clearInterval(txStatus);
-
-          resolve("OK");
-        }
-      }, 5000);
     } catch (e) {
       console.error("An error occured during bridging", e);
       reject(e);
@@ -250,4 +236,40 @@ export async function approveWETHForNFT(signer: Signer) {
   if (allowance.lt(mintAmount)) {
     await wethContract.approve(nftAddress, ethers.constants.MaxUint256);
   }
+}
+
+/**
+ * Ping Socket for the Bridge transaction's status every 5 seconds
+ */
+export async function checkBridgeTxnStatus(txnHash: string) {
+  return new Promise((resolve, reject) => {
+    try {
+      // Checks status of transaction every 5 seconds
+      const txStatus = setInterval(async () => {
+        const status = await getBridgeStatus(txnHash, fromChainId, toChainId);
+
+        console.log(
+          `SOURCE TX : ${status.result.sourceTxStatus}\nDEST TX : ${status.result.destinationTxStatus}`
+        );
+
+        if (status.result.destinationTxStatus == "COMPLETED") {
+          console.log(
+            "DEST TX HASH :",
+            status.result.destinationTransactionHash
+          );
+          clearInterval(txStatus);
+
+          // Resolve with transaction hash on destination chain
+          resolve(status.result.destinationTransactionHash);
+        }
+      }, 5000);
+    } catch (e) {
+      console.error(
+        "An error occured while pinging for bridging txn status",
+        e
+      );
+
+      reject("An error occured while pinging for bridging txn status");
+    }
+  });
 }

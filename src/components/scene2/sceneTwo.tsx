@@ -703,7 +703,7 @@ const Q2 = (props: any) => {
   const chainId = useChainId();
 
   // UI Context
-  const { setModalOpen, setModalData } = useUIContext();
+  const { setTxnHash } = useUIContext();
 
   useEffect(() => {
     props.setInstance(q2.current);
@@ -789,7 +789,8 @@ const Q2 = (props: any) => {
         }
 
         // Bridge WETH to Polygon
-        await bridgeFromETHToPolygon(signer.data as Signer, false);
+        const hash = await bridgeFromETHToPolygon(signer.data as Signer, false);
+        setTxnHash(hash);
 
         // Switch to Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
@@ -821,7 +822,8 @@ const Q2 = (props: any) => {
         }
 
         // Bridge Native ETH to Polygon
-        await bridgeFromETHToPolygon(signer.data as Signer, true);
+        const hash = await bridgeFromETHToPolygon(signer.data as Signer, true);
+        setTxnHash(hash);
 
         // Switch to Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);

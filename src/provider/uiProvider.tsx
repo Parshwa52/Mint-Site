@@ -17,6 +17,9 @@ interface UIContextInterface {
 
   modalData: ModalData;
   setModalData: Dispatch<SetStateAction<ModalData>>;
+
+  txnHash: string;
+  setTxnHash: Dispatch<SetStateAction<string>>;
 }
 
 const defaultState: UIContextInterface = {
@@ -28,6 +31,9 @@ const defaultState: UIContextInterface = {
     text: "",
   },
   setModalData: () => {},
+
+  txnHash: "",
+  setTxnHash: () => {},
 };
 
 const uiContext = createContext<UIContextInterface>(defaultState);
@@ -38,6 +44,7 @@ const UIProvider = ({ children }: { children: any }) => {
     title: "",
     text: "",
   });
+  const [txnHash, setTxnHash] = useState("");
 
   return (
     <uiContext.Provider
@@ -47,6 +54,9 @@ const UIProvider = ({ children }: { children: any }) => {
 
         modalData,
         setModalData,
+
+        txnHash,
+        setTxnHash,
       }}
     >
       {children}
