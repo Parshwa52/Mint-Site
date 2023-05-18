@@ -106,6 +106,13 @@ export const SceneOne = () => {
         // typing
         const typingTl = gsap
           .timeline({ paused: true })
+          .set(
+            '#ui .ui-text',
+            {
+              display: 'flex',
+            },
+            0
+          )
           .to(
             '#ui .ui-text ul',
             {
@@ -125,6 +132,13 @@ export const SceneOne = () => {
             },
             0
           )
+          .set(
+            '#ui #text-1 .phrase-1',
+            {
+              display: 'block',
+            },
+            0
+          )
           .from(
             '#ui #text-1 .phrase-1 span span',
             {
@@ -135,6 +149,13 @@ export const SceneOne = () => {
             },
             0
           )
+          .set(
+            '#ui #text-1 .phrase-2',
+            {
+              display: 'block',
+            },
+            '>+=.5'
+          )
           .from(
             '#ui #text-1 .phrase-2 span span',
             {
@@ -143,7 +164,7 @@ export const SceneOne = () => {
               stagger: 0.1,
               ease: 'none',
             },
-            '>+=1'
+            '>+=.5'
           )
         // unscrollableTl
         if (ls === 'true') {
