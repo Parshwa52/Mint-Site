@@ -38,12 +38,3 @@ export const INSUFFICIENT_FUNDS_DATA: ModalData = {
   title: "Insufficient Funds",
   text: `You need ${mintAmountNumber} WETH on Polygon for minting. Or at least ${targetAmountNumber} WETH/ETH on Ethereum to bridge over to Polygon.`,
 };
-
-export const BRIDGE_LATENCY_DATA: ModalData = {
-  title: "Bridging Warning",
-  text: `
-          Due to bridging latency, there might be a chance the
-          transaction will fail. We urge you to make the transaction
-          from Polygon itself to avoid this.
-  `,
-};

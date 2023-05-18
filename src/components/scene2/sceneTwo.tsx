@@ -1,106 +1,101 @@
 // React
-import { useEffect, useMemo, useRef, useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 // gsap
-import gsap from 'gsap'
+import gsap from "gsap";
 // Rainbow & Wagmi
-import ConnectWallet from '../ui/ConnectWallet'
-import { useAccount, useChainId, useSigner, useSwitchNetwork } from 'wagmi'
+import ConnectWallet from "../ui/ConnectWallet";
+import { useAccount, useChainId, useSigner, useSwitchNetwork } from "wagmi";
 // THREE
-import { Canvas } from '@react-three/fiber'
+import { Canvas } from "@react-three/fiber";
 import {
   PerspectiveCamera,
   RenderTexture,
   useTexture,
   Html,
-} from '@react-three/drei'
-import { PlaneGeometry } from 'three'
+} from "@react-three/drei";
+import { PlaneGeometry } from "three";
 // Custom components
-import { useGlobalContext } from '@/provider/globalProvider'
+import { useGlobalContext } from "@/provider/globalProvider";
 // Images imports
-import img1 from '@/assets/placements/1_Cloud1.png'
-import img2 from '@/assets/placements/2_Cloud2.png'
-import img3 from '@/assets/placements/3_Cloud3.png'
-import img4 from '@/assets/placements/4_Base.png'
-import img4extra from '@/assets/placements/4_Base_blurred.png'
-import img5 from '@/assets/placements/5_Cloud4.png'
-import img6 from '@/assets/placements/6_Cloud5.png'
+import img1 from "@/assets/placements/1_Cloud1.png";
+import img2 from "@/assets/placements/2_Cloud2.png";
+import img3 from "@/assets/placements/3_Cloud3.png";
+import img4 from "@/assets/placements/4_Base.png";
+import img4extra from "@/assets/placements/4_Base_blurred.png";
+import img5 from "@/assets/placements/5_Cloud4.png";
+import img6 from "@/assets/placements/6_Cloud5.png";
 // import img7 from '@/assets/placements/7_Cloud6.png'
 // import img8 from '@/assets/placements/8_Cloud7.png'
 // import img9 from '@/assets/placements/9_Cloud8.png'
-import img10 from '@/assets/placements/13_Octopus_leftmost_Building.png'
-import img11 from '@/assets/placements/14_Octopus_rightmost_Building.png'
-import img12 from '@/assets/placements/11_Octopus_left_Building.png'
-import img13 from '@/assets/placements/12_Octopus_right_Building.png'
-import img14 from '@/assets/placements/10_Octopus_Building.png'
-import img15 from '@/assets/placements/15_Triangular_Building.png'
-import img16 from '@/assets/placements/16_Ground_Bridge_Lab_Building.png'
-import img17 from '@/assets/placements/17_Studio_Building.png'
-import img18 from '@/assets/placements/18_Mushroom_Building.png'
-import img19 from '@/assets/placements/19_Whale_Building.png'
-import img20 from '@/assets/placements/20_Crayon_Building.png'
-import img21 from '@/assets/placements/21_Tall_Building.png'
-import img22 from '@/assets/placements/22_Frog_Building.png'
-import img23 from '@/assets/placements/23_White_Building.png'
-import img24 from '@/assets/placements/24_FLO_Building.png'
-import img25 from '@/assets/placements/25_POP_Building.png'
-import img26 from '@/assets/placements/26_Characters.png'
-import img27 from '@/assets/placements/27_Green_Structure.png'
-import img28 from '@/assets/placements/28_Cars_smokes_lines.png'
-import img29 from '@/assets/placements/29_Clouds9.png'
-import img30 from '@/assets/placements/30_Clouds10.png'
-import img31 from '@/assets/placements/31_Clouds11.png'
-import img32 from '@/assets/placements/32_Clouds12.png'
-import img33 from '@/assets/placements/33_Clouds13.png'
-import img34 from '@/assets/placements/34_Clouds14.png'
-import img35 from '@/assets/placements/35_Clouds15.png'
-import { useRouter } from 'next/router'
-import { Signer } from 'ethers'
+import img10 from "@/assets/placements/13_Octopus_leftmost_Building.png";
+import img11 from "@/assets/placements/14_Octopus_rightmost_Building.png";
+import img12 from "@/assets/placements/11_Octopus_left_Building.png";
+import img13 from "@/assets/placements/12_Octopus_right_Building.png";
+import img14 from "@/assets/placements/10_Octopus_Building.png";
+import img15 from "@/assets/placements/15_Triangular_Building.png";
+import img16 from "@/assets/placements/16_Ground_Bridge_Lab_Building.png";
+import img17 from "@/assets/placements/17_Studio_Building.png";
+import img18 from "@/assets/placements/18_Mushroom_Building.png";
+import img19 from "@/assets/placements/19_Whale_Building.png";
+import img20 from "@/assets/placements/20_Crayon_Building.png";
+import img21 from "@/assets/placements/21_Tall_Building.png";
+import img22 from "@/assets/placements/22_Frog_Building.png";
+import img23 from "@/assets/placements/23_White_Building.png";
+import img24 from "@/assets/placements/24_FLO_Building.png";
+import img25 from "@/assets/placements/25_POP_Building.png";
+import img26 from "@/assets/placements/26_Characters.png";
+import img27 from "@/assets/placements/27_Green_Structure.png";
+import img28 from "@/assets/placements/28_Cars_smokes_lines.png";
+import img29 from "@/assets/placements/29_Clouds9.png";
+import img30 from "@/assets/placements/30_Clouds10.png";
+import img31 from "@/assets/placements/31_Clouds11.png";
+import img32 from "@/assets/placements/32_Clouds12.png";
+import img33 from "@/assets/placements/33_Clouds13.png";
+import img34 from "@/assets/placements/34_Clouds14.png";
+import img35 from "@/assets/placements/35_Clouds15.png";
+import { useRouter } from "next/router";
+import { Signer } from "ethers";
 import {
   approveWETHForNFT,
   bridgeFromETHToPolygon,
   getBalances,
-} from '@/utils/socketBridge'
-import {
-  BRIDGE_LATENCY_DATA,
-  INSUFFICIENT_FUNDS_DATA,
-  mintAmount,
-  targetAmount,
-} from '@/constants'
-import { useUIContext } from '@/provider/uiProvider'
+} from "@/utils/socketBridge";
+import { INSUFFICIENT_FUNDS_DATA, mintAmount, targetAmount } from "@/constants";
+import { useUIContext } from "@/provider/uiProvider";
 
 export const SceneTwo = () => {
-  const { scrollLenis, soundsArray } = useGlobalContext()
-  const scene2 = useRef<HTMLDivElement>(null)
-  const entryTl = useRef<any>()
-  const failureTl = useRef<any>()
-  const successTl = useRef<any>()
-  const transactTl = useRef<any>()
-  const [q2, setQ2] = useState<any>(null)
-  const [currExpression, setCurrExpression] = useState(0)
+  const { scrollLenis, soundsArray } = useGlobalContext();
+  const scene2 = useRef<HTMLDivElement>(null);
+  const entryTl = useRef<any>();
+  const failureTl = useRef<any>();
+  const successTl = useRef<any>();
+  const transactTl = useRef<any>();
+  const [q2, setQ2] = useState<any>(null);
+  const [currExpression, setCurrExpression] = useState(0);
   const updater = {
     entryExp: 0,
     failureExp: 0,
     successExp: 0,
     transactionExp: 0,
-  }
+  };
 
   // Wallet Connection Variables
-  const { isConnected, isConnecting } = useAccount()
-  const connectionInProgress = useRef(false)
+  const { isConnected, isConnecting } = useAccount();
+  const connectionInProgress = useRef(false);
 
   useEffect(() => {
-    if (isConnected) doSuccessAnimation()
-    else doFailureAnimation(false)
-  }, [isConnected])
+    if (isConnected) doSuccessAnimation();
+    else doFailureAnimation(false);
+  }, [isConnected]);
 
   useEffect(() => {
-    if (isConnecting) connectionInProgress.current = true
+    if (isConnecting) connectionInProgress.current = true;
     else if (!isConnected && connectionInProgress.current === true) {
-      doFailureAnimation(false)
-      connectionInProgress.current = false
+      doFailureAnimation(false);
+      connectionInProgress.current = false;
     }
-  }, [isConnecting])
+  }, [isConnecting]);
 
   // function wheel(event: WheelEvent) {
   //   let delta = 0
@@ -136,7 +131,7 @@ export const SceneTwo = () => {
     const ctx = gsap.context(() => {
       // clouds animation
       gsap.fromTo(
-        '.clouds',
+        ".clouds",
         {
           xPercent: -100,
         },
@@ -144,30 +139,30 @@ export const SceneTwo = () => {
           xPercent: 100,
           duration: 20,
           repeat: -1,
-          ease: 'none',
+          ease: "none",
         }
-      )
+      );
       // pin section 1 - fade out
       gsap
         .timeline({
           scrollTrigger: {
-            trigger: '#home-city',
-            start: 'top bottom',
-            end: 'top top',
+            trigger: "#home-city",
+            start: "top bottom",
+            end: "top top",
             scrub: true,
             refreshPriority: 98,
           },
           defaults: {
-            ease: 'none',
+            ease: "none",
           },
         })
         .to(
-          '#ui .ui-space',
-          { autoAlpha: 0, duration: 25, ease: 'power1.inOut' },
+          "#ui .ui-space",
+          { autoAlpha: 0, duration: 25, ease: "power1.inOut" },
           0
         )
         .to(
-          '.scene-bg canvas',
+          ".scene-bg canvas",
           {
             autoAlpha: 0,
             duration: 100,
@@ -175,7 +170,7 @@ export const SceneTwo = () => {
           0
         )
         .to(
-          ['#audio-0', '#audio-1'],
+          ["#audio-0", "#audio-1"],
           {
             volume: 0,
             duration: 50,
@@ -183,63 +178,63 @@ export const SceneTwo = () => {
           0
         )
         .fromTo(
-          '.scene-bg',
+          ".scene-bg",
           {
             background:
-              'linear-gradient(rgba(0, 0, 0,1) 0%, rgba(0, 0, 0,1) 25%, rgba(0, 0, 0,1) 50%, rgba(0, 0, 0,1) 75%, rgba(0, 0, 0,1) 100%))',
+              "linear-gradient(rgba(0, 0, 0,1) 0%, rgba(0, 0, 0,1) 25%, rgba(0, 0, 0,1) 50%, rgba(0, 0, 0,1) 75%, rgba(0, 0, 0,1) 100%))",
           },
           {
             duration: 75,
             background:
-              'linear-gradient(rgba(27, 41, 71) 0%, rgba(42, 66, 95) 25%, rgba(66, 106, 133, 1) 50%, rgba(90, 145, 171,1) 75%, rgba(114, 184, 209,1) 100%)',
+              "linear-gradient(rgba(27, 41, 71) 0%, rgba(42, 66, 95) 25%, rgba(66, 106, 133, 1) 50%, rgba(90, 145, 171,1) 75%, rgba(114, 184, 209,1) 100%)",
           },
           0
         )
-        .set('#ui .ui-space', { display: 'none' }, 25)
-        .set('#ui .ui-world', { display: 'block' }, 25)
-        .to('#ui', { '--color': 'black', duration: 25, ease: 'none' }, 25)
+        .set("#ui .ui-space", { display: "none" }, 25)
+        .set("#ui .ui-world", { display: "block" }, 25)
+        .to("#ui", { "--color": "black", duration: 25, ease: "none" }, 25)
         .from(
-          '#ui .ui-world',
-          { autoAlpha: 0, duration: 25, ease: 'power1.inOut' },
+          "#ui .ui-world",
+          { autoAlpha: 0, duration: 25, ease: "power1.inOut" },
           25
         )
         .to(
-          '.scene-bg',
+          ".scene-bg",
           {
             duration: 25,
             background:
-              'linear-gradient(rgba(42, 66, 95) 0%, rgba(66, 106, 133, 1) 25%, rgba(90, 145, 171,1) 50%, rgba(114, 184, 209,1) 75%, rgba(173,232,244,1) 100%)',
+              "linear-gradient(rgba(42, 66, 95) 0%, rgba(66, 106, 133, 1) 25%, rgba(90, 145, 171,1) 50%, rgba(114, 184, 209,1) 75%, rgba(173,232,244,1) 100%)",
           },
           25
         )
         .to(
-          '.scene-bg',
+          ".scene-bg",
           {
             duration: 25,
             background:
-              'linear-gradient(rgba(90, 145, 171,1) 0%, rgba(114, 184, 209,1) 25%, rgba(126, 204, 228,1) 50%, rgba(137, 223, 247,1) 75%, rgba(137, 223, 247,1) 100%)',
+              "linear-gradient(rgba(90, 145, 171,1) 0%, rgba(114, 184, 209,1) 25%, rgba(126, 204, 228,1) 50%, rgba(137, 223, 247,1) 75%, rgba(137, 223, 247,1) 100%)",
           },
           50
         )
         .to(
-          '.scene-bg',
+          ".scene-bg",
           {
             duration: 25,
             background:
-              'linear-gradient(rgba(137, 223, 247,1) 0%, rgba(137, 223, 247,1) 25%, rgba(137, 223, 247,1) 50%, rgba(137, 223, 247,1) 75%, rgba(137, 223, 247,1) 100%)',
+              "linear-gradient(rgba(137, 223, 247,1) 0%, rgba(137, 223, 247,1) 25%, rgba(137, 223, 247,1) 50%, rgba(137, 223, 247,1) 75%, rgba(137, 223, 247,1) 100%)",
           },
           75
         )
-        .from('#audio-2', { volume: 0, duration: 50 }, 50)
+        .from("#audio-2", { volume: 0, duration: 50 }, 50);
 
       // pin section 2 - fade in
       if (q2) {
         gsap
           .timeline({
             scrollTrigger: {
-              trigger: '#home-city',
-              start: 'top top',
-              end: '+=4000',
+              trigger: "#home-city",
+              start: "top top",
+              end: "+=4000",
               pin: true,
               scrub: true,
             },
@@ -248,7 +243,7 @@ export const SceneTwo = () => {
               stagger: {
                 amount: 15,
               },
-              ease: 'power1',
+              ease: "power1",
             },
           })
           .from(
@@ -256,21 +251,21 @@ export const SceneTwo = () => {
             {
               y: -8,
               duration: 100,
-              ease: 'power1',
+              ease: "power1",
             },
             0
           )
           .to(
-            '#mouse .border-bottom .border-background',
+            "#mouse .border-bottom .border-background",
             {
               scaleX: 1,
-              ease: 'none',
+              ease: "none",
               duration: 100,
             },
             0
           )
           .from(
-            '.clouds > *',
+            ".clouds > *",
             {
               autoAlpha: 0,
               scale: 1.25,
@@ -278,7 +273,7 @@ export const SceneTwo = () => {
             0
           )
           .from(
-            '.background > *:first-child',
+            ".background > *:first-child",
             {
               yPercent: 100,
               stagger: 0,
@@ -288,7 +283,7 @@ export const SceneTwo = () => {
             7.5
           )
           .from(
-            '.city-container .buildings-center > *',
+            ".city-container .buildings-center > *",
             {
               yPercent: 100,
               stagger: 10,
@@ -297,14 +292,14 @@ export const SceneTwo = () => {
             20
           )
           .from(
-            '.background > *:last-child',
+            ".background > *:last-child",
             {
               autoAlpha: 0,
             },
             27.5
           )
           .from(
-            '.city-container .buildings-center-left > *',
+            ".city-container .buildings-center-left > *",
             {
               xPercent: -100,
               stagger: -10,
@@ -313,7 +308,7 @@ export const SceneTwo = () => {
             30
           )
           .from(
-            '.city-container .buildings-center-right > *',
+            ".city-container .buildings-center-right > *",
             {
               xPercent: 100,
               stagger: -10,
@@ -321,81 +316,81 @@ export const SceneTwo = () => {
             },
             30
           )
-          .addLabel('buildingsCenterDone', '>-15')
+          .addLabel("buildingsCenterDone", ">-15")
           .from(
-            '.city-container .buildings-left > *',
+            ".city-container .buildings-left > *",
             {
               xPercent: -100,
               stagger: 10,
               scale: 1.7,
             },
-            'buildingsCenterDone-=5'
+            "buildingsCenterDone-=5"
           )
           .from(
-            '.city-container .buildings-right > *',
+            ".city-container .buildings-right > *",
             {
               xPercent: 100,
               stagger: 7.5,
               scale: 1.7,
             },
-            'buildingsCenterDone-=5'
+            "buildingsCenterDone-=5"
           )
           .from(
-            '.city-container .buildings-logo > *',
+            ".city-container .buildings-logo > *",
             {
               autoAlpha: 0,
               yPercent: -100,
               duration: 30,
-              ease: 'expo',
+              ease: "expo",
             },
-            'buildingsCenterDone+=10'
+            "buildingsCenterDone+=10"
           )
           .from(
-            '.city-container .buildings-hover-left > *',
+            ".city-container .buildings-hover-left > *",
             {
               xPercent: -100,
               duration: 50,
             },
-            'buildingsCenterDone+=30'
+            "buildingsCenterDone+=30"
           )
           .from(
-            '.city-container .buildings-hover-right > *',
+            ".city-container .buildings-hover-right > *",
             {
               xPercent: 100,
               duration: 50,
             },
-            'buildingsCenterDone+=30'
+            "buildingsCenterDone+=30"
           )
-          .addLabel('buildingsDone', 'buildingsCenterDone+=80')
+          .addLabel("buildingsDone", "buildingsCenterDone+=80")
           .to(
-            '.city-container .buildings-logo > *',
+            ".city-container .buildings-logo > *",
             {
               yPercent: -100,
               autoAlpha: 0,
               duration: 45,
-              ease: 'power1.inOut',
+              ease: "power1.inOut",
             },
-            'buildingsDone'
+            "buildingsDone"
           )
           .to(
-            '.city-container',
+            ".city-container",
             {
-              willChange: 'filter',
-              filter: 'blur(2px)',
+              willChange: "filter",
+              filter: "blur(2px)",
               stagger: 0,
               duration: 25,
-              ease: 'none',
+              ease: "none",
             },
-            '>-25%'
-          )
+            ">-25%"
+          );
       }
-    })
+    });
 
-    if (isConnected) doSuccessAnimation()
-    else doEntryAnimation()
+    if (isConnected) doSuccessAnimation();
+    else doEntryAnimation();
 
-    return () => ctx.revert()
-  }, [scrollLenis, soundsArray, q2])
+    return () => ctx.revert();
+  }, [scrollLenis, soundsArray, q2]);
 
   useEffect(() => {
     if (!entryTl.current) {
@@ -406,7 +401,7 @@ export const SceneTwo = () => {
           repeatDelay: 1,
           defaults: {
             duration: 3,
-            ease: 'none',
+            ease: "none",
           },
         })
         .fromTo(
@@ -419,26 +414,26 @@ export const SceneTwo = () => {
             duration: 1.25,
             repeat: 1,
             onUpdate: () => {
-              setCurrExpression(Math.round(updater.entryExp))
+              setCurrExpression(Math.round(updater.entryExp));
             },
           }
         )
         .to(updater, {
           entryExp: 4,
           onUpdate: () => {
-            setCurrExpression(Math.round(updater.entryExp))
+            setCurrExpression(Math.round(updater.entryExp));
           },
-        })
+        });
     }
     if (!successTl.current) {
       successTl.current = gsap
         .timeline({
           paused: true,
-          defaults: { duration: 2.5, ease: 'none' },
+          defaults: { duration: 2.5, ease: "none" },
         })
         .call(
           () => {
-            setCurrExpression(28)
+            setCurrExpression(28);
           },
           undefined,
           0
@@ -452,11 +447,11 @@ export const SceneTwo = () => {
             successExp: 31,
             repeat: -1,
             onUpdate: () => {
-              setCurrExpression(Math.round(updater.successExp))
+              setCurrExpression(Math.round(updater.successExp));
             },
           },
           2.5
-        )
+        );
     }
     if (!failureTl.current && successTl.current) {
       failureTl.current = gsap
@@ -464,10 +459,10 @@ export const SceneTwo = () => {
           paused: true,
           defaults: {
             duration: 10,
-            ease: 'none',
+            ease: "none",
           },
           onComplete: () => {
-            successTl.current.play()
+            successTl.current.play();
           },
         })
         .fromTo(
@@ -478,14 +473,14 @@ export const SceneTwo = () => {
           {
             failureExp: 20,
             onUpdate: () => {
-              setCurrExpression(Math.round(updater.failureExp))
+              setCurrExpression(Math.round(updater.failureExp));
             },
           }
         )
-        .addLabel('failureEnd')
+        .addLabel("failureEnd")
         .to(updater, {
           duration: 0.1,
-        })
+        });
     }
     if (!transactTl.current) {
       transactTl.current = gsap
@@ -494,7 +489,7 @@ export const SceneTwo = () => {
           paused: true,
           defaults: {
             duration: 3.5,
-            ease: 'none',
+            ease: "none",
           },
         })
         .fromTo(
@@ -505,64 +500,64 @@ export const SceneTwo = () => {
           {
             transactionExp: 28,
             onUpdate: () => {
-              setCurrExpression(Math.round(updater.transactionExp))
+              setCurrExpression(Math.round(updater.transactionExp));
             },
           }
-        )
+        );
     }
-  }, [entryTl, failureTl, successTl, transactTl])
+  }, [entryTl, failureTl, successTl, transactTl]);
 
   function doEntryAnimation() {
-    successTl.current && successTl.current?.restart().pause()
-    transactTl.current && transactTl.current?.restart().pause()
-    failureTl.current && failureTl.current?.restart().pause()
+    successTl.current && successTl.current?.restart().pause();
+    transactTl.current && transactTl.current?.restart().pause();
+    failureTl.current && failureTl.current?.restart().pause();
     if (entryTl.current && !entryTl.current.isActive()) {
-      entryTl.current.play()
+      entryTl.current.play();
     }
   }
 
   function doSuccessAnimation() {
-    entryTl.current && entryTl.current?.restart().pause()
-    transactTl.current && transactTl.current?.restart().pause()
-    failureTl.current && failureTl.current?.restart().pause()
+    entryTl.current && entryTl.current?.restart().pause();
+    transactTl.current && transactTl.current?.restart().pause();
+    failureTl.current && failureTl.current?.restart().pause();
     if (successTl.current && !successTl.current.isActive()) {
-      doFailureAnimation(true)
+      doFailureAnimation(true);
     }
   }
 
   function doBridgeFailure() {
     // stop everything
-    successTl.current && successTl.current?.restart().pause()
-    entryTl.current && entryTl.current?.restart().pause()
-    transactTl.current && transactTl.current?.restart().pause()
-    failureTl.current && failureTl.current?.restart().pause()
+    successTl.current && successTl.current?.restart().pause();
+    entryTl.current && entryTl.current?.restart().pause();
+    transactTl.current && transactTl.current?.restart().pause();
+    failureTl.current && failureTl.current?.restart().pause();
 
-    setCurrExpression(31)
+    setCurrExpression(31);
   }
 
   function doTransactionAnimation() {
-    successTl.current && successTl.current?.restart().pause()
-    entryTl.current && entryTl.current?.restart().pause()
-    failureTl.current && failureTl.current?.restart().pause()
+    successTl.current && successTl.current?.restart().pause();
+    entryTl.current && entryTl.current?.restart().pause();
+    failureTl.current && failureTl.current?.restart().pause();
     if (transactTl.current && !transactTl.current.isActive()) {
-      transactTl.current.play()
+      transactTl.current.play();
     }
   }
 
   function doFailureAnimation(isSuccess: boolean) {
-    successTl.current && successTl.current?.restart().pause()
-    transactTl.current && transactTl.current?.restart().pause()
-    entryTl.current && entryTl.current?.restart().pause()
+    successTl.current && successTl.current?.restart().pause();
+    transactTl.current && transactTl.current?.restart().pause();
+    entryTl.current && entryTl.current?.restart().pause();
     if (failureTl.current) {
-      if (isSuccess) failureTl.current.restart().play()
-      else failureTl.current.restart().tweenTo('failureEnd')
+      if (isSuccess) failureTl.current.restart().play();
+      else failureTl.current.restart().tweenTo("failureEnd");
     }
   }
 
   return (
-    <div className='scene scene-2' ref={scene2}>
-      <div className='city-container'>
-        <div className='clouds'>
+    <div className="scene scene-2" ref={scene2}>
+      <div className="city-container">
+        <div className="clouds">
           <Clouds src={img1} />
           <Clouds src={img5} />
           {/* <Clouds src={img7} /> */}
@@ -572,36 +567,36 @@ export const SceneTwo = () => {
           {/* <Clouds src={img8} /> */}
           {/* <Clouds src={img9} /> */}
         </div>
-        <div className='background'>
+        <div className="background">
           <Building src={img4} />
           <Building src={img4extra} />
         </div>
-        <div className='buildings buildings-center-right'>
+        <div className="buildings buildings-center-right">
           <Building src={img11} />
           <Building src={img13} />
         </div>
-        <div className='buildings buildings-center-left'>
+        <div className="buildings buildings-center-left">
           <Building src={img10} />
           <Building src={img12} />
         </div>
-        <div className='buildings buildings-left'>
+        <div className="buildings buildings-left">
           <Building src={img15} />
         </div>
-        <div className='buildings buildings-right'>
+        <div className="buildings buildings-right">
           <Building src={img21} />
         </div>
-        <div className='buildings buildings-center'>
+        <div className="buildings buildings-center">
           <Building src={img14} />
         </div>
-        <div className='buildings buildings-center'>
+        <div className="buildings buildings-center">
           <Building src={img16} />
         </div>
-        <div className='buildings buildings-left'>
+        <div className="buildings buildings-left">
           <Building src={img18} />
           <Building src={img23} />
           <Building src={img25} />
         </div>
-        <div className='buildings buildings-right'>
+        <div className="buildings buildings-right">
           <Building src={img17} />
           <Building src={img19} />
           <Building src={img20} />
@@ -610,26 +605,26 @@ export const SceneTwo = () => {
           <Building src={img26} />
           <Building src={img27} />
         </div>
-        <div className='buildings buildings-center'>
+        <div className="buildings buildings-center">
           <Building src={img28} />
         </div>
-        <div className='buildings buildings-hover-left'>
+        <div className="buildings buildings-hover-left">
           <Building src={img30} />
           <Building src={img32} />
           <Building src={img33} />
           <Building src={img34} />
         </div>
-        <div className='buildings buildings-hover-right'>
+        <div className="buildings buildings-hover-right">
           <Building src={img29} />
           <Building src={img31} />
           <Building src={img35} />
         </div>
-        <div className='buildings buildings-logo'>
+        <div className="buildings buildings-logo">
           <h2>pluto</h2>
         </div>
       </div>
-      <div className='q2-canvas-container'>
-        <div className='canvas-button-container'>
+      <div className="q2-canvas-container">
+        <div className="canvas-button-container">
           <ConnectWallet />
         </div>
         <Canvas
@@ -652,90 +647,90 @@ export const SceneTwo = () => {
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
       </div> */}
     </div>
-  )
-}
+  );
+};
 
 const Clouds = ({ src }: { src: any }) => {
   return (
     <Image
       src={src}
-      alt='clouds'
-      className='building-container clouds-container'
+      alt="clouds"
+      className="building-container clouds-container"
       fill
       unoptimized
       style={{
-        objectFit: 'contain',
-        objectPosition: 'center top',
+        objectFit: "contain",
+        objectPosition: "center top",
       }}
       // sizes='(max-width: 768px) 40vw,
       //         (max-width: 1200px) 50vw,
       //         60vw'
     />
-  )
-}
+  );
+};
 
 const Building = ({ src }: { src: any }) => {
   return (
     <Image
       src={src}
-      alt='building'
-      className='building-container'
+      alt="building"
+      className="building-container"
       fill
       unoptimized
       style={{
-        objectFit: 'cover',
+        objectFit: "cover",
       }}
       // sizes='(max-width: 768px) 45vw,
       //         (max-width: 1200px) 65vw,
       //         75vw'
     />
-  )
-}
+  );
+};
 
 const Q2 = (props: any) => {
-  const router = useRouter()
-  const q2 = useRef(null)
+  const router = useRouter();
+  const q2 = useRef(null);
   // images
   // mesh
   const q2Geometry = useMemo(() => {
-    return new PlaneGeometry(1, 1.6)
-  }, [])
+    return new PlaneGeometry(1, 1.6);
+  }, []);
   const bandGeometry = useMemo(() => {
-    return new PlaneGeometry(1, 1)
-  }, [])
+    return new PlaneGeometry(1, 1);
+  }, []);
   // texture base
   const [body, bodyAlpha, band] = useTexture([
-    '/assets/scene1/Q2.png',
-    '/assets/scene1/Q2_alpha.jpg',
-    '/assets/scene1/Q2_band.png',
-  ])
+    "/assets/scene1/Q2.png",
+    "/assets/scene1/Q2_alpha.jpg",
+    "/assets/scene1/Q2_band.png",
+  ]);
 
   // Wallet Connection Variables
-  const { isConnected } = useAccount()
-  const signer = useSigner()
-  const switchNetwork = useSwitchNetwork()
-  const chainId = useChainId()
+  const { isConnected } = useAccount();
+  const signer = useSigner();
+  const switchNetwork = useSwitchNetwork();
+  const chainId = useChainId();
 
   // UI Context
-  const { setModalOpen, setModalData } = useUIContext()
+  const { setModalOpen, setModalData } = useUIContext();
 
   useEffect(() => {
-    props.setInstance(q2.current)
-  }, [q2])
+    props.setInstance(q2.current);
+  }, [q2]);
 
   function handleClick() {
     if (isConnected) {
       // Bridge and Mint Process
-      bridgeAndMint()
+      bridgeAndMint();
     } else {
       //@ts-ignore
       document
-        .querySelector('.canvas-button-container button')
+        .querySelector(".canvas-button-container button")
         //@ts-ignore
-        .click()
+        .click();
     }
 
-    document.body.style.cursor = 'auto'
+    document.body.style.cursor = "auto";
 
     // setTimeout(() => {
     //   gsap.to('body', {
@@ -750,7 +745,7 @@ const Q2 = (props: any) => {
 
   async function bridgeAndMint() {
     const { ethereumBalance, wethBalanceETH, wethBalancePolygon } =
-      await getBalances(signer.data as Signer)
+      await getBalances(signer.data as Signer);
 
     try {
       //////////////////////////////////////
@@ -758,106 +753,98 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137)
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
         // @ts-ignore
         if (chainId !== 137) {
-          console.warn('Switch to Polygon Chain')
-          return
+          console.warn("Switch to Polygon Chain");
+          return;
         }
 
         // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer)
+        await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log('Mint call reached')
+        console.log("Mint call reached");
       }
 
       ///////////////////////////////////////////////
       // Case 2: User has WETH on Ethereum Network //
       ///////////////////////////////////////////////
       else if (wethBalanceETH.gte(targetAmount)) {
-        // If NFTs left are less than 500, check for it and show a warning modal first
-        // setModalData(BRIDGE_LATENCY_DATA);
-        // setModalOpen(true);
-
         // Make sure network is Ethereum
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1)
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
 
         if (chainId !== 1) {
-          console.warn('Switch to Ethereum Chain')
-          return
+          console.warn("Switch to Ethereum Chain");
+          return;
         }
 
         // Bridge WETH to Polygon
-        await bridgeFromETHToPolygon(signer.data as Signer, false)
+        await bridgeFromETHToPolygon(signer.data as Signer, false);
 
         // Switch to Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137)
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
         // @ts-ignore
         if (chainId !== 137) {
-          console.warn('Switch to Polygon Chain')
-          return
+          console.warn("Switch to Polygon Chain");
+          return;
         }
 
         // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer)
+        await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log('Mint call reached')
+        console.log("Mint call reached");
       }
 
       //////////////////////////////////////////////
       // Case 3: User has ETH on Ethereum Network //
       //////////////////////////////////////////////
       else if (ethereumBalance.gte(targetAmount)) {
-        // If NFTs left are less than 500, check for it and show a warning modal first
-        // setModalData(BRIDGE_LATENCY_DATA);
-        // setModalOpen(true);
-
         // Make sure network is Ethereum
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1)
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
 
         if (chainId !== 1) {
-          console.warn('Switch to Ethereum Chain')
-          return
+          console.warn("Switch to Ethereum Chain");
+          return;
         }
 
         // Bridge Native ETH to Polygon
-        await bridgeFromETHToPolygon(signer.data as Signer, true)
+        await bridgeFromETHToPolygon(signer.data as Signer, true);
 
         // Switch to Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137)
+        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
         // @ts-ignore
         if (chainId !== 137) {
-          console.warn('Switch to Polygon Chain')
-          return
+          console.warn("Switch to Polygon Chain");
+          return;
         }
 
         // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer)
+        await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log('Mint call reached')
+        console.log("Mint call reached");
       }
 
       /////////////////////////////////////////
       // Case 4: User has insufficient funds //
       /////////////////////////////////////////
       else {
-        console.warn('Not enough funds on Polygon or Ethereum ')
-        setModalData(INSUFFICIENT_FUNDS_DATA)
-        setModalOpen(true)
+        console.warn("Not enough funds on Polygon or Ethereum ");
+        setModalData(INSUFFICIENT_FUNDS_DATA);
+        setModalOpen(true);
       }
 
-      console.log('Bridge and Mint Process Done')
+      console.log("Bridge and Mint Process Done");
     } catch (e) {
       console.error(
-        'Error during bridge and mint process. Possible that user rejected txn',
+        "Error during bridge and mint process. Possible that user rejected txn",
         e
-      )
+      );
     }
   }
 
@@ -881,83 +868,83 @@ const Q2 = (props: any) => {
       >
         <meshBasicMaterial map={band} transparent needsUpdate />
         <Html
-          className='canvas-text-container'
+          className="canvas-text-container"
           center
           transform
           sprite
           distanceFactor={1.5}
         >
-          <div className='button-container'>
-            <button className='button' onClick={() => handleClick()}></button>
+          <div className="button-container">
+            <button className="button" onClick={() => handleClick()}></button>
           </div>
         </Html>
       </mesh>
     </group>
-  )
-}
+  );
+};
 
 const Expressions = (props: any) => {
-  const expressions: any = useRef(null)
-  const expression: any = useRef(null)
+  const expressions: any = useRef(null);
+  const expression: any = useRef(null);
 
-  const mask = useTexture('/assets/scene1/Q2_mask.jpg')
+  const mask = useTexture("/assets/scene1/Q2_mask.jpg");
 
   const expArray = useTexture([
-    '/assets/scene2/expressions/entry/exp-1.png',
-    '/assets/scene2/expressions/entry/exp-2.png',
-    '/assets/scene2/expressions/entry/exp-3.png',
-    '/assets/scene2/expressions/entry/exp-4.png',
-    '/assets/scene2/expressions/entry/exp-5.png',
-    '/assets/scene2/expressions/failure/exp-1.png',
-    '/assets/scene2/expressions/failure/exp-2.png',
-    '/assets/scene2/expressions/failure/exp-3.png',
-    '/assets/scene2/expressions/failure/exp-4.png',
-    '/assets/scene2/expressions/failure/exp-5.png',
-    '/assets/scene2/expressions/failure/exp-6.png',
-    '/assets/scene2/expressions/failure/exp-7.png',
-    '/assets/scene2/expressions/failure/exp-8.png',
-    '/assets/scene2/expressions/failure/exp-9.png',
-    '/assets/scene2/expressions/failure/exp-10.png',
-    '/assets/scene2/expressions/failure/exp-11.png',
-    '/assets/scene2/expressions/failure/exp-12.png',
-    '/assets/scene2/expressions/failure/exp-13.png',
-    '/assets/scene2/expressions/failure/exp-14.png',
-    '/assets/scene2/expressions/failure/exp-15.png',
-    '/assets/scene2/expressions/failure/exp-16.png',
-    '/assets/scene2/expressions/transact/exp-1.png',
-    '/assets/scene2/expressions/transact/exp-2.png',
-    '/assets/scene2/expressions/transact/exp-3.png',
-    '/assets/scene2/expressions/transact/exp-4.png',
-    '/assets/scene2/expressions/transact/exp-5.png',
-    '/assets/scene2/expressions/transact/exp-6.png',
-    '/assets/scene2/expressions/transact/exp-7.png',
-    '/assets/scene2/expressions/success/exp-1.png',
-    '/assets/scene2/expressions/success/exp-2.png',
-    '/assets/scene2/expressions/success/exp-3.png',
-    '/assets/scene2/expressions/bridge/Bridge.png',
-  ])
+    "/assets/scene2/expressions/entry/exp-1.png",
+    "/assets/scene2/expressions/entry/exp-2.png",
+    "/assets/scene2/expressions/entry/exp-3.png",
+    "/assets/scene2/expressions/entry/exp-4.png",
+    "/assets/scene2/expressions/entry/exp-5.png",
+    "/assets/scene2/expressions/failure/exp-1.png",
+    "/assets/scene2/expressions/failure/exp-2.png",
+    "/assets/scene2/expressions/failure/exp-3.png",
+    "/assets/scene2/expressions/failure/exp-4.png",
+    "/assets/scene2/expressions/failure/exp-5.png",
+    "/assets/scene2/expressions/failure/exp-6.png",
+    "/assets/scene2/expressions/failure/exp-7.png",
+    "/assets/scene2/expressions/failure/exp-8.png",
+    "/assets/scene2/expressions/failure/exp-9.png",
+    "/assets/scene2/expressions/failure/exp-10.png",
+    "/assets/scene2/expressions/failure/exp-11.png",
+    "/assets/scene2/expressions/failure/exp-12.png",
+    "/assets/scene2/expressions/failure/exp-13.png",
+    "/assets/scene2/expressions/failure/exp-14.png",
+    "/assets/scene2/expressions/failure/exp-15.png",
+    "/assets/scene2/expressions/failure/exp-16.png",
+    "/assets/scene2/expressions/transact/exp-1.png",
+    "/assets/scene2/expressions/transact/exp-2.png",
+    "/assets/scene2/expressions/transact/exp-3.png",
+    "/assets/scene2/expressions/transact/exp-4.png",
+    "/assets/scene2/expressions/transact/exp-5.png",
+    "/assets/scene2/expressions/transact/exp-6.png",
+    "/assets/scene2/expressions/transact/exp-7.png",
+    "/assets/scene2/expressions/success/exp-1.png",
+    "/assets/scene2/expressions/success/exp-2.png",
+    "/assets/scene2/expressions/success/exp-3.png",
+    "/assets/scene2/expressions/bridge/Bridge.png",
+  ]);
 
   useEffect(() => {
     if (expression.current) {
       const handleCamera = () => {
         if (window.innerWidth / window.innerHeight < 1.5) {
-          const minus = 1.5 - window.innerWidth / window.innerHeight / 2
-          expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
+          const minus = 1.5 - window.innerWidth / window.innerHeight / 2;
+          expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1);
         } else {
-          expression.current.scale.set(2.75, 1.15, 1)
+          expression.current.scale.set(2.75, 1.15, 1);
         }
-      }
+      };
 
-      window.addEventListener('resize', handleCamera)
-      handleCamera()
+      window.addEventListener("resize", handleCamera);
+      handleCamera();
     }
-  }, [expression])
+  }, [expression]);
 
   return (
     <mesh ref={expressions} {...props}>
       <meshBasicMaterial alphaMap={mask} transparent needsUpdate>
         {/* @ts-ignore */}
-        <RenderTexture attach='map' frames={1}>
+        <RenderTexture attach="map" frames={1}>
           <PerspectiveCamera makeDefault position={[0, 0, 1]} />
           <mesh
             geometry={props.childGeometry}
@@ -975,27 +962,27 @@ const Expressions = (props: any) => {
         </RenderTexture>
       </meshBasicMaterial>
     </mesh>
-  )
-}
+  );
+};
 
 const Kiwi = (props: any) => {
-  const { isSoundEnabled } = useGlobalContext()
-  const kiwi: any = useRef(null)
-  const [hovered, setHovered] = useState(false)
+  const { isSoundEnabled } = useGlobalContext();
+  const kiwi: any = useRef(null);
+  const [hovered, setHovered] = useState(false);
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
-    '/assets/scene1/Kiwi.png',
-    '/assets/scene1/Kiwi_alpha.jpg',
-    '/assets/scene1/Kiwi_alt.png',
-  ])
+    "/assets/scene1/Kiwi.png",
+    "/assets/scene1/Kiwi_alpha.jpg",
+    "/assets/scene1/Kiwi_alt.png",
+  ]);
 
   useEffect(() => {
     if (isSoundEnabled && hovered) {
-      const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
-      audio.currentTime = 0
-      audio.play()
+      const audio = document.querySelector("#audio-kiwi") as HTMLAudioElement;
+      audio.currentTime = 0;
+      audio.play();
     }
-  }, [isSoundEnabled, hovered])
+  }, [isSoundEnabled, hovered]);
 
   return (
     <group position={[0, 0, 0.01]}>
@@ -1016,5 +1003,5 @@ const Kiwi = (props: any) => {
         <meshBasicMaterial visible={false} />
       </mesh>
     </group>
-  )
-}
+  );
+};
