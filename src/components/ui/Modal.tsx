@@ -43,15 +43,10 @@ export default function Modal({}: Props) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    {modalData.title || "Bridging Warning"}
+                    {modalData.title}
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      {modalData.text ||
-                        `Due to bridging latency, there might be a chance the
-                      transaction will fail. We urge you to make the transaction
-                      from Polygon itself to avoid this.`}
-                    </p>
+                    <p className="text-sm text-gray-500">{modalData.text}</p>
                   </div>
 
                   <div className="mt-4">
