@@ -53,7 +53,17 @@ const Mint = () => {
       .set('.mouse-drag-text', {
         display: 'block',
       })
-      .from('.mouse-drag-text', {
+      .fromTo(
+        '.mouse-drag-text',
+        {
+          autoAlpha: 0,
+        },
+        {
+          autoAlpha: 1,
+          ease: 'expo',
+        }
+      )
+      .to('#mouse .dot', {
         autoAlpha: 0,
         ease: 'expo',
       })
@@ -62,20 +72,21 @@ const Mint = () => {
   function hideDrag() {
     gsap
       .timeline()
-      .from('.mouse-drag-text', {
+      .to('.mouse-drag-text', {
         autoAlpha: 0,
-        ease: 'expo',
+        ease: 'expo.in',
       })
       .set('.mouse-drag-text', {
-        display: 'block',
+        display: 'none',
+      })
+      .to('#mouse .dot', {
+        autoAlpha: 1,
+        ease: 'expo.in',
       })
   }
 
   return (
-    <PageLayout
-      pageTitle='Pluto mint - Minted'
-      pageDesc='Cillum pariatur in Lorem consequat velit reprehenderit enim proident.'
-    >
+    <PageLayout pageTitle='Pluto mint - Minted' pageDesc='Congratulations'>
       <UI visible />
 
       {state ? <></> : <ThreeJSLoading />}

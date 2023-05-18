@@ -30,7 +30,7 @@ const VideoScreen: React.FC<Props> = ({}) => {
         </a>
       </div>
 
-      <div className='absolute items-center justify-center flex w-full bottom-0 p-4 text-[22px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600'>
+      <div className='absolute w-full bottom-0 p-4 text-[22px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mint-text'>
         <a href='#' className='mr-4'>
           View on OpenSea
         </a>

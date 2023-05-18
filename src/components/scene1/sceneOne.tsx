@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import { EffectComposer, GodRays } from '@react-three/postprocessing'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import {
   DefaultLoadingManager,
   DoubleSide,
@@ -1304,18 +1304,19 @@ const Kiwi = (props: any) => {
         <meshBasicMaterial visible={false} />
       </mesh>
       <EffectComposer multisampling={0}>
-        {/* <Bloom /> */}
-        {light && (
-          <GodRays
-            sun={light}
-            samples={128}
-            density={1}
-            decay={0.98}
-            weight={0.5}
-            exposure={0.75}
-            clampMax={1}
-          />
-        )}
+        <Suspense>
+          {light && (
+            <GodRays
+              sun={light}
+              samples={128}
+              density={1}
+              decay={0.98}
+              weight={0.5}
+              exposure={0.75}
+              clampMax={1}
+            />
+          )}
+        </Suspense>
       </EffectComposer>
     </group>
   )
