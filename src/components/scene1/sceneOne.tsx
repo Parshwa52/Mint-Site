@@ -149,12 +149,29 @@ export const SceneOne = () => {
             },
             0
           )
+          .to(
+            '#ui #text-1 .phrase-1 span span',
+            {
+              display: 'none',
+              duration: 0.1,
+              stagger: -0.05,
+              ease: 'none',
+            },
+            '>+=.25'
+          )
+          .set(
+            '#ui #text-1 .phrase-1',
+            {
+              display: 'none',
+            },
+            '>'
+          )
           .set(
             '#ui #text-1 .phrase-2',
             {
               display: 'block',
             },
-            '>+=.5'
+            '>'
           )
           .from(
             '#ui #text-1 .phrase-2 span span',
@@ -164,7 +181,24 @@ export const SceneOne = () => {
               stagger: 0.1,
               ease: 'none',
             },
-            '>+=.5'
+            '>'
+          )
+          .to(
+            '#ui #text-1 .phrase-2 span span',
+            {
+              display: 'none',
+              duration: 0.1,
+              stagger: -0.05,
+              ease: 'none',
+            },
+            '>'
+          )
+          .set(
+            '#ui .ui-text',
+            {
+              display: 'none',
+            },
+            '>-=.25'
           )
         // unscrollableTl
         if (ls === 'true') {
@@ -192,7 +226,7 @@ export const SceneOne = () => {
             .to(
               '#mouse .border-top .border-background',
               {
-                scaleX: 0.5,
+                scaleX: 1,
                 ease: 'expo.inOut',
                 duration: 1.25,
               },
@@ -309,7 +343,7 @@ export const SceneOne = () => {
             .to(
               '#mouse .border-top .border-background',
               {
-                scaleX: 0.5,
+                scaleX: 1,
                 ease: 'none',
                 duration: 47,
               },
@@ -597,9 +631,9 @@ export const SceneOne = () => {
               // onEnterBack: () => {
               //   typingTl.play()
               // },
-              onLeave: () => {
-                typingTl.reverse()
-              },
+              // onLeave: () => {
+              //   typingTl.reverse()
+              // },
               onLeaveBack: () => {
                 if (ls === 'true') expressionTl.play()
               },
@@ -620,7 +654,7 @@ export const SceneOne = () => {
           // }
           // scrollableTl.current
           .to(
-            '#mouse .border-top .border-background',
+            '#mouse .border-bottom .border-background',
             {
               scaleX: 1,
               ease: 'none',

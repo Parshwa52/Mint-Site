@@ -68,7 +68,7 @@
               width: fit-content
               @extend %flex-center
               overflow: hidden
-              margin-right: 15%
+              margin-right: auto
               gap: 5px
               li
                 height: 100%
@@ -85,6 +85,22 @@
             justify-content: flex-end
             gap: 25px
             @extend %p-inline
+            #sound-button
+              position: fixed
+              top: -80%
+              right: 2%
+              &::after
+                content: ''
+                position: absolute
+                inset: 50% 0 0 50%
+                transform: translate(-50%,-50%)
+                z-index: -1
+                width: 75%
+                height: 75%
+                background-color: var(--color)
+                opacity: .2
+                border-radius: 50%
+                filter: blur(5px)
             > p
               position: relative
               &::after

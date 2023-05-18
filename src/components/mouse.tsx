@@ -7,6 +7,7 @@ export const Mouse = () => {
   const router = useRouter()
   const { isSoundEnabled, setSoundStatus } = useGlobalContext()
   const pointerTl: any = useRef()
+  const clickingTl: any = useRef()
   const soundTl: any = useRef()
   let cursorStyle = 'auto'
 
@@ -67,6 +68,27 @@ export const Mouse = () => {
             ease: 'back.inOut',
           },
         })
+        // .from(
+        //   '.mouse-center',
+        //   {
+        //     rotate: -90,
+        //   },
+        //   0
+        // )
+        .from(
+          '.center-normal.dot',
+          {
+            autoAlpha: 0,
+          },
+          0
+        )
+      clickingTl.current = gsap
+        .timeline({
+          paused: true,
+          defaults: {
+            ease: 'back.inOut',
+          },
+        })
         .from(
           '.mouse-center',
           {
@@ -81,10 +103,28 @@ export const Mouse = () => {
           },
           0
         )
+        .to(
+          '.mouse-center',
+          {
+            rotate: 90,
+          },
+          1
+        )
+        .to(
+          '.center-normal.border',
+          {
+            autoAlpha: 0,
+          },
+          1
+        )
+
+      window.addEventListener('click', () => {
+        clickingTl.current.restart()
+      })
     })
 
     return () => ctx.revert()
-  }, [pointerTl])
+  }, [pointerTl, clickingTl])
 
   const handleClick = () => {
     setSoundStatus(true)
