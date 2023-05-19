@@ -695,7 +695,7 @@ export const SceneTwo = () => {
           />
         </Canvas>
       </div>
-      <div className='buttons-container'>
+      {/* <div className='buttons-container'>
         <button onClick={() => doSuccessAnimation()}>do Success</button>
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
@@ -704,7 +704,7 @@ export const SceneTwo = () => {
           Failure animation
         </button>
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
-      </div>
+      </div> */}
     </div>
   )
 }
