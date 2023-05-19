@@ -1,6 +1,8 @@
 import { ModalData } from "@/provider/uiProvider";
 import { parseUnits } from "ethers/lib/utils.js";
 
+export * from "./uniswap";
+
 // RPC URLs used for fetching multi-chain balances
 export const rpc_ethereum = "https://eth.llamarpc.com";
 export const rpc_polygon = "https://polygon.llamarpc.com";
@@ -17,7 +19,7 @@ export const fromChainId = 1;
 export const toChainId = 137;
 
 export const fromAssetAddressNative =
-  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"; // Native Token (Ethereum Mainnet)
+  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"; // Native Token
 export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
 
 export const toAssetAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // WETH on Polygon

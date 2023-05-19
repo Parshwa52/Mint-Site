@@ -4,6 +4,7 @@ import {
   bridgeFromETHToPolygon,
   getBalances,
 } from "@/utils/socketBridge";
+import { getSwapQuote, swap } from "@/utils/swap";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Signer } from "ethers";
 import React from "react";
@@ -142,6 +143,24 @@ function Socket({}: Props) {
         onClick={() => checkAllowance()}
       >
         Check allowance
+      </button>
+
+      <hr />
+
+      <h1>Uniswap</h1>
+
+      <button
+        className="m-2 p-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
+        onClick={() => getSwapQuote()}
+      >
+        Get Uniswap Quote
+      </button>
+
+      <button
+        className="m-2 p-3 bg-gray-200 hover:bg-gray-300 rounded-lg transition"
+        onClick={() => swap(signer.data as Signer)}
+      >
+        Swap
       </button>
     </section>
   );
