@@ -262,7 +262,7 @@ export const SceneTwo = () => {
               start: 'top top',
               end: '+=4000',
               onEnter: () => {
-                // setTimeline(true)
+                setTimeline(true)
               },
               onEnterBack: () => {
                 setTimeline(true)
@@ -1052,7 +1052,7 @@ const Kiwi = (props: any) => {
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
     '/assets/scene1/Kiwi.png',
     '/assets/scene1/Kiwi_alpha.jpg',
-    '/assets/scene1/Kiwi_alt.png',
+    '/assets/scene1/Kiwi_exp_1.png',
   ])
 
   useEffect(() => {
@@ -1067,10 +1067,18 @@ const Kiwi = (props: any) => {
     <group position={[0, 0, 0.01]}>
       <mesh {...props} ref={kiwi}>
         <meshBasicMaterial
-          map={hovered ? kiwiAlt : kiwiMap}
-          color={hovered ? 0xdddddd : 0xffffff}
+          map={kiwiMap}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
+          needsUpdate
+        />
+      </mesh>
+      <mesh {...props}>
+        <meshBasicMaterial
+          map={kiwiAlt}
+          alphaMap={kiwiAlpha}
+          alphaTest={0.5}
+          visible={hovered ? true : false}
           needsUpdate
         />
       </mesh>

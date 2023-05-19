@@ -1307,9 +1307,9 @@ const Kiwi = (props: any) => {
   const [hovered, setHovered] = useState(false)
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
-    '/assets/scene1/Kiwi.png',
+    '/assets/scene1/Kiwi_dark.png',
     '/assets/scene1/Kiwi_alpha.jpg',
-    '/assets/scene1/Kiwi_alt.png',
+    '/assets/scene1/Kiwi_exp_1.png',
   ])
 
   useEffect(() => {
@@ -1328,10 +1328,18 @@ const Kiwi = (props: any) => {
     <group ref={kiwi}>
       <mesh {...props}>
         <meshStandardMaterial
-          map={hovered ? kiwiAlt : kiwiMap}
-          color={hovered ? 0xdddddd : 0xffffff}
+          map={kiwiMap}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
+          needsUpdate
+        />
+      </mesh>
+      <mesh {...props}>
+        <meshStandardMaterial
+          map={kiwiAlt}
+          alphaMap={kiwiAlpha}
+          alphaTest={0.5}
+          visible={hovered ? true : false}
           needsUpdate
         />
       </mesh>
