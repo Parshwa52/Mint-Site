@@ -133,16 +133,6 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                   />
                 </p>
               </div>
-              {/* <div id='text-2'>
-                <p className='phrase-1'>
-                  <Split
-                    splitWords
-                    splitChars
-                    textToSplit='Txn Hash: 22671319jskabd2910678'
-                  />
-                </p>
-              </div> */}
-              {/* <div id='text-mint'></div> */}
               <ul
                 className='ui-text-sounds'
                 style={{
@@ -173,7 +163,9 @@ export const UI = ({ visible }: { visible?: boolean }) => {
             </div>
             <div className='ui-sounds'>
               {mounted && (
-                <div>{address ? compactAddress(address as string) : ''}</div>
+                <div className='address'>
+                  {address ? compactAddress(address as string) : ''}
+                </div>
               )}
               <SoundButton />
             </div>

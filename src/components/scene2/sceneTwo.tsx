@@ -262,15 +262,15 @@ export const SceneTwo = () => {
               start: 'top top',
               end: '+=4000',
               onEnter: () => {
-                setTimeline(true)
-                setEntered(true)
+                // setTimeline(true)
               },
               onEnterBack: () => {
                 setTimeline(true)
-                setEntered(true)
+                setEntered(false)
               },
               onLeave: () => {
                 setTimeline(false)
+                setEntered(true)
               },
               onLeaveBack: () => {
                 setTimeline(false)

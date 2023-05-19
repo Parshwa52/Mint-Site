@@ -87,7 +87,6 @@
             @extend %p-inline
             #sound-button
               position: fixed
-              top: -80%
               right: 2%
               &::after
                 content: ''
@@ -101,7 +100,7 @@
                 opacity: .2
                 border-radius: 50%
                 filter: blur(5px)
-            > p
+            .address
               position: relative
               &::after
                 content: ''
@@ -116,6 +115,11 @@
         bottom: 0
     &.ui-space
       display: none
+      .ui-part
+        .ui-img
+          .ui-sounds
+            #sound-button
+              top: -150%
     &.ui-world
       display: none
       .ui-part
@@ -124,5 +128,7 @@
             p
               color: white!important
           .ui-sounds
-            > p
+            #sound-button
+              top: -100%
+            > *
               color: white!important
