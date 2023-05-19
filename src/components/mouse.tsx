@@ -26,6 +26,16 @@ export const Mouse = () => {
 
   useEffect(() => {
     const ball = document.querySelector('#mouse') as HTMLDivElement
+    const isMobile =
+      /iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+      /Android/i.test(navigator.userAgent) ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0
+
+    if (isMobile) {
+      gsap.set(ball, { autoAlpha: 0 })
+      return
+    }
 
     const ctx = gsap.context(() => {
       gsap.set(ball, { xPercent: -50, yPercent: -50 })
