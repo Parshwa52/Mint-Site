@@ -97,10 +97,8 @@ export const UI = ({ visible }: { visible?: boolean }) => {
               </ul>
             </div>
             <div className='ui-sounds'>
-              {mounted ? (
+              {mounted && (
                 <div>{address ? compactAddress(address as string) : ''}</div>
-              ) : (
-                <>tnx: 00000000000</>
               )}
               <SoundButton />
             </div>
@@ -135,7 +133,7 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                   />
                 </p>
               </div>
-              <div id='text-2'>
+              {/* <div id='text-2'>
                 <p className='phrase-1'>
                   <Split
                     splitWords
@@ -143,8 +141,8 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                     textToSplit='Txn Hash: 22671319jskabd2910678'
                   />
                 </p>
-              </div>
-              <div id='text-mint'></div>
+              </div> */}
+              {/* <div id='text-mint'></div> */}
               <ul
                 className='ui-text-sounds'
                 style={{
@@ -174,10 +172,8 @@ export const UI = ({ visible }: { visible?: boolean }) => {
               </ul>
             </div>
             <div className='ui-sounds'>
-              {mounted ? (
+              {mounted && (
                 <div>{address ? compactAddress(address as string) : ''}</div>
-              ) : (
-                <>tnx: 00000000000</>
               )}
               <SoundButton />
             </div>

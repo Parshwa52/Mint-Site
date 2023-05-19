@@ -118,15 +118,16 @@ export const Mouse = () => {
           1
         )
 
-      window.addEventListener('click', () => {
-        clickingTl.current.restart()
-      })
+      // window.addEventListener('click', () => {
+      //   clickingTl.current.restart()
+      // })
     })
 
     return () => ctx.revert()
   }, [pointerTl, clickingTl])
 
   const handleClick = () => {
+    console.log('clicked')
     setSoundStatus(true)
     window.removeEventListener('click', handleClick)
   }

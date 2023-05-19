@@ -10,7 +10,6 @@ import SEO from '@/components/SEO'
 import { useGlobalContext } from '@/provider/globalProvider'
 import { AspectRatioManager } from '@/components/aspectRatioManager'
 import { Mouse } from '@/components/mouse'
-import { AudioManager } from '@/components/audioManager'
 
 interface pageProps {
   pageTitle?: string
@@ -53,7 +52,6 @@ export const PageLayout = (props: pageProps) => {
     <main>
       <SEO title={props.pageTitle || 'Pluto'} desc={props.pageDesc || ''} />
       <AspectRatioManager />
-      <AudioManager />
       <Mouse />
       {props.children}
     </main>

@@ -65,7 +65,7 @@ import { INSUFFICIENT_FUNDS_DATA, mintAmount, targetAmount } from '@/constants'
 import { useUIContext } from '@/provider/uiProvider'
 
 export const SceneTwo = () => {
-  const { scrollLenis, soundsArray } = useGlobalContext()
+  const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext()
   const scene2 = useRef<HTMLDivElement>(null)
   const entryTl = useRef<any>()
   const failureTl = useRef<any>()
@@ -73,6 +73,9 @@ export const SceneTwo = () => {
   const transactTl = useRef<any>()
   const [q2, setQ2] = useState<any>(null)
   const [currExpression, setCurrExpression] = useState(0)
+  const [isEntered, setEntered] = useState(false)
+  const [isScrolling, setScrolling] = useState(false)
+  const [isTimeline, setTimeline] = useState(false)
   const updater = {
     entryExp: 0,
     failureExp: 0,
@@ -80,35 +83,75 @@ export const SceneTwo = () => {
     transactionExp: 0,
   }
 
-  // function wheel(event: WheelEvent) {
-  //   let delta = 0
-  //   if (event.deltaY) {
-  //     delta = event.deltaY / 120
-  //   } else if (event.detail) {
-  //     delta = -event.detail / 3
-  //   }
-
-  //   if (delta < 0) {
-  //     delta = -1
-  //   } else if (delta > 0) {
-  //     delta = 1
-  //   }
-
-  //   console.log(delta)
-
-  //   if (event.preventDefault) {
-  //     event.preventDefault()
-  //     window.scrollTo(0, document.body.scrollTop + delta)
-  //   }
-  // }
-
-  // function controlSpeed(enable: boolean) {
-  //   // remove
-  //   scrollLenis?.start()
-  //   window.addEventListener('wheel', wheel, { passive: false })
-  // }
-
   // scene building
+  let timer: any
+  const handleScroll = (e: WheelEvent) => {
+    if (timer !== null) {
+      clearTimeout(timer)
+      setScrolling(true)
+    }
+    timer = setTimeout(function () {
+      setScrolling(false)
+    }, 500)
+  }
+
+  useEffect(() => {
+    window.addEventListener('wheel', (e) => handleScroll(e))
+  }, [])
+
+  useEffect(() => {
+    if (isEntered && isSoundEnabled) {
+      switch (currExpression) {
+        case 1:
+        case 30:
+          document.querySelector<HTMLAudioElement>('#audio-blink')?.play()
+          break
+        case 2:
+          document.querySelector<HTMLAudioElement>('#audio-wallet-1')?.play()
+          break
+        case 3:
+          document.querySelector<HTMLAudioElement>('#audio-wallet-2')?.play()
+          break
+        case 4:
+          document.querySelector<HTMLAudioElement>('#audio-wallet-3')?.play()
+          break
+        case 11:
+          document.querySelector<HTMLAudioElement>('#audio-pokemon')?.play()
+          break
+        case 17:
+          document.querySelector<HTMLAudioElement>('#audio-battery')?.play()
+          break
+        case 28:
+          document.querySelector<HTMLAudioElement>('#audio-kidding')?.play()
+          break
+        default:
+          break
+      }
+    }
+  }, [currExpression, isEntered, isSoundEnabled])
+
+  useEffect(() => {
+    const audioStop = document.querySelector(
+      '#audio-building-stopped'
+    ) as HTMLAudioElement
+    const audioBuilding = document.querySelector(
+      '#audio-building'
+    ) as HTMLAudioElement
+
+    if (isSoundEnabled && isTimeline) {
+      if (isScrolling === true) {
+        audioBuilding.play()
+        audioStop.pause()
+      } else if (isScrolling === false) {
+        audioBuilding.pause()
+        audioStop.currentTime = 0
+        audioStop.play()
+      }
+    } else {
+      audioStop.pause()
+      audioBuilding.pause()
+    }
+  }, [isScrolling, isSoundEnabled, isTimeline])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -208,7 +251,7 @@ export const SceneTwo = () => {
           },
           75
         )
-        .from('#audio-2', { volume: 0, duration: 50 }, 50)
+        .fromTo('#audio-2', { volume: 0 }, { volume: 0.25, duration: 50 }, 50)
 
       // pin section 2 - fade in
       if (q2) {
@@ -218,6 +261,21 @@ export const SceneTwo = () => {
               trigger: '#home-city',
               start: 'top top',
               end: '+=4000',
+              onEnter: () => {
+                setTimeline(true)
+                setEntered(true)
+              },
+              onEnterBack: () => {
+                setTimeline(true)
+                setEntered(true)
+              },
+              onLeave: () => {
+                setTimeline(false)
+              },
+              onLeaveBack: () => {
+                setTimeline(false)
+                setEntered(false)
+              },
               pin: true,
               scrub: true,
             },
@@ -487,7 +545,7 @@ export const SceneTwo = () => {
           }
         )
     }
-  }, [entryTl, failureTl, successTl, transactTl])
+  }, [entryTl, failureTl, successTl, transactTl, isSoundEnabled])
 
   function doEntryAnimation() {
     successTl.current && successTl.current?.restart().pause()
@@ -637,8 +695,8 @@ export const SceneTwo = () => {
           />
         </Canvas>
       </div>
-      {/* <div className='buttons-container'>
-        <button onClick={() => doSuccessAnimation()}>do Bridge</button>
+      <div className='buttons-container'>
+        <button onClick={() => doSuccessAnimation()}>do Success</button>
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
         </button>
@@ -646,7 +704,7 @@ export const SceneTwo = () => {
           Failure animation
         </button>
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
-      </div> */}
+      </div>
     </div>
   )
 }

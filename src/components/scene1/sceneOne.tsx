@@ -715,15 +715,6 @@ export const SceneOne = () => {
             1
           )
           .to(
-            '#mouse .dot',
-            {
-              autoAlpha: 1,
-              duration: 1.25,
-              ease: 'expo.inOut',
-            },
-            lastImgDuration
-          )
-          .to(
             '#mouse .mouse-scroll',
             {
               autoAlpha: 0,
@@ -1338,6 +1329,7 @@ const Kiwi = (props: any) => {
       <mesh {...props}>
         <meshStandardMaterial
           map={hovered ? kiwiAlt : kiwiMap}
+          color={hovered ? 0xdddddd : 0xffffff}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
           needsUpdate

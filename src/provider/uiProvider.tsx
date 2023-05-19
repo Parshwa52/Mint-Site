@@ -4,22 +4,22 @@ import {
   createContext,
   useContext,
   useState,
-} from "react";
+} from 'react'
 
 export interface ModalData {
-  title: string;
-  text: string;
+  title: string
+  text: string
 }
 
 interface UIContextInterface {
-  modalOpen: boolean;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  modalOpen: boolean
+  setModalOpen: Dispatch<SetStateAction<boolean>>
 
-  modalData: ModalData;
-  setModalData: Dispatch<SetStateAction<ModalData>>;
+  modalData: ModalData
+  setModalData: Dispatch<SetStateAction<ModalData>>
 
-  txnHash: string;
-  setTxnHash: Dispatch<SetStateAction<string>>;
+  txnHash: string
+  setTxnHash: Dispatch<SetStateAction<string>>
 }
 
 const defaultState: UIContextInterface = {
@@ -27,24 +27,24 @@ const defaultState: UIContextInterface = {
   setModalOpen: () => {},
 
   modalData: {
-    title: "",
-    text: "",
+    title: '',
+    text: '',
   },
   setModalData: () => {},
 
-  txnHash: "",
+  txnHash: '',
   setTxnHash: () => {},
-};
+}
 
-const uiContext = createContext<UIContextInterface>(defaultState);
+const uiContext = createContext<UIContextInterface>(defaultState)
 
 const UIProvider = ({ children }: { children: any }) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
   const [modalData, setModalData] = useState<ModalData>({
-    title: "",
-    text: "",
-  });
-  const [txnHash, setTxnHash] = useState("");
+    title: '',
+    text: '',
+  })
+  const [txnHash, setTxnHash] = useState('')
 
   return (
     <uiContext.Provider
@@ -61,8 +61,8 @@ const UIProvider = ({ children }: { children: any }) => {
     >
       {children}
     </uiContext.Provider>
-  );
-};
+  )
+}
 
-export const useUIContext = () => useContext(uiContext);
-export default UIProvider;
+export const useUIContext = () => useContext(uiContext)
+export default UIProvider

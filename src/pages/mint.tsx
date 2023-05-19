@@ -7,19 +7,17 @@ import VideoScreen from '@/components/videoScreen'
 import { useGlobalContext } from '@/provider/globalProvider'
 
 const Mint = () => {
+  const { soundsArray } = useGlobalContext()
   const [state, setState] = useState(false)
-  const { setSoundStatus } = useGlobalContext()
 
   useEffect(() => {
     setTimeout(() => {
       fadeOut()
       hideDrag()
     }, 10000)
-    showDrag()
 
-    gsap.set('#mouse .mouse-decoration .border-background', {
-      scaleX: 1,
-    })
+    soundsArray[1].play()
+    showDrag()
 
     gsap.to('body', {
       autoAlpha: 1,
@@ -28,15 +26,7 @@ const Mint = () => {
     })
 
     gsap.set('.ui-world', { display: 'block' })
-  }, [])
-
-  useEffect(() => {
-    setSoundStatus(true)
-
-    const audio = document.querySelector('#audio-1') as HTMLAudioElement
-
-    audio.play()
-  }, [])
+  }, [soundsArray])
 
   function fadeOut() {
     gsap.to('.backround', {
@@ -44,20 +34,19 @@ const Mint = () => {
       ease: 'expo.inOut',
       duration: 1.5,
       onComplete: () => {
+        // gsap.set('.background', { display: 'none' })
         setState(true)
-        setTimeout(() => {
-          gsap.fromTo(
-            '.video',
-            {
-              autoAlpha: 0,
-            },
-            {
-              autoAlpha: 1,
-              ease: 'expo.inOut',
-              duration: 1.5,
-            }
-          )
-        }, 500)
+        gsap.fromTo(
+          '.video',
+          {
+            autoAlpha: 0,
+          },
+          {
+            autoAlpha: 1,
+            ease: 'expo.inOut',
+            duration: 1.5,
+          }
+        )
       },
     })
   }
@@ -68,17 +57,7 @@ const Mint = () => {
       .set('.mouse-drag-text', {
         display: 'block',
       })
-      .fromTo(
-        '.mouse-drag-text',
-        {
-          autoAlpha: 0,
-        },
-        {
-          autoAlpha: 1,
-          ease: 'expo',
-        }
-      )
-      .to('#mouse .dot', {
+      .from('.mouse-drag-text', {
         autoAlpha: 0,
         ease: 'expo',
       })
@@ -87,18 +66,22 @@ const Mint = () => {
   function hideDrag() {
     gsap
       .timeline()
-      .to('.mouse-drag-text', {
+      .from('.mouse-drag-text', {
         autoAlpha: 0,
-        ease: 'expo.in',
+        ease: 'expo',
       })
       .set('.mouse-drag-text', {
-        display: 'none',
+        display: 'block',
       })
   }
 
   return (
-    <PageLayout pageTitle='Pluto mint - Minted' pageDesc='Congratulations'>
+    <PageLayout
+      pageTitle='Pluto mint - Minted'
+      pageDesc='Cillum pariatur in Lorem consequat velit reprehenderit enim proident.'
+    >
       <UI visible />
+
       {state ? <></> : <ThreeJSLoading />}
       {state ? <VideoScreen /> : <></>}
     </PageLayout>

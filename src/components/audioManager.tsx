@@ -67,6 +67,90 @@ export const AudioManager = () => {
       >
         <source src='/assets/sounds/Kiwi_Expression.mp3' type='audio/mp3' />
       </audio>
+      {/* AUDIO FOR BUILDINGS SECTION */}
+      <audio
+        id='audio-building'
+        muted
+        loop
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Loop_Building.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-building-stopped'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Stop_Building.mp3' type='audio/mp3' />
+      </audio>
+      {/* AUDIO FOR EXPRESSIONS */}
+      <audio
+        id='audio-battery'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Battery Low.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-blink'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Blink Open.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-kidding'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Just Kidding.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-pokemon'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Swirly Eyes.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-wallet-1'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Wallet 1.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-wallet-2'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Wallet 2.mp3' type='audio/mp3' />
+      </audio>
+      <audio
+        id='audio-wallet-3'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2 Wallet 3.mp3' type='audio/mp3' />
+      </audio>
     </>
   )
 }
