@@ -1068,6 +1068,7 @@ const Kiwi = (props: any) => {
       <mesh {...props} ref={kiwi}>
         <meshBasicMaterial
           map={hovered ? kiwiAlt : kiwiMap}
+          color={hovered ? 0xdddddd : 0xffffff}
           alphaMap={kiwiAlpha}
           alphaTest={0.5}
           needsUpdate
