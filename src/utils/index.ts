@@ -10,10 +10,12 @@ export function compactAddress(address: string) {
 }
 
 // ui.tsx paragraph animations
-export function showCustomText(paragraphId: string = "custom-p-1") {
+export async function showCustomText(paragraphId: string = "custom-p-1") {
   const target = document.getElementById(paragraphId) as HTMLParagraphElement;
 
-  console.log("Got target", target);
+  // Add a small delay while the text is set
+  await new Promise((resolve, _) => setTimeout(resolve, 500));
+
   gsap
     .timeline()
     // hide previous text
