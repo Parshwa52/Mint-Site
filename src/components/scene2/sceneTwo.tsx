@@ -66,6 +66,7 @@ import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
 
 export const SceneTwo = () => {
+  const { isConnected } = useAccount();
   const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext();
   const scene2 = useRef<HTMLDivElement>(null);
   const entryTl = useRef<any>();
@@ -83,6 +84,7 @@ export const SceneTwo = () => {
     successExp: 0,
     transactionExp: 0,
   };
+  const [whitelisted, setWhitelisted] = useState(false);
 
   // scene building
   let timer: any;
@@ -99,6 +101,19 @@ export const SceneTwo = () => {
   useEffect(() => {
     window.addEventListener("wheel", (e) => handleScroll(e));
   }, []);
+
+  useEffect(() => {
+    if (isConnected) {
+      console.log("isConnected", isConnected);
+      checkWhitelistStatus();
+    }
+  }, [isConnected]);
+
+  async function checkWhitelistStatus() {
+    // TODO: When contract is deployed
+    setWhitelisted(true);
+    return true;
+  }
 
   useEffect(() => {
     if (isEntered && isSoundEnabled) {
@@ -428,7 +443,8 @@ export const SceneTwo = () => {
       }
     });
 
-    doEntryAnimation();
+    if (whitelisted) doSuccessAnimation();
+    else doEntryAnimation();
 
     return () => ctx.revert();
   }, [scrollLenis, soundsArray, q2]);
@@ -693,6 +709,7 @@ export const SceneTwo = () => {
               doBridgeFailure,
               doTransactionAnimation,
             }}
+            whitelisted={whitelisted}
           />
         </Canvas>
       </div>
@@ -778,20 +795,22 @@ const Q2 = (props: any) => {
     props.setInstance(q2.current);
   }, [q2]);
 
+  useEffect(() => {
+    if (props.whitelisted === true) props.animations.doSuccessAnimation();
+  }, [props.whitelisted]);
+
   async function handleClick() {
     if (isConnected) {
-      // Check if whitelisted
-      const whitelisted = await checkWhitelistStatus();
+      // Check if whitelisted right after connecting
 
       // Check Custom Mint Status and add HUD text accodingly
       showCustomText();
       setHudText("You have 1 free and 2 paid mints left");
 
-      if (whitelisted) {
-        // Success animation
-        props.animations.doSuccessAnimation();
-
-        await new Promise((resolve, _) => setTimeout(resolve, 500));
+      if (props.whitelisted) {
+        // Simulate bridge txn
+        props.animations.doTransactionAnimation();
+        await new Promise((resolve, _) => setTimeout(resolve, 5000));
 
         // Bridge and Mint Process (Which shall trigger Txn animation upon completion)
         // bridgeAndMint();
@@ -829,11 +848,6 @@ const Q2 = (props: any) => {
     //     },
     //   })
     // }, 1000)
-  }
-
-  async function checkWhitelistStatus() {
-    // TODO: When contract is deployed
-    return true;
   }
 
   async function bridgeAndMint() {
