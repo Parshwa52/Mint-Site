@@ -17,6 +17,8 @@ export const UI = ({ visible }: { visible?: boolean }) => {
 
   const [mounted, setMounted] = useState(false)
 
+  const your_custom_text = ''
+
   useEffect(() => {
     setMounted(true)
 
@@ -38,6 +40,46 @@ export const UI = ({ visible }: { visible?: boolean }) => {
 
     return () => ctx.revert()
   }, [])
+
+  function showCustomText(target: HTMLParagraphElement) {
+    gsap
+      .timeline()
+      // hide previous text
+      .set('#ui .ui-text', { display: 'block' })
+      .to('#text-1 > *', { autoAlpha: 0, ease: 'expo' })
+      .set('#text-1 > *', { display: 'none' })
+      // show selected text
+      .set(target, {
+        display: 'block',
+      })
+      .from(target.querySelectorAll('span span'), {
+        display: 'none',
+        duration: 0.1,
+        stagger: 0.1,
+        ease: 'none',
+      })
+  }
+  function hideCustomText(target: HTMLParagraphElement) {
+    gsap
+      .timeline()
+      .to(
+        target.querySelectorAll('span span'),
+        {
+          display: 'none',
+          duration: 0.1,
+          stagger: -0.05,
+          ease: 'none',
+        },
+        '>+=.5'
+      )
+      .set(
+        '#ui .ui-text',
+        {
+          display: 'none',
+        },
+        '>-=.25'
+      )
+  }
 
   return (
     <div
@@ -131,6 +173,9 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                     splitChars
                     textToSplit='Let me take you to the world of Pluto.'
                   />
+                </p>
+                <p className='phrase-3'>
+                  <Split splitWords splitChars textToSplit={your_custom_text} />
                 </p>
               </div>
               <ul
