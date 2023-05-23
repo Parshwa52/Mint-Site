@@ -791,8 +791,21 @@ const Q2 = (props: any) => {
         // Success animation
         props.animations.doSuccessAnimation();
 
+        await new Promise((resolve, _) => setTimeout(resolve, 500));
+
         // Bridge and Mint Process (Which shall trigger Txn animation upon completion)
-        bridgeAndMint();
+        // bridgeAndMint();
+
+        // Simulate Mint and then final page
+        setTimeout(() => {
+          gsap.to("body", {
+            autoAlpha: 0,
+            duration: 1.25,
+            onComplete: () => {
+              router.push("/mint");
+            },
+          });
+        }, 1000);
       } else {
         // Failure animation
         props.animations.doFailureAnimation();
