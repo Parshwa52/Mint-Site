@@ -104,7 +104,7 @@ export const SceneTwo = () => {
 
   useEffect(() => {
     if (isConnected) {
-      console.log("isConnected", isConnected);
+      // console.log("isConnected", isConnected);
       checkWhitelistStatus();
     }
   }, [isConnected]);
@@ -706,6 +706,7 @@ export const SceneTwo = () => {
             animations={{
               doSuccessAnimation,
               doFailureAnimation,
+              doEthFailure,
               doBridgeFailure,
               doTransactionAnimation,
             }}
@@ -885,6 +886,7 @@ const Q2 = (props: any) => {
 
         if (chainId !== 1) {
           console.warn("Switch to Ethereum Chain");
+          props.animations.doEthFailure(); // Switch to Ethereum Animation
           return;
         }
 
@@ -918,6 +920,7 @@ const Q2 = (props: any) => {
 
         if (chainId !== 1) {
           console.warn("Switch to Ethereum Chain");
+          props.animations.doEthFailure(); // Switch to Ethereum Animation
           return;
         }
 
