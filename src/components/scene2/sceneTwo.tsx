@@ -87,16 +87,16 @@ export const SceneTwo = () => {
   const [whitelisted, setWhitelisted] = useState(false)
 
   // scene building
-  let timer: any
-  const handleScroll = (e: WheelEvent) => {
-    if (timer !== null) {
-      clearTimeout(timer)
-      setScrolling(true)
-    }
-    timer = setTimeout(function () {
-      setScrolling(false)
-    }, 500)
-  }
+  // let timer: any
+  // const handleScroll = (e: WheelEvent) => {
+  //   if (timer !== null) {
+  //     clearTimeout(timer)
+  //     setScrolling(true)
+  //   }
+  //   timer = setTimeout(function () {
+  //     setScrolling(false)
+  //   }, 500)
+  // }
 
   // useEffect(() => {
   //   window.addEventListener("wheel", (e) => handleScroll(e));
@@ -146,27 +146,27 @@ export const SceneTwo = () => {
     }
   }, [currExpression, isEntered, isSoundEnabled])
 
-  useEffect(() => {
-    // const audioStop = document.querySelector(
-    //   "#audio-building-stopped"
-    // ) as HTMLAudioElement;
-    // const audioBuilding = document.querySelector(
-    //   "#audio-building"
-    // ) as HTMLAudioElement;
-    // if (isSoundEnabled && isTimeline) {
-    //   if (isScrolling === true) {
-    //     audioBuilding.play();
-    //     audioStop.pause();
-    //   } else if (isScrolling === false) {
-    //     audioBuilding.pause();
-    //     audioStop.currentTime = 0;
-    //     audioStop.play();
-    //   }
-    // } else {
-    //   audioStop.pause();
-    //   audioBuilding.pause();
-    // }
-  }, [isScrolling, isSoundEnabled, isTimeline])
+  // useEffect(() => {
+  // const audioStop = document.querySelector(
+  //   "#audio-building-stopped"
+  // ) as HTMLAudioElement;
+  // const audioBuilding = document.querySelector(
+  //   "#audio-building"
+  // ) as HTMLAudioElement;
+  // if (isSoundEnabled && isTimeline) {
+  //   if (isScrolling === true) {
+  //     audioBuilding.play();
+  //     audioStop.pause();
+  //   } else if (isScrolling === false) {
+  //     audioBuilding.pause();
+  //     audioStop.currentTime = 0;
+  //     audioStop.play();
+  //   }
+  // } else {
+  //   audioStop.pause();
+  //   audioBuilding.pause();
+  // }
+  // }, [isScrolling, isSoundEnabled, isTimeline])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -178,7 +178,7 @@ export const SceneTwo = () => {
         },
         {
           xPercent: 100,
-          duration: 20,
+          duration: 30,
           repeat: -1,
           ease: 'none',
         }
@@ -231,6 +231,7 @@ export const SceneTwo = () => {
           },
           0
         )
+        .to('.canvas-scroll', { autoAlpha: 0 }, 0)
         .set('#ui .ui-space', { display: 'none' }, 25)
         .set('#ui .ui-world', { display: 'block' }, 25)
         .to('#ui', { '--color': 'black', duration: 25, ease: 'none' }, 25)
@@ -713,7 +714,7 @@ export const SceneTwo = () => {
           />
         </Canvas>
       </div>
-      <div className='buttons-container'>
+      {/* <div className='buttons-container'>
         <button onClick={() => doSuccessAnimation()}>do Success</button>
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
@@ -722,7 +723,7 @@ export const SceneTwo = () => {
           Failure animation
         </button>
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -884,9 +885,9 @@ const Q2 = (props: any) => {
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1)
 
         if (chainId !== 1) {
-          console.warn("Switch to Ethereum Chain");
-          props.animations.doEthFailure(); // Switch to Ethereum Animation
-          return;
+          console.warn('Switch to Ethereum Chain')
+          props.animations.doEthFailure() // Switch to Ethereum Animation
+          return
         }
 
         // Bridge WETH to Polygon
@@ -918,9 +919,9 @@ const Q2 = (props: any) => {
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1)
 
         if (chainId !== 1) {
-          console.warn("Switch to Ethereum Chain");
-          props.animations.doEthFailure(); // Switch to Ethereum Animation
-          return;
+          console.warn('Switch to Ethereum Chain')
+          props.animations.doEthFailure() // Switch to Ethereum Animation
+          return
         }
 
         // Bridge Native ETH to Polygon

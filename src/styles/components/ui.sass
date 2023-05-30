@@ -87,7 +87,7 @@
             @extend %p-inline
             #sound-button
               position: fixed
-              right: 2%
+              right: 1%
               &::after
                 content: ''
                 position: absolute
@@ -116,6 +116,7 @@
     &.ui-space
       display: none
       .ui-part
+        &.ui-mid
         .ui-img
           .ui-sounds
             #sound-button
@@ -123,12 +124,15 @@
     &.ui-world
       display: none
       .ui-part
-        .ui-img
-          .ui-text
-            p
-              color: white!important
-          .ui-sounds
-            #sound-button
-              top: -100%
-            > *
-              color: white!important
+        &.ui-mid
+          .ui-img
+            .ui-text
+              display: flex
+              p
+                color: white!important
+                display: inline
+            .ui-sounds
+              #sound-button
+                top: -100%
+              > *
+                color: white!important

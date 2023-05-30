@@ -107,7 +107,7 @@ export const SceneOne = () => {
         const typingTl = gsap
           .timeline({ paused: true })
           .set(
-            '#ui .ui-text',
+            '#ui .ui-space .ui-text',
             {
               display: 'flex',
             },
@@ -144,7 +144,7 @@ export const SceneOne = () => {
             {
               display: 'none',
               duration: 0.1,
-              stagger: 0.1,
+              stagger: 0.15,
               ease: 'none',
             },
             0
@@ -157,14 +157,14 @@ export const SceneOne = () => {
               stagger: -0.05,
               ease: 'none',
             },
-            '>+=.25'
+            '>+=.75'
           )
           .set(
             '#ui #text-1 .phrase-1',
             {
               display: 'none',
             },
-            '>'
+            '>+=.5'
           )
           .set(
             '#ui #text-1 .phrase-2',
@@ -178,7 +178,7 @@ export const SceneOne = () => {
             {
               display: 'none',
               duration: 0.1,
-              stagger: 0.1,
+              stagger: 0.15,
               ease: 'none',
             },
             '>'
@@ -191,14 +191,14 @@ export const SceneOne = () => {
               stagger: -0.05,
               ease: 'none',
             },
-            '>'
+            '>+=.75'
           )
           .set(
-            '#ui .ui-text',
+            '#ui .ui-space .ui-text',
             {
               display: 'none',
             },
-            '>-=.25'
+            '>+=.5'
           )
         // unscrollableTl
         if (ls === 'true') {
@@ -504,7 +504,8 @@ export const SceneOne = () => {
                 y: 3,
                 x: 10,
                 duration: 13,
-                ease: 'power1',
+                // ease: 'power1',
+                ease: 'back',
               },
               33.5
             )
@@ -573,6 +574,16 @@ export const SceneOne = () => {
               { opacity: 0, duration: 1, ease: 'power2.inOut' },
               45.5
             )
+            // .to(
+            //   voyager.position,
+            //   {
+            //     y: 0.1,
+            //     x: 0.1,
+            //     duration: 1.5,
+            //     ease: 'back.inOut',
+            //   },
+            //   46.5
+            // )
             .to(
               updater,
               {
@@ -1123,19 +1134,19 @@ const Expressions = (props: any) => {
   )
 
   useEffect(() => {
-    if (expression.current) {
-      const handleCamera = () => {
-        if (window.innerWidth / window.innerHeight < 1.5) {
-          const minus = 1.5 - window.innerWidth / window.innerHeight / 2
-          expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
-        } else {
-          expression.current.scale.set(2.75, 1.15, 1)
-        }
+    const handleCamera = () => {
+      if (window.innerWidth / window.innerHeight < 1.5) {
+        const minus = 1.5 - window.innerWidth / window.innerHeight / 2
+        expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
+      } else {
+        expression.current.scale.set(2.75, 1.15, 1)
       }
-
+    }
+    if (expression.current) {
       window.addEventListener('resize', handleCamera)
       handleCamera()
     }
+    return () => window.removeEventListener('resize', handleCamera)
   }, [expression])
 
   useEffect(() => {
@@ -1358,9 +1369,9 @@ const Kiwi = (props: any) => {
         <planeGeometry args={[0.16, 0.16]} />
         <meshBasicMaterial visible={false} />
       </mesh>
-      <EffectComposer multisampling={0}>
-        <Suspense>
-          {light && (
+      <Suspense fallback={null}>
+        {light && (
+          <EffectComposer multisampling={0}>
             <GodRays
               sun={light}
               samples={128}
@@ -1370,9 +1381,9 @@ const Kiwi = (props: any) => {
               exposure={0.75}
               clampMax={1}
             />
-          )}
-        </Suspense>
-      </EffectComposer>
+          </EffectComposer>
+        )}
+      </Suspense>
     </group>
   )
 }

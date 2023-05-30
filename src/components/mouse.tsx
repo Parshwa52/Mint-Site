@@ -78,13 +78,6 @@ export const Mouse = () => {
             ease: 'back.inOut',
           },
         })
-        // .from(
-        //   '.mouse-center',
-        //   {
-        //     rotate: -90,
-        //   },
-        //   0
-        // )
         .from(
           '.center-normal.dot',
           {
@@ -145,6 +138,15 @@ export const Mouse = () => {
   useEffect(() => {
     if (router.asPath !== '/') {
       gsap.set(['.mouse-wave', '.mouse-wave-text'], { display: 'none' })
+      gsap.set(
+        [
+          '#mouse .border-top .border-background',
+          '#mouse .border-bottom .border-background',
+        ],
+        {
+          scaleX: 1,
+        }
+      )
     }
     if (!soundTl.current && router.asPath === '/') {
       gsap.fromTo(
