@@ -14,7 +14,7 @@ export async function showCustomText(paragraphId: string = "custom-p-1") {
   const target = document.getElementById(paragraphId) as HTMLParagraphElement;
 
   // Add a small delay while the text is set
-  await new Promise((resolve, _) => setTimeout(resolve, 500));
+  await new Promise((resolve, _) => setTimeout(resolve, 800));
 
   gsap
     .timeline()
@@ -34,7 +34,9 @@ export async function showCustomText(paragraphId: string = "custom-p-1") {
     });
 }
 
-export function hideCustomText(paragraphId: string = "custom-p-1") {
+export async function hideCustomText(
+  paragraphId: string = "custom-p-1"
+): Promise<void> {
   const target = document.getElementById(paragraphId) as HTMLParagraphElement;
   gsap
     .timeline()
@@ -55,4 +57,7 @@ export function hideCustomText(paragraphId: string = "custom-p-1") {
       },
       ">-=.25"
     );
+
+  // Resolve after 0.15 seconds (almost 0.1 plus margin)
+  await new Promise((resolve, _) => setTimeout(resolve, 150));
 }
