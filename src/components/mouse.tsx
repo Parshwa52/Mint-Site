@@ -121,9 +121,9 @@ export const Mouse = () => {
           1
         )
 
-      // window.addEventListener('click', () => {
-      //   clickingTl.current.restart()
-      // })
+      window.addEventListener('click', () => {
+        clickingTl.current.restart()
+      })
     })
 
     return () => ctx.revert()

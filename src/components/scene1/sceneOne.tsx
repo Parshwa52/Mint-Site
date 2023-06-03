@@ -1,7 +1,15 @@
 import { useGlobalContext } from '@/provider/globalProvider'
 import { PerspectiveCamera, RenderTexture, useTexture } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { EffectComposer, GodRays } from '@react-three/postprocessing'
+import {
+  BlendFunction,
+  BloomEffect,
+  // EffectComposer,
+  EffectPass,
+  GodRaysEffect,
+  RenderPass,
+} from 'postprocessing'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
@@ -105,7 +113,12 @@ export const SceneOne = () => {
         })
         // typing
         const typingTl = gsap
-          .timeline({ paused: true })
+          .timeline({
+            paused: true,
+            onComplete: () => {
+              scrollLenis?.start()
+            },
+          })
           .set(
             '#ui .ui-space .ui-text',
             {
@@ -502,7 +515,7 @@ export const SceneOne = () => {
               voyager.position,
               {
                 y: 3,
-                x: 10,
+                x: 12,
                 duration: 13,
                 // ease: 'power1',
                 ease: 'back',
@@ -734,16 +747,6 @@ export const SceneOne = () => {
             },
             lastImgDuration
           )
-          .call(
-            () => {
-              if (scrollableTl.current.progress() > lastscroll) typingTl.play()
-              else typingTl.reverse()
-
-              lastscroll = scrollableTl.current.progress()
-            },
-            undefined,
-            lastImgDuration
-          )
           .to(
             images.material,
             { opacity: 0, duration: 2, ease: 'back.inOut' },
@@ -774,6 +777,18 @@ export const SceneOne = () => {
                 expressionLastTl.pause()
                 setExp(5)
               } else expressionLastTl.play()
+            },
+            undefined,
+            lastImgDuration + 2
+          )
+          .call(
+            () => {
+              if (scrollableTl.current.progress() > lastscroll) {
+                typingTl.play()
+                scrollLenis?.stop()
+              } else typingTl.reverse()
+
+              lastscroll = scrollableTl.current.progress()
             },
             undefined,
             lastImgDuration + 2
@@ -917,6 +932,8 @@ export const SceneOne = () => {
         dpr={[1, 1.25]}
         gl={{
           antialias: false,
+          stencil: false,
+          powerPreference: 'high-performance',
         }}
         id='canvas-one'
       >
@@ -1196,7 +1213,7 @@ const Expressions = (props: any) => {
     <mesh ref={expressions} {...props}>
       <meshBasicMaterial alphaMap={mask} transparent needsUpdate>
         {/* @ts-ignore */}
-        <RenderTexture attach='map' frames={1}>
+        <RenderTexture attach='map' frames={2}>
           <PerspectiveCamera makeDefault position={[0, 0, 1]} ref={camera} />
           <mesh
             geometry={props.childGeometry}
@@ -1206,8 +1223,8 @@ const Expressions = (props: any) => {
           >
             <meshBasicMaterial
               map={expArray[props.currExp]}
-              color='white'
-              // alphaMap={expMaskArray[props.currExp]}
+              // color='white'
+              alphaMap={expArray[props.currExp]}
               transparent
               needsUpdate
             />
@@ -1311,10 +1328,13 @@ const VoyagerImages = (props: any) => {
 }
 
 const Kiwi = (props: any) => {
+  const { gl, camera, scene } = useThree()
   const { isSoundEnabled } = useGlobalContext()
   const kiwi: any = useRef(null)
   const lightContainer: any = useRef(null)
   const [light, set] = useState<any>()
+  // const light: any = useRef()
+  const composer: any = useRef()
   const [hovered, setHovered] = useState(false)
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
@@ -1334,6 +1354,35 @@ const Kiwi = (props: any) => {
       audio.play()
     }
   }, [isSoundEnabled, hovered, props.isKiwiHoverable])
+
+  // useEffect(() => {
+  //   console.log(gl, camera, scene)
+  //   if (light.current && !composer.current) {
+  //     const composerLocal = new EffectComposer(gl, {
+  //       multisampling: 0,
+  //     })
+  //     const renderpass = new RenderPass(scene, camera)
+  //     composerLocal.addPass(renderpass)
+  //     composerLocal.addPass(
+  //       new EffectPass(
+  //         camera,
+  //         new GodRaysEffect(camera, light.current, {
+  //           samples: 128,
+  //           density: 1,
+  //           decay: 0.98,
+  //           weight: 0.5,
+  //           exposure: 0.75,
+  //           clampMax: 1,
+  //         })
+  //       )
+  //     )
+  //     composer.current = composerLocal
+  //   }
+  // }, [light, composer])
+
+  useFrame(() => {
+    composer.current && composer.current.render()
+  })
 
   return (
     <group ref={kiwi}>
@@ -1356,7 +1405,6 @@ const Kiwi = (props: any) => {
       </mesh>
       <group ref={lightContainer}>
         <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.585}>
-          {/* <planeGeometry args={[0.3, 0.5, 1, 1]} /> */}
           <circleGeometry args={[0.2, 24]} />
           <meshBasicMaterial color='#b97264' />
         </mesh>
@@ -1444,7 +1492,7 @@ const Voyager = (props: any) => {
   }, [voyager])
 
   return (
-    <mesh scale={2.25} position={[2.15, 0.1, 0.2]} ref={voyager}>
+    <mesh scale={2.25} position={[2.35, 0.1, 0.2]} ref={voyager}>
       <planeGeometry args={[1, 1]} />
       <meshStandardMaterial
         map={voyagerMap}

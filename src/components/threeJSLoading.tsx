@@ -166,7 +166,7 @@ const ThreeJSLoading = () => {
   return (
     <div
       ref={mount}
-      className='relative w-screen h-screen overflow-hidden cursor-all-scroll	backround'
+      className='relative w-screen h-screen overflow-hidden	backround'
     >
       <div className='absolute -ml-[67px] mt-5 text-white font-courier shadow-xl'>
         {/* <LoadingMouse /> */}

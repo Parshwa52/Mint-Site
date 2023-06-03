@@ -14,17 +14,17 @@ const Mint = () => {
   const [state, setState] = useState(false)
 
   useEffect(() => {
-    if (!soundsArray[1]) {
-      router.push('/')
-      return
-    }
+    // if (!soundsArray[1]) {
+    //   router.push('/')
+    //   return
+    // }
 
-    setTimeout(() => {
-      fadeOut()
-      hideDrag()
-    }, 10000)
+    // setTimeout(() => {
+    //   fadeOut()
+    //   hideDrag()
+    // }, 10000)
 
-    soundsArray[1].play()
+    // soundsArray[1].play()
     showDrag()
 
     gsap.to('body', {
@@ -75,12 +75,12 @@ const Mint = () => {
   function hideDrag() {
     gsap
       .timeline()
-      .from('.mouse-drag-text', {
+      .to('.mouse-drag-text', {
         autoAlpha: 0,
         ease: 'expo',
       })
       .set('.mouse-drag-text', {
-        display: 'block',
+        display: 'none',
       })
   }
 
