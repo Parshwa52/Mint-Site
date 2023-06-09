@@ -343,7 +343,6 @@
         "name": "acceptOwnership",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": []
     },
@@ -353,7 +352,6 @@
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -372,7 +370,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -391,7 +388,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -404,7 +400,6 @@
         "name": "burn",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -418,7 +413,6 @@
         "name": "changeBaseURI",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "string",
@@ -432,7 +426,6 @@
         "name": "changeDesignatedSigner",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -446,7 +439,6 @@
         "name": "changeMintPrice",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -460,7 +452,6 @@
         "name": "deRegisterTrait",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -474,7 +465,6 @@
         "name": "deleteDefaultRoyalty",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": []
     },
@@ -484,7 +474,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -498,7 +487,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -517,7 +505,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "tuple",
@@ -549,7 +536,6 @@
         "name": "initialize",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -572,7 +558,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -594,7 +579,6 @@
         "name": "linkTrait",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -617,7 +601,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256"
@@ -638,7 +621,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -652,7 +634,6 @@
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "tuple",
@@ -689,7 +670,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -703,7 +683,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -717,7 +696,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -731,7 +709,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -750,7 +727,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -763,7 +739,6 @@
         "name": "registerTrait",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -778,7 +753,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address"
@@ -795,7 +769,6 @@
         "name": "renounceOwnership",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": []
     },
@@ -804,7 +777,6 @@
         "name": "resetTokenRoyalty",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -819,7 +791,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -845,7 +816,6 @@
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -868,7 +838,6 @@
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -894,7 +863,6 @@
         "name": "setApprovalForAll",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -912,7 +880,6 @@
         "name": "setDefaultRoyalty",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -930,7 +897,6 @@
         "name": "setMaxTotalSupply",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -944,7 +910,6 @@
         "name": "setTokenRoyalty",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -967,7 +932,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "bytes4",
@@ -986,7 +950,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -1000,7 +963,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -1019,7 +981,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [],
         "outputs": [
             {
@@ -1033,7 +994,6 @@
         "constant": false,
         "stateMutability": "payable",
         "payable": true,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -1055,7 +1015,6 @@
         "name": "transferOwnership",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",
@@ -1069,7 +1028,6 @@
         "name": "unlinkTrait",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "uint256",
@@ -1092,7 +1050,6 @@
         "constant": true,
         "stateMutability": "view",
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "bytes"
@@ -1109,7 +1066,6 @@
         "name": "withdraw",
         "constant": false,
         "payable": false,
-        "gas": 29000000,
         "inputs": [
             {
                 "type": "address",

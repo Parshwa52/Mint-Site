@@ -52,6 +52,7 @@ import {
 import { INSUFFICIENT_FUNDS_DATA, mintAmount, targetAmount } from '@/constants'
 import { useUIContext } from '@/provider/uiProvider'
 import { hideCustomText, showCustomText } from '@/utils'
+import { mint } from '@/utils/mint'
 
 export const SceneTwo = () => {
   const { isConnected } = useAccount()
@@ -790,26 +791,26 @@ const Q2 = (props: any) => {
       if (props.whitelisted) {
         // Check Custom Mint Status and add HUD text accodingly
         await hideCustomText()
-        setHudText('You have 1 free and 2 paid mints left')
-        showCustomText()
+        // setHudText('You have 1 free and 2 paid mints left')
+        // showCustomText()
 
         // Simulate bridge txn
-        props.animations.doTransactionAnimation()
-        await new Promise((resolve, _) => setTimeout(resolve, 5000))
+        // props.animations.doTransactionAnimation()
+        // await new Promise((resolve, _) => setTimeout(resolve, 5000))
 
         // Bridge and Mint Process (Which shall trigger Txn animation upon completion)
-        // bridgeAndMint();
+        bridgeAndMint();
 
         // Simulate Mint and then final page
-        setTimeout(() => {
-          gsap.to('body', {
-            autoAlpha: 0,
-            duration: 1.25,
-            onComplete: () => {
-              router.push('/mint')
-            },
-          })
-        }, 1000)
+        // setTimeout(() => {
+        //   gsap.to('body', {
+        //     autoAlpha: 0,
+        //     duration: 1.25,
+        //     onComplete: () => {
+        //       router.push('/mint')
+        //     },
+        //   })
+        // }, 1000)
       } else {
         // Failure animation
         props.animations.doFailureAnimation()
@@ -866,6 +867,7 @@ const Q2 = (props: any) => {
 
         // Mint
         console.log('Mint call reached')
+        await mint(signer.data as Signer)
       }
 
       ///////////////////////////////////////////////
