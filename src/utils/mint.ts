@@ -17,11 +17,20 @@ export async function mint(signer: Signer) {
     name: "PlutoSigner",
     version: "1",
     chainId: "137",
+    verifyingContract: nftAddress,
   };
 
-  const types = {};
+  const types = {
+    Signature: [
+      { name: "nonce", type: "uint32" },
+      { name: "userAddress", type: "address" },
+    ],
+  };
 
-  const value = {};
+  const value = {
+    nonce: Date.now().toString(),
+    userAddress: userAddress,
+  };
 
   // @ts-ignore
   const signedBytes = await signer._signTypedData(domain, types, value);
