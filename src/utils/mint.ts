@@ -28,7 +28,7 @@ export async function mint(signer: Signer) {
   };
 
   const value = {
-    nonce: Date.now().toString(),
+    nonce: Math.round(Date.now() / 1000).toString(),
     userAddress: userAddress,
   };
 
@@ -36,7 +36,7 @@ export async function mint(signer: Signer) {
   const signedBytes = await signer._signTypedData(domain, types, value);
 
   const Signature = [
-    await signer.getTransactionCount(),
+    value.nonce,
     userAddress,
     signedBytes,
   ];
