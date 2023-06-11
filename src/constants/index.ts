@@ -4,8 +4,8 @@ import { parseUnits } from "ethers/lib/utils.js";
 export * from "./uniswap";
 
 // RPC URLs used for fetching multi-chain balances
-export const rpc_ethereum = "https://eth.llamarpc.com";
-export const rpc_polygon = "https://polygon.llamarpc.com";
+export const rpc_ethereum = "https://eth-mainnet.g.alchemy.com/v2/uXqMixV-ZenaLSsJCfYVT7Gy8LRjt5C4";
+export const rpc_polygon = "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
 // NFT Contact on Polygon
 export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
