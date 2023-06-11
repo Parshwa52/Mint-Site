@@ -8,7 +8,7 @@ export const rpc_ethereum = "https://eth.llamarpc.com";
 export const rpc_polygon = "https://polygon.llamarpc.com";
 
 // NFT Contact on Polygon
-export const nftAddress = "0xf475D99Be3241c69454eA8AF7B12F38078F697bc"; // Replace later when NFT contract is deployed
+export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
