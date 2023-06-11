@@ -35,13 +35,9 @@ export async function mint(signer: Signer) {
   // @ts-ignore
   const signedBytes = await signer._signTypedData(domain, types, value);
 
-  const Signature = [
-    value.nonce,
-    userAddress,
-    signedBytes,
-  ];
+  const Signature = [value.nonce, userAddress, signedBytes];
 
   // Mint
   const nftContract = new Contract(nftAddress, PlutoAvatarABI, signer);
-  await nftContract.mint(Signature, userAddress, "1"); // Signature, to, amount
+  return await nftContract.mint(Signature, userAddress, "1"); // Signature, to, amount
 }

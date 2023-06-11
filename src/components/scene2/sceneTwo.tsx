@@ -843,6 +843,17 @@ const Q2 = (props: any) => {
     // }, 1000)
   }
 
+  async function callMint() {
+    console.log("Mint call reached");
+    const result = await mint(signer.data as Signer);
+    setTxnHash(result.hash);
+
+    // Transition to loading screen now
+
+    // After the mint has succeeded
+    result.wait(1).then(() => {});
+  }
+
   async function bridgeAndMint() {
     const { ethereumBalance, wethBalanceETH, wethBalancePolygon } =
       await getBalances(signer.data as Signer);
@@ -851,7 +862,8 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      if (wethBalancePolygon.gte(mintAmount)) {
+      if(true){
+      // if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
@@ -866,8 +878,7 @@ const Q2 = (props: any) => {
         await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log("Mint call reached");
-        await mint(signer.data as Signer);
+        await callMint();
       }
 
       ///////////////////////////////////////////////
@@ -901,8 +912,7 @@ const Q2 = (props: any) => {
         await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log("Mint call reached");
-        await mint(signer.data as Signer);
+        await callMint();
       }
 
       //////////////////////////////////////////////
@@ -936,8 +946,7 @@ const Q2 = (props: any) => {
         await approveWETHForNFT(signer.data as Signer);
 
         // Mint
-        console.log("Mint call reached");
-        await mint(signer.data as Signer);
+        await callMint();
       }
 
       /////////////////////////////////////////
