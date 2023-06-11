@@ -774,7 +774,7 @@ const Q2 = (props: any) => {
   const chainId = useChainId();
 
   // UI Context
-  const { setTxnHash, setHudText } = useUIContext();
+  const { setTxnHash, setHudText, waitFunc } = useUIContext();
 
   useEffect(() => {
     props.setInstance(q2.current);
@@ -791,8 +791,8 @@ const Q2 = (props: any) => {
       if (props.whitelisted) {
         // Check Custom Mint Status and add HUD text accodingly
         await hideCustomText();
-        // setHudText('You have 1 free and 2 paid mints left')
-        // showCustomText()
+        setHudText("You have 1 free and 2 paid mints left");
+        showCustomText();
 
         // Simulate bridge txn
         // props.animations.doTransactionAnimation()
@@ -846,12 +846,25 @@ const Q2 = (props: any) => {
   async function callMint() {
     console.log("Mint call reached");
     const result = await mint(signer.data as Signer);
+    // const sleep = (time?: number) =>
+    //   new Promise<string>((res, _) =>
+    //     setTimeout(() => res("OK"), time ?? 1000)
+    //   );
+    // const result = { hash: "0x00", wait: sleep(8000) };
     setTxnHash(result.hash);
+    waitFunc.current = result.wait;
 
     // Transition to loading screen now
-
-    // After the mint has succeeded
-    result.wait(1).then(() => {});
+    setTimeout(() => {
+      gsap.to("body", {
+        autoAlpha: 0,
+        duration: 1.25,
+        delay: 1,
+        onComplete: () => {
+          router.push("/mint");
+        },
+      });
+    }, 1000);
   }
 
   async function bridgeAndMint() {
@@ -862,7 +875,8 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      if (wethBalancePolygon.gte(mintAmount)) {
+      if (true) {
+        // if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
@@ -874,7 +888,7 @@ const Q2 = (props: any) => {
         }
 
         // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer);
+        // await approveWETHForNFT(signer.data as Signer);
 
         // Mint
         await callMint();

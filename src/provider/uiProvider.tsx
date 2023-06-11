@@ -1,8 +1,10 @@
 import {
   Dispatch,
+  MutableRefObject,
   SetStateAction,
   createContext,
   useContext,
+  useRef,
   useState,
 } from "react";
 
@@ -21,6 +23,8 @@ interface UIContextInterface {
   txnHash: string;
   setTxnHash: Dispatch<SetStateAction<string>>;
 
+  waitFunc: MutableRefObject<(numConfirmations: number) => Promise<any>>;
+
   hudText: string;
   setHudText: Dispatch<SetStateAction<string>>;
 }
@@ -38,6 +42,8 @@ const defaultState: UIContextInterface = {
   txnHash: "",
   setTxnHash: () => {},
 
+  waitFunc: (() => {}) as any,
+
   hudText: "",
   setHudText: () => {},
 };
@@ -50,7 +56,10 @@ const UIProvider = ({ children }: { children: any }) => {
     title: "",
     text: "",
   });
+
   const [txnHash, setTxnHash] = useState("");
+  const waitFunc = useRef(null as any);
+
   const [hudText, setHudText] = useState("");
 
   return (
@@ -64,6 +73,8 @@ const UIProvider = ({ children }: { children: any }) => {
 
         txnHash,
         setTxnHash,
+
+        waitFunc,
 
         hudText,
         setHudText,
