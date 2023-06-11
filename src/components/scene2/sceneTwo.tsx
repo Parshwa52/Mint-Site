@@ -875,8 +875,8 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      if (true) {
-        // if (wethBalancePolygon.gte(mintAmount)) {
+      // if (true) {
+      if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
