@@ -902,6 +902,7 @@ const Q2 = (props: any) => {
 
         // Mint
         console.log("Mint call reached");
+        await mint(signer.data as Signer);
       }
 
       //////////////////////////////////////////////
@@ -936,6 +937,7 @@ const Q2 = (props: any) => {
 
         // Mint
         console.log("Mint call reached");
+        await mint(signer.data as Signer);
       }
 
       /////////////////////////////////////////
