@@ -29,7 +29,8 @@ const Mint = () => {
 
     console.log("Wait func in mint page", waitFunc);
     if (waitFunc.current) {
-      waitFunc.current(1).then(() => {
+      // Wait for a certain number of block confirmations
+      waitFunc.current(3).then(() => {
         fadeOut();
         hideDrag();
       });
