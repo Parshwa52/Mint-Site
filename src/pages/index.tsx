@@ -10,8 +10,8 @@ import Modal from "@/components/ui/Modal";
 export default function Home() {
   return (
     <PageLayout
-      pageTitle="Pluto mint website"
-      pageDesc="Cillum pariatur in Lorem consequat velit reprehenderit enim proident."
+      pageTitle="Pluto Mint Website"
+      pageDesc="Pluto Misfits Minting by Plutoverse"
     >
       <ThreeJSBackground />
       <HomepageHero />

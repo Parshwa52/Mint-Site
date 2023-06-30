@@ -176,7 +176,7 @@ export const SceneTwo = () => {
         .timeline({
           scrollTrigger: {
             trigger: "#home-city",
-            start: "top bottom",
+            start: "top 48%",
             end: "top top",
             scrub: true,
             refreshPriority: 98,
@@ -1006,7 +1006,7 @@ const Q2 = (props: any) => {
           distanceFactor={1.5}
         >
           <div className="button-container">
-            <button className="button" onClick={() => handleClick()}></button>
+            <button className="button cursor-none" onClick={() => handleClick()}></button>
           </div>
         </Html>
       </mesh>

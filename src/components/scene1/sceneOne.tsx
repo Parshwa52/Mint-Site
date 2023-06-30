@@ -1054,7 +1054,7 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
       <div
         className='start-screen'
         onClick={() => onLoaded()}
-        style={{ cursor: 'pointer' }}
+        // style={{ cursor: 'pointer' }}
       >
         <p>Please scroll slowly through the website for the best experience.</p>
       </div>
