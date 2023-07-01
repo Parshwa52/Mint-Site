@@ -421,7 +421,7 @@ export const SceneTwo = () => {
             ".city-container",
             {
               willChange: "filter",
-              filter: "blur(4px)",
+              filter: "blur(3px)",
               stagger: 0,
               duration: 25,
               ease: "none",
@@ -844,14 +844,15 @@ const Q2 = (props: any) => {
   }
 
   async function callMint() {
-    console.log("Mint call reached");
     const result = await mint(signer.data as Signer);
     // const sleep = (time?: number) =>
     //   new Promise<string>((res, _) =>
     //     setTimeout(() => res("OK"), time ?? 1000)
     //   );
     // const result = { hash: "0x00", wait: sleep(8000) };
-    setTxnHash(result.hash);
+
+    setTxnHash(result.hash); // Unused rn
+    setHudText("Txn Hash: " + result.hash);
     waitFunc.current = result.wait;
 
     // Transition to loading screen now
@@ -859,7 +860,7 @@ const Q2 = (props: any) => {
       gsap.to("body", {
         autoAlpha: 0,
         duration: 1.25,
-        delay: 1,
+        delay: 5,
         onComplete: () => {
           router.push("/mint");
         },
@@ -875,8 +876,8 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      // if (true) {
-      if (wethBalancePolygon.gte(mintAmount)) {
+      if (true) {
+        // if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
@@ -1006,7 +1007,10 @@ const Q2 = (props: any) => {
           distanceFactor={1.5}
         >
           <div className="button-container">
-            <button className="button cursor-none" onClick={() => handleClick()}></button>
+            <button
+              className="button cursor-none"
+              onClick={() => handleClick()}
+            ></button>
           </div>
         </Html>
       </mesh>

@@ -14,7 +14,7 @@ const Mint = () => {
   const { soundsArray } = useGlobalContext();
   const [state, setState] = useState(false);
 
-  const { waitFunc } = useUIContext();
+  const { waitFunc, setTxnHash, setHudText } = useUIContext();
 
   useEffect(() => {
     // if (!soundsArray[1]) {
@@ -27,12 +27,15 @@ const Mint = () => {
     //   hideDrag()
     // }, 10000)
 
-    console.log("Wait func in mint page", waitFunc);
+    // Disable for testing
     if (waitFunc.current) {
       // Wait for a certain number of block confirmations
-      waitFunc.current(3).then(() => {
+      waitFunc.current(2).then(() => {
         fadeOut();
         hideDrag();
+
+        // setTxnHash("")
+        // setHudText("")
       });
     } else router.push("/");
 

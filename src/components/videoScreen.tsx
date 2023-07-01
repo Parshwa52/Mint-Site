@@ -24,9 +24,9 @@ const VideoScreen: React.FC<Props> = ({}) => {
       <div className="absolute items-center justify-center flex w-full mt-[100px] top-0 p-4 ">
         <a
           href="#"
-          className="mr-4 text-lg sm:text-xl md:text-3xl font-bold text-white"
+          className="mr-4 text-lg sm:text-xl md:text-3xl font-bold text-purple-200"
           style={{
-            textShadow: "3px 3px 20px black",
+            textShadow: "2px 2px 10px #222",
           }}
         >
           Congrats #123, now, you are a Misfit.
@@ -34,9 +34,9 @@ const VideoScreen: React.FC<Props> = ({}) => {
       </div>
 
       <div
-        className="absolute items-center justify-center flex w-full bottom-5 p-4 text-[22px] font-semibold text-white"
+        className="absolute items-center justify-center flex w-full bottom-5 p-4 text-[22px] font-semibold text-purple-200"
         style={{
-          textShadow: "3px 3px 20px black",
+          textShadow: "2px 2px 10px #222",
         }}
       >
         <a href="#">

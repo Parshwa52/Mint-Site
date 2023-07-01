@@ -18,7 +18,7 @@ export const UI = ({ visible }: { visible?: boolean }) => {
 
   const [mounted, setMounted] = useState(false);
 
-  const { hudText } = useUIContext();
+  const { hudText, txnHash } = useUIContext();
 
   useEffect(() => {
     setMounted(true);
@@ -51,9 +51,13 @@ export const UI = ({ visible }: { visible?: boolean }) => {
     >
       <div className="ui-container ui-space">
         <Image src={topPanelSpace} alt="ui top" className="ui-part ui-top" />
+        {/* Custom ui-mid for Txn Hash */}
+        <div className="ui-part ui-mid text-purple-200/90 ml-8 text-sm">{hudText}</div>
+
         <div className="ui-part ui-mid">
           <div className="ui-img">
             <Image src={midPanelSpace} alt="ui mid" className="ui-img-img" />
+            {/* Txn Hash */}
             <div className="ui-text">
               <div id="text-1">
                 <p className="phrase-1">
