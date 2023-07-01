@@ -680,7 +680,7 @@ export const SceneOne = () => {
           .to(
             '#mouse .border-bottom .border-background',
             {
-              scaleX: 1,
+              scaleX: 0.8,
               ease: 'none',
               duration: 100,
             },

@@ -303,7 +303,7 @@ export const SceneTwo = () => {
           .to(
             "#mouse .border-bottom .border-background",
             {
-              scaleX: 1,
+              scaleX: 0.9,
               ease: "none",
               duration: 100,
             },
