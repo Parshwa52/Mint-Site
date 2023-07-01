@@ -421,7 +421,7 @@ export const SceneTwo = () => {
             ".city-container",
             {
               willChange: "filter",
-              filter: "blur(2px)",
+              filter: "blur(4px)",
               stagger: 0,
               duration: 25,
               ease: "none",
