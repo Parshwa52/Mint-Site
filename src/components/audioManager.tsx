@@ -151,10 +151,29 @@ export const AudioManager = () => {
       >
         <source src='/assets/sounds/Q2 Wallet 3.mp3' type='audio/mp3' />
       </audio>
+
+      <audio
+        id='audio-welcome'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2_Welcome_Voice.wav' type='audio/wav' />
+      </audio>
+      <audio
+        id='audio-mint'
+        muted
+        style={{
+          display: 'none',
+        }}
+      >
+        <source src='/assets/sounds/Q2_Mint_Voice.mp3' type='audio/mp3' />
+      </audio>
     </>
   )
 }
 
 export function getAudio(index: string) {
-  return document.getElementById(index)
+  return document.getElementById(index) as HTMLAudioElement
 }

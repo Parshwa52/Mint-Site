@@ -53,6 +53,7 @@ import { INSUFFICIENT_FUNDS_DATA, mintAmount, targetAmount } from "@/constants";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
 import { mint } from "@/utils/mint";
+import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
   const { isConnected } = useAccount();
@@ -789,9 +790,12 @@ const Q2 = (props: any) => {
       // Check if whitelisted right after connecting
 
       if (props.whitelisted) {
-        // Check Custom Mint Status and add HUD text accodingly
+        // Check Custom Mint Status, add HUD text accodingly and play mint audio
         await hideCustomText();
-        setHudText("You have 1 free and 2 paid mints left");
+        setHudText("You have 1 free and 2 paid mints");
+        const mintAudio = getAudio("audio-mint");
+        mintAudio.volume = 1;
+        mintAudio.play();
         showCustomText();
 
         // Simulate bridge txn

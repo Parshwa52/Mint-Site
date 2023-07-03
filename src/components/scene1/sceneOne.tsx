@@ -1,7 +1,11 @@
-import { useGlobalContext } from '@/provider/globalProvider'
-import { PerspectiveCamera, RenderTexture, useTexture } from '@react-three/drei'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { EffectComposer, GodRays } from '@react-three/postprocessing'
+import { useGlobalContext } from "@/provider/globalProvider";
+import {
+  PerspectiveCamera,
+  RenderTexture,
+  useTexture,
+} from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { EffectComposer, GodRays } from "@react-three/postprocessing";
 import {
   BlendFunction,
   BloomEffect,
@@ -9,10 +13,10 @@ import {
   EffectPass,
   GodRaysEffect,
   RenderPass,
-} from 'postprocessing'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+} from "postprocessing";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   DefaultLoadingManager,
   DoubleSide,
@@ -20,36 +24,37 @@ import {
   PlaneGeometry,
   RepeatWrapping,
   Texture,
-} from 'three'
+} from "three";
+import { getAudio } from "../audioManager";
 
 export const SceneOne = () => {
-  const { scrollLenis, soundsArray } = useGlobalContext()
+  const { scrollLenis, soundsArray } = useGlobalContext();
 
-  const unscrollableTl = useRef<any>(null)
-  const scrollableTl = useRef<any>(null)
+  const unscrollableTl = useRef<any>(null);
+  const scrollableTl = useRef<any>(null);
 
-  const [q2, setQ2] = useState<any>(null)
-  const [kiwi, setKiwi] = useState<any>(null)
-  const [planet, setPlanet] = useState<any>(null)
-  const [voyager, setVoyager] = useState<any>(null)
-  const [lights, setLights] = useState<any>(null)
-  const [images, setImages] = useState<any>(null)
-  const [expressions, setExpressions] = useState<any>(null)
-  const [currImage, setImage] = useState(0)
-  const [currExp, setExp] = useState(0)
-  const [isKiwiHoverable, setKiwiHoverable] = useState(false)
+  const [q2, setQ2] = useState<any>(null);
+  const [kiwi, setKiwi] = useState<any>(null);
+  const [planet, setPlanet] = useState<any>(null);
+  const [voyager, setVoyager] = useState<any>(null);
+  const [lights, setLights] = useState<any>(null);
+  const [images, setImages] = useState<any>(null);
+  const [expressions, setExpressions] = useState<any>(null);
+  const [currImage, setImage] = useState(0);
+  const [currExp, setExp] = useState(0);
+  const [isKiwiHoverable, setKiwiHoverable] = useState(false);
 
   useEffect(() => {
     // Local storage to not play again first animation
-    const ls = localStorage.getItem('kubrick') || ''
+    const ls = localStorage.getItem("kubrick") || "";
     const updater = {
       currPreImage: 0,
       currImage: 0,
       currExp: 0,
       currExp2: 6,
-    }
-    let lastTime = 0
-    let lastSecondTime = 0
+    };
+    let lastTime = 0;
+    let lastSecondTime = 0;
 
     const ctx = gsap.context(() => {
       if (
@@ -68,21 +73,21 @@ export const SceneOne = () => {
             repeat: -1,
             defaults: {
               duration: 1,
-              ease: 'none',
+              ease: "none",
             },
           })
           .to(updater, {
             currExp: 1,
             onUpdate: () => {
-              setExp(Math.round(updater.currExp))
+              setExp(Math.round(updater.currExp));
             },
           })
           .to(updater, {
             currExp: 0,
             onUpdate: () => {
-              setExp(Math.round(updater.currExp))
+              setExp(Math.round(updater.currExp));
             },
-          })
+          });
         // last expression loop
         const expressionLastTl = gsap
           .timeline({
@@ -90,142 +95,150 @@ export const SceneOne = () => {
             paused: true,
             defaults: {
               duration: 1,
-              ease: 'none',
+              ease: "none",
             },
           })
           .to(updater, {
             currExp2: 7,
             onUpdate: () => {
-              setExp(Math.round(updater.currExp2))
+              setExp(Math.round(updater.currExp2));
             },
           })
           .to(updater, {
             currExp2: 6,
             onUpdate: () => {
-              setExp(Math.round(updater.currExp2))
+              setExp(Math.round(updater.currExp2));
             },
-          })
+          });
         // voyager rotation
         gsap.timeline({ repeat: -1 }).to(voyager.rotation, {
           z: Math.PI * 2,
           duration: 7.5,
-          ease: 'none',
-        })
+          ease: "none",
+        });
+
         // typing
         const typingTl = gsap
           .timeline({
             paused: true,
+            onStart: () => {
+              // Play Welcome Audio as typing starts
+              const welcomeAudio = getAudio("audio-welcome");
+              welcomeAudio.volume = 1
+              welcomeAudio.play();
+            },
             onComplete: () => {
-              scrollLenis?.start()
+              scrollLenis?.start();
             },
           })
           .set(
-            '#ui .ui-space .ui-text',
+            "#ui .ui-space .ui-text",
             {
-              display: 'flex',
+              display: "flex",
             },
             0
           )
           .to(
-            '#ui .ui-text ul',
+            "#ui .ui-text ul",
             {
               autoAlpha: 1,
               duration: 1.25,
-              ease: 'expo.inOut',
+              ease: "expo.inOut",
             },
             0
           )
           .from(
-            '#ui #text-1',
+            "#ui #text-1",
             {
               autoAlpha: 0,
               duration: 0.1,
               stagger: 0.1,
-              ease: 'none',
+              ease: "none",
             },
             0
           )
           .set(
-            '#ui #text-1 .phrase-1',
+            "#ui #text-1 .phrase-1",
             {
-              display: 'block',
+              display: "block",
             },
             0
           )
           .from(
-            '#ui #text-1 .phrase-1 span span',
+            "#ui #text-1 .phrase-1 span span",
             {
-              display: 'none',
+              display: "none",
               duration: 0.1,
               stagger: 0.15,
-              ease: 'none',
+              ease: "none",
             },
             0
           )
           .to(
-            '#ui #text-1 .phrase-1 span span',
+            "#ui #text-1 .phrase-1 span span",
             {
-              display: 'none',
+              display: "none",
               duration: 0.1,
               stagger: -0.05,
-              ease: 'none',
+              ease: "none",
             },
-            '>+=.75'
+            ">+=.75"
           )
           .set(
-            '#ui #text-1 .phrase-1',
+            "#ui #text-1 .phrase-1",
             {
-              display: 'none',
+              display: "none",
             },
-            '>+=.5'
+            ">+=.5"
           )
           .set(
-            '#ui #text-1 .phrase-2',
+            "#ui #text-1 .phrase-2",
             {
-              display: 'block',
+              display: "block",
             },
-            '>'
+            ">"
           )
           .from(
-            '#ui #text-1 .phrase-2 span span',
+            "#ui #text-1 .phrase-2 span span",
             {
-              display: 'none',
+              display: "none",
               duration: 0.1,
               stagger: 0.15,
-              ease: 'none',
+              ease: "none",
             },
-            '>'
+            ">"
           )
           .to(
-            '#ui #text-1 .phrase-2 span span',
+            "#ui #text-1 .phrase-2 span span",
             {
-              display: 'none',
+              display: "none",
               duration: 0.1,
               stagger: -0.05,
-              ease: 'none',
+              ease: "none",
             },
-            '>+=.75'
+            ">+=.75"
           )
           .set(
-            '#ui .ui-space .ui-text',
+            "#ui .ui-space .ui-text",
             {
-              display: 'none',
+              display: "none",
             },
-            '>+=.5'
-          )
+            ">+=.5"
+          );
+
         // unscrollableTl
-        if (ls === 'true') {
+        if (ls === "true") {
           unscrollableTl.current = gsap
             .timeline({
               paused: true,
               onComplete: () => {
-                document.body.style.height = 'auto'
-                document.body.style.overflow = 'auto'
-                gsap.to('.canvas-scroll', {
+                document.body.style.height = "auto";
+                document.body.style.overflow = "auto";
+                gsap.to(".canvas-scroll", {
                   autoAlpha: 1,
                   duration: 1.25,
-                  ease: 'expo',
-                })
+                  ease: "expo",
+                });
               },
             })
             .set(planet.children[0].material, { visible: false })
@@ -237,41 +250,41 @@ export const SceneOne = () => {
               0
             )
             .to(
-              '#mouse .border-top .border-background',
+              "#mouse .border-top .border-background",
               {
                 scaleX: 1,
-                ease: 'expo.inOut',
+                ease: "expo.inOut",
                 duration: 1.25,
               },
               0
             )
             .from(
-              ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
+              ["#ui .ui-part.ui-top", "#ui .ui-part.ui-mid"],
               {
                 yPercent: -100,
                 scale: 1.1,
-                ease: 'expo',
+                ease: "expo",
                 duration: 1.5,
               },
               0
             )
             .from(
-              '#ui .ui-part.ui-lower',
+              "#ui .ui-part.ui-lower",
               {
                 yPercent: 100,
                 scale: 1.1,
-                ease: 'expo',
+                ease: "expo",
                 duration: 1.5,
               },
               0
             )
-            .to('#ui', { opacity: 1, duration: 0.75, ease: 'expo.inOut' }, 0)
+            .to("#ui", { opacity: 1, duration: 0.75, ease: "expo.inOut" }, 0)
             .to(
               lights[0],
               {
                 intensity: 0.15,
                 duration: 2,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               0.5
             )
@@ -280,13 +293,13 @@ export const SceneOne = () => {
               {
                 intensity: 3,
                 duration: 2,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               0.5
             )
             .call(
               () => {
-                setKiwiHoverable(true)
+                setKiwiHoverable(true);
               },
               undefined,
               0.5
@@ -297,7 +310,7 @@ export const SceneOne = () => {
                 x: 0,
                 y: 0,
                 duration: 2.25,
-                ease: 'expo',
+                ease: "expo",
               },
               0.5
             )
@@ -306,14 +319,14 @@ export const SceneOne = () => {
               {
                 opacity: 0,
                 duration: 1.5,
-                ease: 'back',
+                ease: "back",
               },
               1
             )
             .fromTo(
               images.material,
               { opacity: 0 },
-              { opacity: 1, duration: 1.25, ease: 'power2.inOut' },
+              { opacity: 1, duration: 1.25, ease: "power2.inOut" },
               1.5
             )
             // .to(
@@ -332,38 +345,38 @@ export const SceneOne = () => {
               () => {
                 unscrollableTl.current.reversed()
                   ? scrollLenis?.stop()
-                  : scrollLenis?.start()
+                  : scrollLenis?.start();
               },
               undefined,
               1.5
-            )
+            );
         } else {
           unscrollableTl.current = gsap
             .timeline({
               paused: true,
               onComplete: () => {
-                document.body.style.height = 'auto'
-                document.body.style.overflow = 'auto'
-                gsap.to('.canvas-scroll', {
+                document.body.style.height = "auto";
+                document.body.style.overflow = "auto";
+                gsap.to(".canvas-scroll", {
                   autoAlpha: 1,
                   duration: 1.25,
-                  ease: 'expo',
-                })
+                  ease: "expo",
+                });
                 // set local storage
-                localStorage.setItem('kubrick', 'true')
+                localStorage.setItem("kubrick", "true");
               },
             })
             .to(
-              '#mouse .border-top .border-background',
+              "#mouse .border-top .border-background",
               {
                 scaleX: 1,
-                ease: 'none',
+                ease: "none",
                 duration: 47,
               },
               0
             )
             .from(
-              ['#ui .ui-part.ui-top', '#ui .ui-part.ui-mid'],
+              ["#ui .ui-part.ui-top", "#ui .ui-part.ui-mid"],
               {
                 yPercent: -100,
                 scale: 1.1,
@@ -372,7 +385,7 @@ export const SceneOne = () => {
               0
             )
             .from(
-              '#ui .ui-part.ui-lower',
+              "#ui .ui-part.ui-lower",
               {
                 yPercent: 100,
                 scale: 1.1,
@@ -380,13 +393,13 @@ export const SceneOne = () => {
               },
               0
             )
-            .to('#ui', { opacity: 1, duration: 3, ease: 'expo.inOut' }, 0)
+            .to("#ui", { opacity: 1, duration: 3, ease: "expo.inOut" }, 0)
             .to(
               lights[0],
               {
                 intensity: 0.025,
                 duration: 6,
-                ease: 'power1.in',
+                ease: "power1.in",
               },
               0
             )
@@ -396,7 +409,7 @@ export const SceneOne = () => {
                 x: 0,
                 y: 0,
                 duration: 8.5,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               8
             )
@@ -406,7 +419,7 @@ export const SceneOne = () => {
               {
                 y: -0.35,
                 duration: 45,
-                ease: 'none',
+                ease: "none",
               },
               0
             )
@@ -415,7 +428,7 @@ export const SceneOne = () => {
               {
                 y: -3,
                 duration: 10,
-                ease: 'power1',
+                ease: "power1",
               },
               5
             )
@@ -424,7 +437,7 @@ export const SceneOne = () => {
               {
                 intensity: 0.05,
                 duration: 10,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               5
             )
@@ -433,7 +446,7 @@ export const SceneOne = () => {
               {
                 opacity: 0.25,
                 duration: 2,
-                ease: 'expo.inOut',
+                ease: "expo.inOut",
               },
               12
             )
@@ -442,7 +455,7 @@ export const SceneOne = () => {
               {
                 intensity: 3,
                 duration: 20,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               16.5
             )
@@ -454,16 +467,16 @@ export const SceneOne = () => {
               {
                 y: 0.05,
                 duration: 12,
-                ease: 'power1',
+                ease: "power1",
               },
               17
             )
             .to(
               kiwi[1].position,
               {
-                y: '+=0.05',
+                y: "+=0.05",
                 duration: 12,
-                ease: 'power1',
+                ease: "power1",
               },
               17
             )
@@ -472,7 +485,7 @@ export const SceneOne = () => {
               {
                 y: 0.575,
                 duration: 3.5,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               29.5
             )
@@ -482,7 +495,7 @@ export const SceneOne = () => {
                 x: 0.575,
                 y: 0.575,
                 duration: 3.5,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               29.5
             )
@@ -491,7 +504,7 @@ export const SceneOne = () => {
               {
                 y: 0,
                 duration: 3.5,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               29.5
             )
@@ -500,13 +513,13 @@ export const SceneOne = () => {
               {
                 z: 0.01,
                 duration: 1,
-                ease: 'power2.inOut',
+                ease: "power2.inOut",
               },
               29.5
             )
             .call(
               () => {
-                setKiwiHoverable(true)
+                setKiwiHoverable(true);
               },
               undefined,
               29.5
@@ -518,7 +531,7 @@ export const SceneOne = () => {
                 x: 12,
                 duration: 13,
                 // ease: 'power1',
-                ease: 'back',
+                ease: "back",
               },
               33.5
             )
@@ -527,16 +540,16 @@ export const SceneOne = () => {
               {
                 x: Math.PI,
                 duration: 7,
-                ease: 'power2.inOut',
+                ease: "power2.inOut",
               },
               33.5
             )
             .call(
               () => {
                 if (expressionTl.isActive()) {
-                  expressionTl.pause()
-                  setExp(2)
-                } else expressionTl.play()
+                  expressionTl.pause();
+                  setExp(2);
+                } else expressionTl.play();
               },
               undefined,
               35
@@ -546,18 +559,18 @@ export const SceneOne = () => {
               {
                 intensity: 0.15,
                 duration: 10,
-                ease: 'power1.inOut',
+                ease: "power1.inOut",
               },
               35
             )
             .call(
               () => {
                 if (lastTime === 0) {
-                  setExp(3)
-                  lastTime = 1
+                  setExp(3);
+                  lastTime = 1;
                 } else {
-                  setExp(2)
-                  lastTime = 0
+                  setExp(2);
+                  lastTime = 0;
                 }
               },
               undefined,
@@ -566,17 +579,17 @@ export const SceneOne = () => {
             .call(
               () => {
                 if (lastTime === 1) {
-                  setExp(4)
-                  images.visible = true
-                  lastTime = 2
+                  setExp(4);
+                  images.visible = true;
+                  lastTime = 2;
                   // refresh scroll trigger
-                  const scrollTrigger = ScrollTrigger.getById('scrollable')
-                  scrollTrigger?.refresh()
-                  scrollTrigger?.update()
+                  const scrollTrigger = ScrollTrigger.getById("scrollable");
+                  scrollTrigger?.refresh();
+                  scrollTrigger?.update();
                 } else {
-                  setExp(3)
-                  images.visible = false
-                  lastTime = 1
+                  setExp(3);
+                  images.visible = false;
+                  lastTime = 1;
                 }
               },
               undefined,
@@ -584,7 +597,7 @@ export const SceneOne = () => {
             )
             .from(
               images.material,
-              { opacity: 0, duration: 1, ease: 'power2.inOut' },
+              { opacity: 0, duration: 1, ease: "power2.inOut" },
               45.5
             )
             // .to(
@@ -602,9 +615,9 @@ export const SceneOne = () => {
               {
                 currPreImage: 4,
                 duration: 1.5,
-                ease: 'none',
+                ease: "none",
                 onUpdate: () => {
-                  setImage(Math.round(updater.currPreImage))
+                  setImage(Math.round(updater.currPreImage));
                 },
               },
               46.5
@@ -613,7 +626,7 @@ export const SceneOne = () => {
               () => {
                 unscrollableTl.current.reversed()
                   ? scrollLenis?.stop()
-                  : scrollLenis?.start()
+                  : scrollLenis?.start();
               },
               undefined,
               48
@@ -624,7 +637,7 @@ export const SceneOne = () => {
                 visible: false,
               },
               48
-            )
+            );
         }
 
         // if (ls === 'true') {
@@ -633,23 +646,23 @@ export const SceneOne = () => {
 
         // if
 
-        let lastscroll = 0
-        let lastImgDuration = 40
+        let lastscroll = 0;
+        let lastImgDuration = 40;
         // scrollableTl
         scrollableTl.current = gsap
           .timeline({
             scrollTrigger: {
-              trigger: '#home-hero',
-              start: 'bottom+=1 bottom',
-              end: '+=5000',
-              id: 'scrollable',
+              trigger: "#home-hero",
+              start: "bottom+=1 bottom",
+              end: "+=5000",
+              id: "scrollable",
               scrub: true,
               pin: true,
               refreshPriority: 99,
               onEnter: () => {
-                if (ls === 'true') {
-                  expressionTl.pause()
-                  images.visible = true
+                if (ls === "true") {
+                  expressionTl.pause();
+                  images.visible = true;
                 }
               },
               // onEnterBack: () => {
@@ -659,7 +672,7 @@ export const SceneOne = () => {
               //   typingTl.reverse()
               // },
               onLeaveBack: () => {
-                if (ls === 'true') expressionTl.play()
+                if (ls === "true") expressionTl.play();
               },
             },
           })
@@ -678,10 +691,10 @@ export const SceneOne = () => {
           // }
           // scrollableTl.current
           .to(
-            '#mouse .border-bottom .border-background',
+            "#mouse .border-bottom .border-background",
             {
               scaleX: 0.8,
-              ease: 'none',
+              ease: "none",
               duration: 100,
             },
             0
@@ -691,65 +704,65 @@ export const SceneOne = () => {
             {
               currImage: 70,
               duration: lastImgDuration,
-              ease: 'none',
+              ease: "none",
               onUpdate: () => {
-                setImage(Math.round(updater.currImage))
+                setImage(Math.round(updater.currImage));
               },
             },
             0
           )
           .to(
-            '#mouse .dot',
+            "#mouse .dot",
             {
               autoAlpha: 0,
               duration: 1.25,
-              ease: 'expo.inOut',
+              ease: "expo.inOut",
             },
             0
           )
           .to(
-            '#mouse .mouse-scroll',
+            "#mouse .mouse-scroll",
             {
               autoAlpha: 1,
               duration: 1.25,
-              ease: 'expo.inOut',
+              ease: "expo.inOut",
             },
             0
           )
           .to(
-            '.canvas-scroll',
+            ".canvas-scroll",
             {
               autoAlpha: 0,
               duration: 15,
-              ease: 'none',
+              ease: "none",
             },
             0
           )
           .call(
             () => {
               if (lastSecondTime === 0) {
-                setExp(5)
-                lastSecondTime = 1
+                setExp(5);
+                lastSecondTime = 1;
               } else {
-                setExp(4)
-                lastSecondTime = 0
+                setExp(4);
+                lastSecondTime = 0;
               }
             },
             undefined,
             1
           )
           .to(
-            '#mouse .mouse-scroll',
+            "#mouse .mouse-scroll",
             {
               autoAlpha: 0,
               duration: 1.25,
-              ease: 'expo.inOut',
+              ease: "expo.inOut",
             },
             lastImgDuration
           )
           .to(
             images.material,
-            { opacity: 0, duration: 2, ease: 'back.inOut' },
+            { opacity: 0, duration: 2, ease: "back.inOut" },
             lastImgDuration
           )
           .to(
@@ -758,7 +771,7 @@ export const SceneOne = () => {
               y: -3,
               x: 10,
               duration: 36,
-              ease: 'power1.in',
+              ease: "power1.in",
             },
             lastImgDuration + 1
           )
@@ -767,16 +780,16 @@ export const SceneOne = () => {
             {
               x: Math.PI,
               duration: 36,
-              ease: 'power2.inOut',
+              ease: "power2.inOut",
             },
             lastImgDuration + 1
           )
           .call(
             () => {
               if (expressionLastTl.isActive()) {
-                expressionLastTl.pause()
-                setExp(5)
-              } else expressionLastTl.play()
+                expressionLastTl.pause();
+                setExp(5);
+              } else expressionLastTl.play();
             },
             undefined,
             lastImgDuration + 2
@@ -784,11 +797,11 @@ export const SceneOne = () => {
           .call(
             () => {
               if (scrollableTl.current.progress() > lastscroll) {
-                typingTl.play()
-                scrollLenis?.stop()
-              } else typingTl.reverse()
+                typingTl.play();
+                scrollLenis?.stop();
+              } else typingTl.reverse();
 
-              lastscroll = scrollableTl.current.progress()
+              lastscroll = scrollableTl.current.progress();
             },
             undefined,
             lastImgDuration + 2
@@ -798,7 +811,7 @@ export const SceneOne = () => {
             {
               y: -10,
               duration: 20,
-              ease: 'power2.in',
+              ease: "power2.in",
             },
             lastImgDuration + 7
           )
@@ -807,7 +820,7 @@ export const SceneOne = () => {
             {
               y: 0,
               duration: 15,
-              ease: 'power1.inOut',
+              ease: "power1.inOut",
             },
             lastImgDuration + 12
           )
@@ -817,19 +830,19 @@ export const SceneOne = () => {
               x: 0,
               y: 0,
               duration: 15,
-              ease: 'power1.inOut',
+              ease: "power1.inOut",
             },
             lastImgDuration + 12
-          )
+          );
       }
 
       return () => {
-        if (unscrollableTl.current) unscrollableTl.current.revert()
-        if (scrollableTl.current) scrollableTl.current.revert()
-      }
-    })
+        if (unscrollableTl.current) unscrollableTl.current.revert();
+        if (scrollableTl.current) scrollableTl.current.revert();
+      };
+    });
 
-    return () => ctx.revert()
+    return () => ctx.revert();
   }, [
     unscrollableTl,
     scrollableTl,
@@ -850,7 +863,7 @@ export const SceneOne = () => {
     setExpressions,
     setImage,
     setExp,
-  ])
+  ]);
 
   useEffect(() => {
     gsap
@@ -859,83 +872,83 @@ export const SceneOne = () => {
         yoyo: true,
       })
       .fromTo(
-        '.canvas-scroll .scroll-arrow',
+        ".canvas-scroll .scroll-arrow",
         {
           yPercent: -45,
         },
         {
           yPercent: 45,
-          ease: 'power1.inOut',
+          ease: "power1.inOut",
           duration: 1.5,
           stagger: {
             amount: 0.45,
           },
         }
-      )
-  }, [])
+      );
+  }, []);
 
   function handleStartClick() {
     // sound manager
-    const ls = localStorage.getItem('kubrick') || ''
+    const ls = localStorage.getItem("kubrick") || "";
 
-    soundsArray[2].play()
+    soundsArray[2].play();
 
-    if (ls === 'true') {
-      soundsArray[0].volume = 0
-      soundsArray[1].play()
+    if (ls === "true") {
+      soundsArray[0].volume = 0;
+      soundsArray[1].play();
     } else {
-      soundsArray[0].play()
+      soundsArray[0].play();
       setTimeout(() => {
-        soundsArray[1].play()
+        soundsArray[1].play();
         gsap.from(soundsArray[1], {
           volume: 0,
           duration: 1.25,
-          ease: 'none',
-        })
-      }, 74000)
+          ease: "none",
+        });
+      }, 74000);
     }
 
     // sound button
-    gsap.timeline().set('#sound-button', { display: 'block' }).fromTo(
-      '#sound-button',
+    gsap.timeline().set("#sound-button", { display: "block" }).fromTo(
+      "#sound-button",
       { scale: 0 },
       {
         scale: 1,
-        ease: 'back.inOut',
+        ease: "back.inOut",
       },
       0
-    )
+    );
 
     gsap
       .timeline({
         onComplete: () => {
-          unscrollableTl.current?.play()
+          unscrollableTl.current?.play();
         },
       })
-      .to('.canvas-loader', {
+      .to(".canvas-loader", {
         autoAlpha: 0,
         duration: 1.25,
-        ease: 'power4.inOut',
+        ease: "power4.inOut",
       })
-      .set('.canvas-loader', { display: 'none' })
+      .set(".canvas-loader", { display: "none" });
   }
 
   return (
-    <section className='canvas-container'>
+    <section className="canvas-container">
       <Loader onLoaded={() => handleStartClick()} />
-      <div className='canvas-scroll'>
-        <div className='scroll-arrow'></div>
-        <div className='scroll-arrow'></div>
-        <div className='scroll-arrow'></div>
+      <div className="canvas-scroll">
+        <div className="scroll-arrow"></div>
+        <div className="scroll-arrow"></div>
+        <div className="scroll-arrow"></div>
       </div>
       <Canvas
         dpr={[1, 1.25]}
         gl={{
           antialias: false,
           stencil: false,
-          powerPreference: 'high-performance',
+          powerPreference: "high-performance",
         }}
-        id='canvas-one'
+        id="canvas-one"
       >
         <Q2
           setInstance={setQ2}
@@ -951,14 +964,14 @@ export const SceneOne = () => {
         <Lights setInstance={setLights} />
       </Canvas>
     </section>
-  )
-}
+  );
+};
 
 const Loader = ({ onLoaded }: { onLoaded: Function }) => {
-  const [threejsLoaded, setThreejsLoaded] = useState(false)
-  const [totalLoaded, setTotalLoaded] = useState(0)
-  const [mediaLoaded, setMediaLoaded] = useState(0)
-  let mediaLoaded2 = 0
+  const [threejsLoaded, setThreejsLoaded] = useState(false);
+  const [totalLoaded, setTotalLoaded] = useState(0);
+  const [mediaLoaded, setMediaLoaded] = useState(0);
+  let mediaLoaded2 = 0;
 
   useEffect(() => {
     if (
@@ -974,16 +987,16 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
           // },
         })
 
-        .to('.canvas-loader .spinner', {
+        .to(".canvas-loader .spinner", {
           scale: 0,
           duration: 1.25,
-          ease: 'back.inOut',
+          ease: "back.inOut",
         })
-        .to('.canvas-loader .loader-screen', {
+        .to(".canvas-loader .loader-screen", {
           autoAlpha: 0,
         })
         .fromTo(
-          '.canvas-loader .start-screen > *',
+          ".canvas-loader .start-screen > *",
           {
             autoAlpha: 0,
             yPercent: 50,
@@ -995,93 +1008,93 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
             stagger: {
               amount: 0.5,
             },
-            ease: 'back.inOut',
+            ease: "back.inOut",
           }
         )
         .from(
-          '#canvas-one',
+          "#canvas-one",
           {
             autoAlpha: 0,
             duration: 1.25,
-            ease: 'back.inOut',
+            ease: "back.inOut",
           },
-          '>-=50%'
-        )
+          ">-=50%"
+        );
     }
-  }, [mediaLoaded, totalLoaded, threejsLoaded])
+  }, [mediaLoaded, totalLoaded, threejsLoaded]);
 
   useEffect(() => {
-    gsap.set(['.ui-space', '.ui-world'], {
-      display: 'block',
-    })
-    const images = document.querySelectorAll('img')
+    gsap.set([".ui-space", ".ui-world"], {
+      display: "block",
+    });
+    const images = document.querySelectorAll("img");
     images.forEach((img) => {
       if (img.complete) {
-        setMediaLoaded(++mediaLoaded2)
+        setMediaLoaded(++mediaLoaded2);
       } else {
         img.onload = function () {
-          setMediaLoaded(++mediaLoaded2)
-        }
+          setMediaLoaded(++mediaLoaded2);
+        };
       }
-    })
+    });
 
-    setTotalLoaded(images.length)
+    setTotalLoaded(images.length);
 
-    gsap.to('.canvas-loader .spinner', {
+    gsap.to(".canvas-loader .spinner", {
       rotate: 360,
       duration: 5,
-      ease: 'none',
+      ease: "none",
       repeat: -1,
-    })
-    gsap.to('.canvas-loader .spinner', {
-      borderRadius: '50%',
+    });
+    gsap.to(".canvas-loader .spinner", {
+      borderRadius: "50%",
       duration: 2.5,
-      ease: 'none',
+      ease: "none",
       repeat: -1,
       yoyo: true,
-    })
+    });
 
     DefaultLoadingManager.onLoad = function () {
-      setThreejsLoaded(true)
-    }
-  }, [])
+      setThreejsLoaded(true);
+    };
+  }, []);
 
   return (
-    <div className='canvas-loader'>
-      <div className='loader-screen'>
-        <div className='spinner'></div>
+    <div className="canvas-loader">
+      <div className="loader-screen">
+        <div className="spinner"></div>
       </div>
       <div
-        className='start-screen'
+        className="start-screen"
         onClick={() => onLoaded()}
         // style={{ cursor: 'pointer' }}
       >
         <p>Please scroll slowly through the website for the best experience.</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Q2 = (props: any) => {
-  const q2 = useRef(null)
+  const q2 = useRef(null);
   // images
   // mesh
   const q2Geometry = useMemo(() => {
-    return new PlaneGeometry(1, 1.6)
-  }, [])
+    return new PlaneGeometry(1, 1.6);
+  }, []);
   const bandGeometry = useMemo(() => {
-    return new PlaneGeometry(1, 1)
-  }, [])
+    return new PlaneGeometry(1, 1);
+  }, []);
   // texture base
   const [body, bodyAlpha, band] = useTexture([
-    '/assets/scene1/Q2_space.png',
-    '/assets/scene1/Q2_alpha.jpg',
-    '/assets/scene1/Q2_band_space.png',
-  ])
+    "/assets/scene1/Q2_space.png",
+    "/assets/scene1/Q2_alpha.jpg",
+    "/assets/scene1/Q2_band_space.png",
+  ]);
 
   useEffect(() => {
-    props.setInstance(q2.current)
-  }, [q2])
+    props.setInstance(q2.current);
+  }, [q2]);
 
   return (
     <group scale={5} ref={q2} position={[0, -1, 0]}>
@@ -1116,58 +1129,58 @@ const Q2 = (props: any) => {
         <meshStandardMaterial map={band} transparent needsUpdate />
       </mesh>
     </group>
-  )
-}
+  );
+};
 
 const Expressions = (props: any) => {
-  const expressions: any = useRef(null)
-  const expression: any = useRef(null)
-  const tl = useRef<GSAPTimeline>()
-  const camera = useRef()
+  const expressions: any = useRef(null);
+  const expression: any = useRef(null);
+  const tl = useRef<GSAPTimeline>();
+  const camera = useRef();
 
-  const mask = useTexture('/assets/scene1/Q2_mask.jpg')
+  const mask = useTexture("/assets/scene1/Q2_mask.jpg");
 
   const expArray = useTexture(
     [
-      '/assets/scene1/expressions/variant/before/exp-2-eyes-right.png',
-      '/assets/scene1/expressions/variant/before/exp-2-eyes-right.png',
-      '/assets/scene1/expressions/variant/before/exp-3.png',
-      '/assets/scene1/expressions/variant/before/exp-4.png',
-      '/assets/scene1/expressions/variant/before/exp-5.png',
-      '/assets/scene1/expressions/variant/after/exp-6.png',
-      '/assets/scene1/expressions/variant/after/exp-7.png',
-      '/assets/scene1/expressions/variant/after/exp-8.png',
+      "/assets/scene1/expressions/variant/before/exp-2-eyes-right.png",
+      "/assets/scene1/expressions/variant/before/exp-2-eyes-right.png",
+      "/assets/scene1/expressions/variant/before/exp-3.png",
+      "/assets/scene1/expressions/variant/before/exp-4.png",
+      "/assets/scene1/expressions/variant/before/exp-5.png",
+      "/assets/scene1/expressions/variant/after/exp-6.png",
+      "/assets/scene1/expressions/variant/after/exp-7.png",
+      "/assets/scene1/expressions/variant/after/exp-8.png",
     ],
     // @ts-ignore
     (localExpArray: Texture[]) => {
-      localExpArray[1].wrapS = RepeatWrapping
-      localExpArray[1].repeat.x = -1
+      localExpArray[1].wrapS = RepeatWrapping;
+      localExpArray[1].repeat.x = -1;
 
       localExpArray.forEach((texture: Texture) => {
-        texture.generateMipmaps = false
-        texture.minFilter = NearestFilter
-      })
+        texture.generateMipmaps = false;
+        texture.minFilter = NearestFilter;
+      });
     }
-  )
+  );
 
   useEffect(() => {
     const handleCamera = () => {
       if (window.innerWidth / window.innerHeight < 1.5) {
-        const minus = 1.5 - window.innerWidth / window.innerHeight / 2
-        expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1)
+        const minus = 1.5 - window.innerWidth / window.innerHeight / 2;
+        expression.current.scale.set(2.75 - minus, 1.15 - minus / 4, 1);
       } else {
-        expression.current.scale.set(2.75, 1.15, 1)
+        expression.current.scale.set(2.75, 1.15, 1);
       }
-    }
+    };
     if (expression.current) {
-      window.addEventListener('resize', handleCamera)
-      handleCamera()
+      window.addEventListener("resize", handleCamera);
+      handleCamera();
     }
-    return () => window.removeEventListener('resize', handleCamera)
-  }, [expression])
+    return () => window.removeEventListener("resize", handleCamera);
+  }, [expression]);
 
   useEffect(() => {
-    props.setInstance(expressions.current)
+    props.setInstance(expressions.current);
 
     tl.current = gsap
       .timeline({
@@ -1176,7 +1189,7 @@ const Expressions = (props: any) => {
         paused: true,
         defaults: {
           duration: 0.05,
-          ease: 'none',
+          ease: "none",
         },
       })
       .to(expressions.current.position, {
@@ -1190,30 +1203,30 @@ const Expressions = (props: any) => {
       })
       .to(expressions.current.position, {
         x: 0,
-      })
+      });
 
     return () => {
-      if (tl.current) tl.current.revert()
-      if (expressions.current) gsap.set(expressions.current.position, { x: 0 })
-    }
-  }, [expressions, tl])
+      if (tl.current) tl.current.revert();
+      if (expressions.current) gsap.set(expressions.current.position, { x: 0 });
+    };
+  }, [expressions, tl]);
 
   useEffect(() => {
     if (expressions.current && props.currExp === 5 && tl.current) {
-      tl.current.play()
+      tl.current.play();
     }
 
     return () => {
-      if (tl.current && props.currExp === 5) tl.current.restart().pause()
-      if (expressions.current) gsap.set(expressions.current.position, { x: 0 })
-    }
-  }, [props.currExp, expressions, tl])
+      if (tl.current && props.currExp === 5) tl.current.restart().pause();
+      if (expressions.current) gsap.set(expressions.current.position, { x: 0 });
+    };
+  }, [props.currExp, expressions, tl]);
 
   return (
     <mesh ref={expressions} {...props}>
       <meshBasicMaterial alphaMap={mask} transparent needsUpdate>
         {/* @ts-ignore */}
-        <RenderTexture attach='map' frames={2}>
+        <RenderTexture attach="map" frames={2}>
           <PerspectiveCamera makeDefault position={[0, 0, 1]} ref={camera} />
           <mesh
             geometry={props.childGeometry}
@@ -1232,88 +1245,88 @@ const Expressions = (props: any) => {
         </RenderTexture>
       </meshBasicMaterial>
     </mesh>
-  )
-}
+  );
+};
 
 const VoyagerImages = (props: any) => {
-  const images: any = useRef()
+  const images: any = useRef();
 
-  const mask = useTexture('/assets/scene1/Mask_1.jpg')
+  const mask = useTexture("/assets/scene1/Mask_1.jpg");
 
   const imagesArray = useTexture([
-    '/assets/scene1/voyager/voyager-01.jpg',
-    '/assets/scene1/voyager/voyager-02.jpg',
-    '/assets/scene1/voyager/voyager-03.jpg',
-    '/assets/scene1/voyager/voyager-04.jpg',
-    '/assets/scene1/voyager/voyager-05.jpg',
-    '/assets/scene1/voyager/voyager-06.jpg',
-    '/assets/scene1/voyager/voyager-07.jpg',
-    '/assets/scene1/voyager/voyager-08.jpg',
-    '/assets/scene1/voyager/voyager-09.jpg',
-    '/assets/scene1/voyager/voyager-10.jpg',
-    '/assets/scene1/voyager/voyager-11.jpg',
-    '/assets/scene1/voyager/voyager-12.jpg',
-    '/assets/scene1/voyager/voyager-13.jpg',
-    '/assets/scene1/voyager/voyager-14.jpg',
-    '/assets/scene1/voyager/voyager-15.jpg',
-    '/assets/scene1/voyager/voyager-16.jpg',
-    '/assets/scene1/voyager/voyager-17.jpg',
-    '/assets/scene1/voyager/voyager-18.jpg',
-    '/assets/scene1/voyager/voyager-19.jpg',
-    '/assets/scene1/voyager/voyager-20.jpg',
-    '/assets/scene1/voyager/voyager-21.jpg',
-    '/assets/scene1/voyager/voyager-22.jpg',
-    '/assets/scene1/voyager/voyager-23.jpg',
-    '/assets/scene1/voyager/voyager-24.jpg',
-    '/assets/scene1/voyager/voyager-25.jpg',
-    '/assets/scene1/voyager/voyager-26.jpg',
-    '/assets/scene1/voyager/voyager-27.jpg',
-    '/assets/scene1/voyager/voyager-28.jpg',
-    '/assets/scene1/voyager/voyager-29.jpg',
-    '/assets/scene1/voyager/voyager-30.jpg',
-    '/assets/scene1/voyager/voyager-31.jpg',
-    '/assets/scene1/voyager/voyager-32.jpg',
-    '/assets/scene1/voyager/voyager-33.jpg',
-    '/assets/scene1/voyager/voyager-34.jpg',
-    '/assets/scene1/voyager/voyager-35.jpg',
-    '/assets/scene1/voyager/voyager-36.jpg',
-    '/assets/scene1/voyager/voyager-37.jpg',
-    '/assets/scene1/voyager/voyager-38.jpg',
-    '/assets/scene1/voyager/voyager-39.jpg',
-    '/assets/scene1/voyager/voyager-40.jpg',
-    '/assets/scene1/voyager/voyager-41.jpg',
-    '/assets/scene1/voyager/voyager-42.jpg',
-    '/assets/scene1/voyager/voyager-43.jpg',
-    '/assets/scene1/voyager/voyager-44.jpg',
-    '/assets/scene1/voyager/voyager-45.jpg',
-    '/assets/scene1/voyager/voyager-46.jpg',
-    '/assets/scene1/voyager/voyager-47.jpg',
-    '/assets/scene1/voyager/voyager-49.jpg',
-    '/assets/scene1/voyager/voyager-50.jpg',
-    '/assets/scene1/voyager/voyager-51.jpg',
-    '/assets/scene1/voyager/voyager-52.jpg',
-    '/assets/scene1/voyager/voyager-53.jpg',
-    '/assets/scene1/voyager/voyager-54.jpg',
-    '/assets/scene1/voyager/voyager-55.jpg',
-    '/assets/scene1/voyager/voyager-56.jpg',
-    '/assets/scene1/voyager/voyager-57.jpg',
-    '/assets/scene1/voyager/voyager-58.jpg',
-    '/assets/scene1/voyager/voyager-59.jpg',
-    '/assets/scene1/voyager/voyager-60.jpg',
-    '/assets/scene1/voyager/voyager-61.jpg',
-    '/assets/scene1/voyager/voyager-62.jpg',
-    '/assets/scene1/voyager/voyager-63.jpg',
-    '/assets/scene1/voyager/voyager-64.jpg',
-    '/assets/scene1/voyager/voyager-65.jpg',
-    '/assets/scene1/voyager/voyager-66.jpg',
-    '/assets/scene1/voyager/voyager-67.jpg',
-    '/assets/scene1/voyager/voyager-68.jpg',
-    '/assets/scene1/voyager/voyager-69.jpg',
-  ])
+    "/assets/scene1/voyager/voyager-01.jpg",
+    "/assets/scene1/voyager/voyager-02.jpg",
+    "/assets/scene1/voyager/voyager-03.jpg",
+    "/assets/scene1/voyager/voyager-04.jpg",
+    "/assets/scene1/voyager/voyager-05.jpg",
+    "/assets/scene1/voyager/voyager-06.jpg",
+    "/assets/scene1/voyager/voyager-07.jpg",
+    "/assets/scene1/voyager/voyager-08.jpg",
+    "/assets/scene1/voyager/voyager-09.jpg",
+    "/assets/scene1/voyager/voyager-10.jpg",
+    "/assets/scene1/voyager/voyager-11.jpg",
+    "/assets/scene1/voyager/voyager-12.jpg",
+    "/assets/scene1/voyager/voyager-13.jpg",
+    "/assets/scene1/voyager/voyager-14.jpg",
+    "/assets/scene1/voyager/voyager-15.jpg",
+    "/assets/scene1/voyager/voyager-16.jpg",
+    "/assets/scene1/voyager/voyager-17.jpg",
+    "/assets/scene1/voyager/voyager-18.jpg",
+    "/assets/scene1/voyager/voyager-19.jpg",
+    "/assets/scene1/voyager/voyager-20.jpg",
+    "/assets/scene1/voyager/voyager-21.jpg",
+    "/assets/scene1/voyager/voyager-22.jpg",
+    "/assets/scene1/voyager/voyager-23.jpg",
+    "/assets/scene1/voyager/voyager-24.jpg",
+    "/assets/scene1/voyager/voyager-25.jpg",
+    "/assets/scene1/voyager/voyager-26.jpg",
+    "/assets/scene1/voyager/voyager-27.jpg",
+    "/assets/scene1/voyager/voyager-28.jpg",
+    "/assets/scene1/voyager/voyager-29.jpg",
+    "/assets/scene1/voyager/voyager-30.jpg",
+    "/assets/scene1/voyager/voyager-31.jpg",
+    "/assets/scene1/voyager/voyager-32.jpg",
+    "/assets/scene1/voyager/voyager-33.jpg",
+    "/assets/scene1/voyager/voyager-34.jpg",
+    "/assets/scene1/voyager/voyager-35.jpg",
+    "/assets/scene1/voyager/voyager-36.jpg",
+    "/assets/scene1/voyager/voyager-37.jpg",
+    "/assets/scene1/voyager/voyager-38.jpg",
+    "/assets/scene1/voyager/voyager-39.jpg",
+    "/assets/scene1/voyager/voyager-40.jpg",
+    "/assets/scene1/voyager/voyager-41.jpg",
+    "/assets/scene1/voyager/voyager-42.jpg",
+    "/assets/scene1/voyager/voyager-43.jpg",
+    "/assets/scene1/voyager/voyager-44.jpg",
+    "/assets/scene1/voyager/voyager-45.jpg",
+    "/assets/scene1/voyager/voyager-46.jpg",
+    "/assets/scene1/voyager/voyager-47.jpg",
+    "/assets/scene1/voyager/voyager-49.jpg",
+    "/assets/scene1/voyager/voyager-50.jpg",
+    "/assets/scene1/voyager/voyager-51.jpg",
+    "/assets/scene1/voyager/voyager-52.jpg",
+    "/assets/scene1/voyager/voyager-53.jpg",
+    "/assets/scene1/voyager/voyager-54.jpg",
+    "/assets/scene1/voyager/voyager-55.jpg",
+    "/assets/scene1/voyager/voyager-56.jpg",
+    "/assets/scene1/voyager/voyager-57.jpg",
+    "/assets/scene1/voyager/voyager-58.jpg",
+    "/assets/scene1/voyager/voyager-59.jpg",
+    "/assets/scene1/voyager/voyager-60.jpg",
+    "/assets/scene1/voyager/voyager-61.jpg",
+    "/assets/scene1/voyager/voyager-62.jpg",
+    "/assets/scene1/voyager/voyager-63.jpg",
+    "/assets/scene1/voyager/voyager-64.jpg",
+    "/assets/scene1/voyager/voyager-65.jpg",
+    "/assets/scene1/voyager/voyager-66.jpg",
+    "/assets/scene1/voyager/voyager-67.jpg",
+    "/assets/scene1/voyager/voyager-68.jpg",
+    "/assets/scene1/voyager/voyager-69.jpg",
+  ]);
 
   useEffect(() => {
-    props.setInstance(images.current)
-  }, [images])
+    props.setInstance(images.current);
+  }, [images]);
 
   return (
     <mesh ref={images} {...props} visible={false}>
@@ -1324,36 +1337,36 @@ const VoyagerImages = (props: any) => {
         needsUpdate
       />
     </mesh>
-  )
-}
+  );
+};
 
 const Kiwi = (props: any) => {
-  const { gl, camera, scene } = useThree()
-  const { isSoundEnabled } = useGlobalContext()
-  const kiwi: any = useRef(null)
-  const lightContainer: any = useRef(null)
-  const [light, set] = useState<any>()
+  const { gl, camera, scene } = useThree();
+  const { isSoundEnabled } = useGlobalContext();
+  const kiwi: any = useRef(null);
+  const lightContainer: any = useRef(null);
+  const [light, set] = useState<any>();
   // const light: any = useRef()
-  const composer: any = useRef()
-  const [hovered, setHovered] = useState(false)
+  const composer: any = useRef();
+  const [hovered, setHovered] = useState(false);
 
   const [kiwiMap, kiwiAlpha, kiwiAlt] = useTexture([
-    '/assets/scene1/Kiwi_dark.png',
-    '/assets/scene1/Kiwi_alpha.jpg',
-    '/assets/scene1/Kiwi_exp_1.png',
-  ])
+    "/assets/scene1/Kiwi_dark.png",
+    "/assets/scene1/Kiwi_alpha.jpg",
+    "/assets/scene1/Kiwi_exp_1.png",
+  ]);
 
   useEffect(() => {
-    props.setInstance([kiwi.current, lightContainer.current.children[0]])
-  }, [lightContainer, kiwi])
+    props.setInstance([kiwi.current, lightContainer.current.children[0]]);
+  }, [lightContainer, kiwi]);
 
   useEffect(() => {
     if (isSoundEnabled && hovered && props.isKiwiHoverable) {
-      const audio = document.querySelector('#audio-kiwi') as HTMLAudioElement
-      audio.currentTime = 0
-      audio.play()
+      const audio = document.querySelector("#audio-kiwi") as HTMLAudioElement;
+      audio.currentTime = 0;
+      audio.play();
     }
-  }, [isSoundEnabled, hovered, props.isKiwiHoverable])
+  }, [isSoundEnabled, hovered, props.isKiwiHoverable]);
 
   // useEffect(() => {
   //   console.log(gl, camera, scene)
@@ -1381,8 +1394,8 @@ const Kiwi = (props: any) => {
   // }, [light, composer])
 
   useFrame(() => {
-    composer.current && composer.current.render()
-  })
+    composer.current && composer.current.render();
+  });
 
   return (
     <group ref={kiwi}>
@@ -1406,7 +1419,7 @@ const Kiwi = (props: any) => {
       <group ref={lightContainer}>
         <mesh ref={set} position={[-0.005, 0.575, -0.5]} scale={0.585}>
           <circleGeometry args={[0.2, 24]} />
-          <meshBasicMaterial color='#b97264' />
+          <meshBasicMaterial color="#b97264" />
         </mesh>
       </group>
       <mesh
@@ -1433,21 +1446,21 @@ const Kiwi = (props: any) => {
         )}
       </Suspense>
     </group>
-  )
-}
+  );
+};
 
 const Planet = (props: any) => {
-  const planet: any = useRef()
+  const planet: any = useRef();
   // mesh
   const q2Geometry = useMemo(() => {
-    return new PlaneGeometry(1, 1)
-  }, [])
+    return new PlaneGeometry(1, 1);
+  }, []);
   // texture base
-  const [planetMap, planetAlpha] = useTexture(['/assets/scene1/planet.png'])
+  const [planetMap, planetAlpha] = useTexture(["/assets/scene1/planet.png"]);
 
   useEffect(() => {
-    props.setInstance(planet.current)
-  }, [planet])
+    props.setInstance(planet.current);
+  }, [planet]);
 
   return (
     <group scale={15} position={[0, -5, 0]} ref={planet}>
@@ -1460,36 +1473,36 @@ const Planet = (props: any) => {
         />
       </mesh>
     </group>
-  )
-}
+  );
+};
 
 const Lights = (props: any) => {
-  const ambientLight: any = useRef()
-  const pointLight: any = useRef()
+  const ambientLight: any = useRef();
+  const pointLight: any = useRef();
 
   useEffect(() => {
-    props.setInstance([ambientLight.current, pointLight.current])
-  }, [ambientLight, pointLight])
+    props.setInstance([ambientLight.current, pointLight.current]);
+  }, [ambientLight, pointLight]);
 
   return (
     <>
       <pointLight intensity={0} position={[0, 2.3, 0.3]} ref={pointLight} />
       <ambientLight intensity={0.01} ref={ambientLight} />
     </>
-  )
-}
+  );
+};
 
 const Voyager = (props: any) => {
-  const voyager: any = useRef()
+  const voyager: any = useRef();
 
   const [voyagerMap, voyagerAlpha] = useTexture([
-    '/assets/scene1/Voyager.png',
-    '/assets/scene1/Voyager_alpha.jpg',
-  ])
+    "/assets/scene1/Voyager.png",
+    "/assets/scene1/Voyager_alpha.jpg",
+  ]);
 
   useEffect(() => {
-    props.setInstance(voyager.current)
-  }, [voyager])
+    props.setInstance(voyager.current);
+  }, [voyager]);
 
   return (
     <mesh scale={2.25} position={[2.35, 0.1, 0.2]} ref={voyager}>
@@ -1501,5 +1514,5 @@ const Voyager = (props: any) => {
         side={DoubleSide}
       />
     </mesh>
-  )
-}
+  );
+};
