@@ -57,6 +57,7 @@ function ConnectWallet(): JSX.Element {
           }
 
           return (
+            // @ts-ignore
             <DelegateCashButton
               rpcUrl={[rpc_ethereum, rpc_polygon]}
               onButtonClick={(event: any) => console.log(event.detail)}
