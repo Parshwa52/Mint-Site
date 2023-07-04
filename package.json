@@ -23,6 +23,7 @@
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/smart-order-router": "^3.11.3",
     "@uniswap/v3-sdk": "^3.9.0",
+    "delegatecash-button-react": "^0.1.6",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "ethers": "5.7.0",
