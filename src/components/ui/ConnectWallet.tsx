@@ -12,62 +12,13 @@ const DelegateCashButton = dynamic(() => import("delegatecash-button-react"), {
 function ConnectWallet(): JSX.Element {
   return (
     <div>
-      {/* <ConnectButton
+      <ConnectButton
         showBalance={false}
         accountStatus={{
-          smallScreen: 'avatar',
-          largeScreen: 'full',
+          smallScreen: "avatar",
+          largeScreen: "full",
         }}
-      /> */}
-      <ConnectButton.Custom>
-        {({
-          account,
-          chain,
-          openChainModal,
-          openConnectModal,
-          authenticationStatus,
-          mounted,
-        }) => {
-          const ready = mounted && authenticationStatus !== "loading";
-          const connected =
-            ready &&
-            account &&
-            chain &&
-            (!authenticationStatus || authenticationStatus === "authenticated");
-
-          if (!connected) {
-            return (
-              <div
-                {...(!ready && {
-                  "aria-hidden": true,
-                })}
-              >
-                <button
-                  className={`auth-button`}
-                  onClick={() => openConnectModal()}
-                >
-                  Connect
-                </button>
-              </div>
-            );
-          }
-
-          if (chain.unsupported) {
-            openChainModal();
-          }
-
-          return (
-            // @ts-ignore
-            <DelegateCashButton
-              rpcUrl={[rpc_ethereum, rpc_polygon]}
-              onButtonClick={(event: any) => console.log(event.detail)}
-              onWalletSelect={(event: any) => console.log(event.detail)}
-            >
-              Connect
-            </DelegateCashButton>
-          );
-        }}
-      </ConnectButton.Custom>
+      />
     </div>
   );
 }

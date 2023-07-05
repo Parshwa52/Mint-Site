@@ -1,12 +1,12 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, lightTheme, Theme } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, mainnet } from "wagmi";
-import { polygon } from "wagmi/chains";
+import { configureChains, createClient, goerli, mainnet } from "wagmi";
+import { polygon, polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
-import { Color } from "three";
 
 export const { chains, provider } = configureChains(
-  [polygon, mainnet],
+  // [polygon, mainnet],
+  [goerli, polygonMumbai],
   [alchemyProvider({ apiKey: "I3K5UoJriahPrauT3HRuT7FDdHdyE_Um" })]
 );
 

@@ -8,7 +8,7 @@ export const rpc_ethereum = "https://eth-mainnet.g.alchemy.com/v2/uXqMixV-ZenaLS
 export const rpc_polygon = "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
 // NFT Contact on Polygon
-export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
+// export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
 
 // Delegator Addresses
 export const delegatorAddress = "0x5Eda92b2F4840178E370F5E8BcCe22Fa7c6a91B0" // Goerli
@@ -22,7 +22,7 @@ export const fromChainId = 1;
 export const toChainId = 137;
 
 export const fromAssetAddressNative =
-  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"; // Native Token
+  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Native Token
 export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
 
 export const toAssetAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // WETH on Polygon

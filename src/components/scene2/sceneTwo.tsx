@@ -848,7 +848,7 @@ const Q2 = (props: any) => {
   }
 
   async function callMint() {
-    const result = await mint(signer.data as Signer);
+    const result = await mint(signer.data as Signer, chainId);
     // const sleep = (time?: number) =>
     //   new Promise<string>((res, _) =>
     //     setTimeout(() => res("OK"), time ?? 1000)
@@ -880,17 +880,17 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      // if (true) {
-      if (wethBalancePolygon.gte(mintAmount)) {
+      if (true) {
+        // if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
+        // if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
 
         // @ts-ignore
-        if (chainId !== 137) {
-          console.warn("Switch to Polygon Chain");
-          props.animations.doBridgeFailure(); // Switch to Polygon Animation
-          return;
-        }
+        // if (chainId !== 137) {
+        //   console.warn("Switch to Polygon Chain");
+        //   props.animations.doBridgeFailure(); // Switch to Polygon Animation
+        //   return;
+        // }
 
         // Approve WETH on Polygon to NFT Contract
         // await approveWETHForNFT(signer.data as Signer);

@@ -1,10 +1,11 @@
-import { nftAddress } from "@/constants";
-import { Contract, Signer } from "ethers";
+import { delegatorAddress, fromAssetAddressNative } from "@/constants";
+import { Contract, Signer, ethers } from "ethers";
 
-// PlutoAvatar ABI
-import PlutoAvatarABI from "@/json/PlutoAvatar.json";
+// NFT Contract ABI
+import DelegatorABI from "@/json/PlutoDelegator.json";
+import { parseEther } from "ethers/lib/utils.js";
 
-export async function mint(signer: Signer) {
+export async function mint(signer: Signer, chainId = 137) {
   if (!signer.provider) {
     console.error("Could not find provider on signer");
     return;
@@ -16,28 +17,44 @@ export async function mint(signer: Signer) {
   const domain = {
     name: "PlutoSigner",
     version: "1",
-    chainId: "137",
-    verifyingContract: nftAddress,
+    chainId: chainId.toString(),
+    verifyingContract: delegatorAddress,
   };
 
   const types = {
     Signature: [
-      { name: "nonce", type: "uint32" },
+      { name: "timestamp", type: "uint32" },
       { name: "userAddress", type: "address" },
     ],
   };
 
   const value = {
-    nonce: Math.round(Date.now() / 1000).toString(),
+    timestamp: Math.round(Date.now() / 1000).toString(),
     userAddress: userAddress,
   };
 
   // @ts-ignore
   const signedBytes = await signer._signTypedData(domain, types, value);
 
-  const Signature = [value.nonce, userAddress, signedBytes];
+  const Signature = [value.timestamp, userAddress, signedBytes];
 
   // Mint
-  const nftContract = new Contract(nftAddress, PlutoAvatarABI, signer);
-  return await nftContract.mint(Signature, userAddress, "1"); // Signature, to, amount
+  const nftContract = new Contract(delegatorAddress, DelegatorABI, signer);
+  console.log("Params to payAndMintTokens", {
+    Signature,
+    fromAssetAddressNative,
+    amount: "1",
+    userAddress,
+    vault: ethers.constants.AddressZero,
+  });
+  return await nftContract.payAndMintTokens(
+    Signature,
+    fromAssetAddressNative,
+    "1",
+    userAddress,
+    ethers.constants.AddressZero,
+    {
+      value: parseEther("0.2"),
+    }
+  ); // Signature, to, amount
 }
