@@ -42,6 +42,7 @@ import img27 from "@/assets/placements/27_Green_Structure.png";
 import img28 from "@/assets/placements/28_Cars_smokes_lines.png";
 import img29 from "@/assets/placements/29_Clouds_right.png";
 import img30 from "@/assets/placements/29_Clouds_left.png";
+import PlutoText from "@/assets/Pluto Text Transparent.png";
 import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import {
@@ -672,7 +673,8 @@ export const SceneTwo = () => {
           <Building src={img29} />
         </div>
         <div className="buildings buildings-logo">
-          <h2>pluto</h2>
+          {/* <h2>pluto</h2> */}
+          <img src={PlutoText.src} alt="Pluto Logo" width={600} />
         </div>
       </div>
       <div className="q2-canvas-container">
@@ -880,7 +882,8 @@ const Q2 = (props: any) => {
       //////////////////////////////////////
       // Case 1: User Has WETH on Polygon //
       //////////////////////////////////////
-      if (1 === 1) { // True value without typescript errors
+      if (1 === 1) {
+        // True value without typescript errors
         // if (wethBalancePolygon.gte(mintAmount)) {
         // Make sure network is Polygon
         // if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
