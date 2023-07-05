@@ -39,7 +39,7 @@ export async function mint(signer: Signer, chainId = 137) {
   const Signature = [value.timestamp, userAddress, signedBytes];
 
   // Mint
-  const nftContract = new Contract(delegatorAddress, DelegatorABI, signer);
+  const delegatorContract = new Contract(delegatorAddress, DelegatorABI, signer);
   console.log("Params to payAndMintTokens", {
     Signature,
     fromAssetAddressNative,
@@ -47,7 +47,7 @@ export async function mint(signer: Signer, chainId = 137) {
     userAddress,
     vault: ethers.constants.AddressZero,
   });
-  return await nftContract.payAndMintTokens(
+  return await delegatorContract.payAndMintTokens(
     Signature,
     fromAssetAddressNative,
     "1",
