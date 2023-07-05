@@ -7,11 +7,11 @@ import {
   getRouteTransactionData,
 } from './socket'
 import {
+  delegatorAddress,
   fromAssetAddressNative,
   fromAssetAddressWETH,
   fromChainId,
   mintAmount,
-  nftAddress,
   rpc_ethereum,
   rpc_polygon,
   singleTxOnly,
@@ -229,12 +229,12 @@ export async function approveWETHForNFT(signer: Signer) {
   // Check if at least "mintAmount" is allowed
   const allowance: BigNumber = await wethContract.allowance(
     await signer.getAddress(),
-    nftAddress
+    delegatorAddress
   )
 
   // If allowance is lower than mint amount, approve more WETH
   if (allowance.lt(mintAmount)) {
-    await wethContract.approve(nftAddress, ethers.constants.MaxUint256)
+    await wethContract.approve(delegatorAddress, ethers.constants.MaxUint256)
   }
 }
 
