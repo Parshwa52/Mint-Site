@@ -12,6 +12,12 @@ import { Split } from "@/utils/split";
 import { useAccount } from "wagmi";
 import { compactAddress } from "@/utils";
 import { useUIContext } from "@/provider/uiProvider";
+import dynamic from "next/dynamic";
+
+// @ts-ignore
+const DelegateCashButton = dynamic(() => import("delegatecash-button-react"), {
+  ssr: false,
+});
 
 export const UI = ({ visible }: { visible?: boolean }) => {
   const { address } = useAccount();
@@ -52,7 +58,9 @@ export const UI = ({ visible }: { visible?: boolean }) => {
       <div className="ui-container ui-space">
         <Image src={topPanelSpace} alt="ui top" className="ui-part ui-top" />
         {/* Custom ui-mid for Txn Hash */}
-        <div className="ui-part ui-mid text-purple-200/90 ml-8 text-sm">{hudText}</div>
+        <div className="ui-part ui-mid text-purple-200/90 ml-8 text-sm">
+          {hudText}
+        </div>
 
         <div className="ui-part ui-mid">
           <div className="ui-img">
@@ -132,9 +140,19 @@ export const UI = ({ visible }: { visible?: boolean }) => {
             </div>
             <div className="ui-sounds">
               {mounted && (
-                <div className="address">
-                  {address ? compactAddress(address as string) : ""}
-                </div>
+                <>
+                  {/* <div className="address">
+                    {address ? compactAddress(address as string) : ""}
+                  </div> */}
+                  <DelegateCashButton
+                    connectedWallet="0xf475D99Be3241c69454eA8AF7B12F38078F697bc"
+                    rpcUrl="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+                    rounded={true}
+                    theme="dark"
+                    onButtonClick={(event: any) => console.log(event.detail)}
+                    onWalletSelect={(event: any) => console.log(event.detail)}
+                  />
+                </>
               )}
               <SoundButton />
             </div>

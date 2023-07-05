@@ -34,13 +34,16 @@ const VideoScreen: React.FC<Props> = ({}) => {
       </div>
 
       <div
-        className="absolute items-center justify-center flex w-full bottom-5 p-4 text-[22px] font-semibold text-purple-200"
+        className="absolute space-x-5 justify-center flex w-full bottom-5 p-4 text-[22px] font-semibold text-purple-200"
         style={{
           textShadow: "2px 2px 10px #222",
         }}
       >
-        <a href="#">
+        <a href="#" target="_blank">
           View on OpenSea
+        </a>
+        <a target="_blank" href="http://twitter.com/share?text=I am officially a misfit @plutomisfits!&url=https://magicbatch.xyz/&hashtags=pluto,misfit,randomCat123">
+          Share on Twitter
         </a>
       </div>
     </div>
