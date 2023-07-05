@@ -13,6 +13,9 @@ export const rpc_polygon = "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5
 // Delegator Addresses
 export const delegatorAddress = "0x5Eda92b2F4840178E370F5E8BcCe22Fa7c6a91B0" // Goerli
 
+// Minter Addresses (Not used in any way, keep until final deployment for reference)
+export const minterAddress = "0x52e3a2ae070E1428cb3B9b95608812cf652Db7CA" // Mumbai
+
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 export const wethPolygon = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
