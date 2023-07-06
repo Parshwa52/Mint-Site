@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { useAccount } from "wagmi";
 
-function test() {
+function Test() {
   const DelegateCashButton = dynamic(
     // @ts-ignore
     () => import("delegatecash-button-react"),
@@ -32,4 +32,4 @@ function test() {
   );
 }
 
-export default test;
+export default Test;

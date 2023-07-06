@@ -30,7 +30,6 @@ export async function approveToken(
   const targetAddress =
     chainId === primaryChainId ? minterAddress : delegatorAddress;
 
-  // Check if at least "mintAmount" is allowed
   const allowance: BigNumber = await tokenContract.allowance(
     await signer.getAddress(),
     targetAddress
