@@ -1,18 +1,23 @@
 import { PageLayout } from "@/layout/pageLayout";
 import { UI } from "@/components/scene1/ui";
 import ThreeJSLoading from "@/components/threeJSLoading";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import VideoScreen from "@/components/videoScreen";
 import { useGlobalContext } from "@/provider/globalProvider";
 import { useRouter } from "next/router";
 import { useUIContext } from "@/provider/uiProvider";
+import { getAudio } from "@/components/audioManager";
 
 const Mint = () => {
   const router = useRouter();
 
   const { soundsArray } = useGlobalContext();
+
+  const [state0, setState0] = useState(true);
   const [state, setState] = useState(false);
+
+  const bridgeVideo = useRef(null as HTMLVideoElement | null);
 
   const { waitFunc, setTxnHash, setHudText } = useUIContext();
 
@@ -27,30 +32,54 @@ const Mint = () => {
     //   hideDrag()
     // }, 10000)
 
-    // Disable for testing
-    if (waitFunc.current) {
-      // Wait for a certain number of block confirmations
-      waitFunc.current(2).then(() => {
-        fadeOut();
-        hideDrag();
+    gsap.to(".bridging-video-container", {
+      opacity: 1,
+      duration: 1,
+      onComplete() {
+        bridgeVideo.current!.play();
 
-        // setTxnHash("")
-        // setHudText("")
-      });
-    } else router.push("/");
-
-    // soundsArray[1].play()
-    showDrag();
-
-    gsap.to("body", {
-      autoAlpha: 1,
-      duration: 1.5,
-      ease: "expo",
+        const bridgingAudio = getAudio("audio-bridging");
+        bridgingAudio.volume = 1;
+        bridgingAudio.play();
+      },
     });
 
-    gsap.set(".ui-space", { display: "block" });
+    // soundsArray[1].play()
+
     // gsap.set('.ui-space #sound-button', { display: 'block', autoAlpha: 1 })
   }, [soundsArray]);
+
+  function toGalaxy() {
+    gsap.to(".bridging-video-container", {
+      opacity: 0,
+      duration: 1.5,
+      ease: "expo",
+      onComplete() {
+        setState0(false);
+
+        showDrag();
+
+        gsap.to("body", {
+          autoAlpha: 1,
+          duration: 1.5,
+          ease: "expo",
+        });
+
+        gsap.set(".ui-space", { display: "block" });
+
+        // Show for at least 5 seconds
+        setTimeout(() => {
+          if (waitFunc.current) {
+            // Wait for a certain number of block confirmations
+            waitFunc.current(2).then(() => {
+              fadeOut();
+              hideDrag();
+            });
+          } else router.push("/");
+        }, 5000);
+      },
+    });
+  }
 
   function fadeOut() {
     gsap.to(".backround", {
@@ -106,8 +135,36 @@ const Mint = () => {
     >
       <UI visible />
 
-      {state ? <></> : <ThreeJSLoading />}
-      {state ? <VideoScreen /> : <></>}
+      {state0 ? (
+        <div className="bridging-video-container opacity-0">
+          <video
+            ref={bridgeVideo}
+            style={{
+              width: "100vw",
+              height: "100vh",
+            }}
+            onCanPlay={() => console.log("Video can play")}
+            onEnded={() => toGalaxy()}
+            muted
+          >
+            <source src="/assets/media/Bridge.mp4" type="video/mp4" />
+          </video>
+          <audio
+            id="audio-bridging"
+            muted
+            style={{
+              display: "none",
+            }}
+          >
+            <source src="/assets/sounds/Bridging.mp3" type="audio/mp3" />
+          </audio>
+        </div>
+      ) : (
+        <>
+          {state ? <></> : <ThreeJSLoading />}
+          {state ? <VideoScreen /> : <></>}
+        </>
+      )}
     </PageLayout>
   );
 };

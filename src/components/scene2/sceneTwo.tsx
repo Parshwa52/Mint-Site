@@ -1001,7 +1001,9 @@ const Q2 = (props: any) => {
       // Case 4: User has insufficient funds //
       /////////////////////////////////////////
       else {
-        console.warn("Not enough funds on Polygon or Ethereum ");
+        console.warn("Insufficient funds on this chain");
+        setHudText("Insufficient funds on this chain");
+        showCustomText();
         props.animations.doFailureAnimation();
       }
 

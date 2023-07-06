@@ -4,6 +4,7 @@ import {
   fromAssetAddressNative,
   l0_ethereum,
   l0_polygon,
+  primaryChainId,
 } from "@/constants";
 import { BigNumber, Contract, Signer, ethers } from "ethers";
 
@@ -17,7 +18,7 @@ export async function getSignature(chainId: number, address: string) {
   return await fetch(
     API_URL +
       `/rest/whitelist/${
-        chainId === 5 ? "eth" : "poly"
+        chainId === primaryChainId ? "poly" : "eth"
       }?walletAddress=${address}`
   );
 }
@@ -64,7 +65,8 @@ export async function mint(signer: Signer, chainId = 137) {
     DelegatorABI,
     signer
   );
-  const destinationChainId = chainId === 5 ? l0_polygon : l0_ethereum;
+  const destinationChainId =
+    chainId === primaryChainId ? l0_ethereum : l0_polygon;
 
   const [estimatedFees, _] = (await delegatorContract.estimateFees(
     userAddress,
@@ -73,7 +75,7 @@ export async function mint(signer: Signer, chainId = 137) {
   )) as [BigNumber, BigNumber];
 
   console.log("Estimated Fees", estimatedFees);
-  const nativeAmount = estimatedFees.add(parseEther("0.1"));
+  const nativeAmount = estimatedFees.add(parseEther("0.03"));
   console.log("Params to payAndMintTokens", {
     Signature,
     fromAssetAddressNative,
