@@ -1,4 +1,10 @@
-import { API_URL, delegatorAddress, fromAssetAddressNative } from "@/constants";
+import {
+  API_URL,
+  delegatorAddress,
+  fromAssetAddressNative,
+  l0_ethereum,
+  l0_polygon,
+} from "@/constants";
 import { BigNumber, Contract, Signer, ethers } from "ethers";
 
 // NFT Contract ABI
@@ -49,7 +55,8 @@ export async function mint(signer: Signer, chainId = 137) {
 
   // const Signature = [value.timestamp, userAddress, signedBytes];
 
-  const Signature = await getSignature(chainId, userAddress);
+  const Signature = (await (await getSignature(chainId, userAddress)).json())
+    .tuple;
 
   // Mint
   const delegatorContract = new Contract(
@@ -57,20 +64,23 @@ export async function mint(signer: Signer, chainId = 137) {
     DelegatorABI,
     signer
   );
-  
+  const destinationChainId = chainId === 5 ? l0_polygon : l0_ethereum;
+
   const [estimatedFees, _] = (await delegatorContract.estimateFees(
     userAddress,
-    chainId,
+    destinationChainId,
     "1"
   )) as [BigNumber, BigNumber];
 
+  console.log("Estimated Fees", estimatedFees);
+  const nativeAmount = estimatedFees.add(parseEther("0.1"));
   console.log("Params to payAndMintTokens", {
     Signature,
     fromAssetAddressNative,
     amount: "1",
     userAddress,
     vault: ethers.constants.AddressZero,
-    value: estimatedFees.add(parseEther("0.02")),
+    value: nativeAmount,
   });
   return await delegatorContract.payAndMintTokens(
     Signature,
@@ -80,7 +90,7 @@ export async function mint(signer: Signer, chainId = 137) {
     ethers.constants.AddressZero,
     {
       // TODO: Mint Value will depend on how the user is paying. With native tokens or ERC20 tokens
-      value: estimatedFees.add(parseEther("0.02")),
+      value: nativeAmount,
     }
   );
 }

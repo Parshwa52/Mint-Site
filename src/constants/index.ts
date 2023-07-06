@@ -12,8 +12,9 @@ export const rpc_ethereum =
 export const rpc_polygon =
   "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
-// NFT Contact on Polygon
-// export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
+// LayerZero Chain IDs
+export const l0_ethereum = -1; // Fill in when deployed
+export const l0_polygon = 10121;
 
 // Delegator Addresses
 export const delegatorAddress = "0x17909E8A36fF7D7121e4b3fd0Ea925C569209748"; // Goerli
