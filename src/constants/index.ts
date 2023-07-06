@@ -2,6 +2,11 @@ import { ModalData } from "@/provider/uiProvider";
 import { parseUnits } from "ethers/lib/utils.js";
 
 export * from "./uniswap";
+export * from "./tokens";
+
+// ChainIds
+export const primaryChainId = 80001; // Mumbai Testnet, Minter Contract
+export const secondaryChainId = 5; // Goerli Testnet, Delegator Contract
 
 // Whitelist, Signature API
 export const API_URL = "https://pluto-whitelist-5c37p.ondigitalocean.app";
@@ -12,14 +17,23 @@ export const rpc_ethereum =
 export const rpc_polygon =
   "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
+export const rpc_goerli =
+  "https://eth-goerli.g.alchemy.com/v2/p2H_3LDh1SZAiCMCNZQyFPYY7K8Kxtty";
+
+export const rpc_mumbai =
+  "https://polygon-mumbai.g.alchemy.com/v2/xScLHgyYFvlGKWZ5SxstjeZqLC6mDgB-";
+
+export const rpc_primary = rpc_mumbai;
+export const rpc_secondary = rpc_goerli;
+
 // LayerZero Chain IDs
 export const l0_ethereum = -1; // Fill in when deployed
 export const l0_polygon = 10121;
 
 // Delegator Addresses
-export const delegatorAddress = "0x17909E8A36fF7D7121e4b3fd0Ea925C569209748"; // Goerli
+export const delegatorAddress = "0x4560eE1c798F9e21089AA27Bc1d7fE3DE3a0cE3B"; // Goerli
 
-// Minter Addresses (Not used in any way, keep until final deployment for reference)
+// Minter Addresses
 export const minterAddress = "0xB192282B7E82C4900cc9DCE905F5cCFD224462b7"; // Mumbai
 
 // Token Addresses
