@@ -3,18 +3,23 @@ import { parseUnits } from "ethers/lib/utils.js";
 
 export * from "./uniswap";
 
+// Whitelist, Signature API
+export const API_URL = "https://pluto-whitelist-5c37p.ondigitalocean.app";
+
 // RPC URLs used for fetching multi-chain balances
-export const rpc_ethereum = "https://eth-mainnet.g.alchemy.com/v2/uXqMixV-ZenaLSsJCfYVT7Gy8LRjt5C4";
-export const rpc_polygon = "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
+export const rpc_ethereum =
+  "https://eth-mainnet.g.alchemy.com/v2/uXqMixV-ZenaLSsJCfYVT7Gy8LRjt5C4";
+export const rpc_polygon =
+  "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
 // NFT Contact on Polygon
 // export const nftAddress = "0x690b6Bf1da0E215300F9e0a299d5AC9Aa8d53CEE";
 
 // Delegator Addresses
-export const delegatorAddress = "0x17909E8A36fF7D7121e4b3fd0Ea925C569209748" // Goerli
+export const delegatorAddress = "0x17909E8A36fF7D7121e4b3fd0Ea925C569209748"; // Goerli
 
 // Minter Addresses (Not used in any way, keep until final deployment for reference)
-export const minterAddress = "0xB192282B7E82C4900cc9DCE905F5cCFD224462b7" // Mumbai
+export const minterAddress = "0xB192282B7E82C4900cc9DCE905F5cCFD224462b7"; // Mumbai
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";

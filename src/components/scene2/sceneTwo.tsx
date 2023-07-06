@@ -50,14 +50,20 @@ import {
   bridgeFromETHToPolygon,
   getBalances,
 } from "@/utils/socketBridge";
-import { INSUFFICIENT_FUNDS_DATA, mintAmount, targetAmount } from "@/constants";
+import {
+  API_URL,
+  INSUFFICIENT_FUNDS_DATA,
+  mintAmount,
+  targetAmount,
+} from "@/constants";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
 import { mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const chainId = useChainId();
   const { scrollLenis, soundsArray, isSoundEnabled } = useGlobalContext();
   const scene2 = useRef<HTMLDivElement>(null);
   const entryTl = useRef<any>();
@@ -74,7 +80,7 @@ export const SceneTwo = () => {
     successExp: 0,
     transactionExp: 0,
   };
-  const [whitelisted, setWhitelisted] = useState(false);
+  const [whitelisted, setWhitelisted] = useState(null as boolean | null);
 
   // scene building
   // let timer: any
@@ -94,15 +100,20 @@ export const SceneTwo = () => {
 
   useEffect(() => {
     if (isConnected) {
-      // console.log("isConnected", isConnected);
       checkWhitelistStatus();
     }
   }, [isConnected]);
 
   async function checkWhitelistStatus() {
-    // TODO: When contract is deployed
-    setWhitelisted(true);
-    return true;
+    // TODO: Check delegatecash vault if connected
+    // TODO: Change from Goerli to Ethereum ChainId on deployment
+    const response = await fetch(
+      API_URL +
+        `/rest/whitelist/${
+          chainId === 5 ? "eth" : "poly"
+        }?walletAddress=${address}`
+    );
+    setWhitelisted(response.status === 200);
   }
 
   useEffect(() => {
@@ -771,7 +782,7 @@ const Q2 = (props: any) => {
   ]);
 
   // Wallet Connection Variables
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const signer = useSigner();
   const switchNetwork = useSwitchNetwork();
   const chainId = useChainId();
@@ -785,6 +796,22 @@ const Q2 = (props: any) => {
 
   useEffect(() => {
     if (props.whitelisted === true) props.animations.doSuccessAnimation();
+    else if (props.whitelisted === false) {
+      // Failure animation
+      props.animations.doFailureAnimation();
+
+      // Set HUD text. TODO: Should happen after whielisting is checked on connection
+      hideCustomText();
+      setHudText(
+        "It looks like you couldn't make it to Pluto this time around. Please try next time!"
+      );
+
+      setTimeout(() => showCustomText(), 500);
+      setTimeout(() => hideCustomText(), 10000);
+      const failureAudio = getAudio("audio-failure");
+      failureAudio.volume = 1;
+      failureAudio.play();
+    }
   }, [props.whitelisted]);
 
   async function handleClick() {
@@ -818,15 +845,6 @@ const Q2 = (props: any) => {
         //   })
         // }, 1000)
       } else {
-        // Failure animation
-        props.animations.doFailureAnimation();
-
-        // Set HUD text. TODO: Should happen after whielisting is checked on connection
-        await hideCustomText();
-        setHudText(
-          "It looks like you couldn't make it to Pluto this time around. Please try next time!"
-        );
-        showCustomText();
       }
     } else {
       //@ts-ignore

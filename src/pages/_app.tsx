@@ -16,7 +16,6 @@ import { WagmiConfig } from "wagmi";
 import { chains, customTheme, wagmiClient } from "@/utils/rainbowkitconfig";
 import GlobalProvider from "@/provider/globalProvider";
 import UIProvider from "@/provider/uiProvider";
-import { AudioManager } from "@/components/audioManager";
 
 gsap.registerPlugin(Flip); // remove if not needed
 gsap.registerPlugin(ScrollTrigger);
