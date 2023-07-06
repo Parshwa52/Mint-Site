@@ -59,7 +59,7 @@ export const UI = ({ visible }: { visible?: boolean }) => {
         <Image src={topPanelSpace} alt="ui top" className="ui-part ui-top" />
         {/* Custom ui-mid for Txn Hash */}
         <div className="ui-part ui-mid text-purple-200/90 ml-8 text-sm">
-          {hudText}
+          {txnHash}
         </div>
 
         <div className="ui-part ui-mid">

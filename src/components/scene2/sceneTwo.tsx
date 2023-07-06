@@ -58,7 +58,7 @@ import {
 } from "@/constants";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
-import { mint } from "@/utils/mint";
+import { getSignature, mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
@@ -105,14 +105,7 @@ export const SceneTwo = () => {
   }, [isConnected]);
 
   async function checkWhitelistStatus() {
-    // TODO: Check delegatecash vault if connected
-    // TODO: Change from Goerli to Ethereum ChainId on deployment
-    const response = await fetch(
-      API_URL +
-        `/rest/whitelist/${
-          chainId === 5 ? "eth" : "poly"
-        }?walletAddress=${address}`
-    );
+    const response = await getSignature(chainId, address!.toString());
     setWhitelisted(response.status === 200);
   }
 
@@ -709,6 +702,7 @@ export const SceneTwo = () => {
               doTransactionAnimation,
             }}
             whitelisted={whitelisted}
+            isWorldScene={isTimeline}
           />
         </Canvas>
       </div>
@@ -797,6 +791,9 @@ const Q2 = (props: any) => {
   useEffect(() => {
     if (props.whitelisted === true) props.animations.doSuccessAnimation();
     else if (props.whitelisted === false) {
+      // Check if in scene Two or not, don't want it to play on load
+      if (!props.isWorldScene) return;
+
       // Failure animation
       props.animations.doFailureAnimation();
 
@@ -845,6 +842,19 @@ const Q2 = (props: any) => {
         //   })
         // }, 1000)
       } else {
+        console.log("Button click failure animation and HUD text");
+        // Failure animation
+        props.animations.doFailureAnimation();
+
+        // Set HUD text. TODO: Should happen after whielisting is checked on connection
+        setHudText(
+          "It looks like you couldn't make it to Pluto this time around. Please try next time!"
+        );
+        showCustomText();
+
+        const failureAudio = getAudio("audio-failure");
+        failureAudio.volume = 1;
+        failureAudio.play();
       }
     } else {
       //@ts-ignore
@@ -875,8 +885,7 @@ const Q2 = (props: any) => {
     //   );
     // const result = { hash: "0x00", wait: sleep(8000) };
 
-    setTxnHash(result.hash); // Unused rn
-    setHudText("Txn Hash: " + result.hash);
+    setTxnHash("Txn Hash: " + result.hash);
     waitFunc.current = result.wait;
 
     // Transition to loading screen now
@@ -969,7 +978,7 @@ const Q2 = (props: any) => {
 
         // Bridge Native ETH to Polygon
         const hash = await bridgeFromETHToPolygon(signer.data as Signer, true);
-        setTxnHash(hash);
+        setTxnHash("Txn Hash: " + hash);
 
         // Switch to Polygon
         if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
