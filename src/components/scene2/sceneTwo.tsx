@@ -45,20 +45,9 @@ import img30 from "@/assets/placements/29_Clouds_left.png";
 import PlutoText from "@/assets/Pluto Text Transparent.png";
 import { useRouter } from "next/router";
 import { Signer } from "ethers";
-import {
-  approveWETHForNFT,
-  bridgeFromETHToPolygon,
-  getBalances,
-} from "@/utils/socketBridge";
-import {
-  API_URL,
-  INSUFFICIENT_FUNDS_DATA,
-  mintAmount,
-  targetAmount,
-} from "@/constants";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
-import { getSignature, mint } from "@/utils/mint";
+import { getMintAllocation, getSignature, mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
@@ -776,9 +765,8 @@ const Q2 = (props: any) => {
   ]);
 
   // Wallet Connection Variables
-  const { isConnected, address } = useAccount();
+  const { address, isConnected } = useAccount();
   const signer = useSigner();
-  const switchNetwork = useSwitchNetwork();
   const chainId = useChainId();
 
   // UI Context
@@ -811,38 +799,44 @@ const Q2 = (props: any) => {
     }
   }, [props.whitelisted]);
 
+  async function checkMintAllocation() {
+    if (!address) return;
+
+    const result = await getMintAllocation(address);
+    console.log("Mint Allocation", result);
+
+    // Check Custom Mint Status, add HUD text accodingly and play mint audio
+    await hideCustomText();
+    setHudText("You have 1 free and 2 paid mints");
+    const mintAudio = getAudio("audio-mint");
+    mintAudio.volume = 1;
+    mintAudio.play();
+    showCustomText();
+  }
+
   async function handleClick() {
     if (isConnected) {
-      // Check if whitelisted right after connecting
-
       if (props.whitelisted) {
-        // Check Custom Mint Status, add HUD text accodingly and play mint audio
-        await hideCustomText();
-        setHudText("You have 1 free and 2 paid mints");
-        const mintAudio = getAudio("audio-mint");
-        mintAudio.volume = 1;
-        mintAudio.play();
-        showCustomText();
-
         // Simulate bridge txn
-        // props.animations.doTransactionAnimation()
         // await new Promise((resolve, _) => setTimeout(resolve, 5000))
 
-        // Bridge and Mint Process (Which shall trigger Txn animation upon completion)
+        props.animations.doTransactionAnimation();
+        await checkMintAllocation();
+
+        // Mint Process (Which shall trigger Txn animation upon completion)
         beginMint();
 
         // Simulate Mint and then final page
         // setTimeout(() => {
-        //   gsap.to('body', {
+        //   gsap.to("body", {
         //     autoAlpha: 0,
         //     duration: 1.25,
         //     onComplete: () => {
-        //       router.push('/mint')
+        //       router.push("/mint");
         //     },
-        //   })
-        // }, 1000)
+        //   });
+        // }, 5000);
       } else {
-        console.log("Button click failure animation and HUD text");
         // Failure animation
         props.animations.doFailureAnimation();
 
@@ -893,7 +887,7 @@ const Q2 = (props: any) => {
           router.push("/mint");
         },
       });
-    }, 1000);
+    }, 2000);
   }
 
   async function beginMint() {

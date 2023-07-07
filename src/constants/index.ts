@@ -27,7 +27,6 @@ export const rpc_primary = rpc_mumbai;
 export const rpc_secondary = rpc_goerli;
 
 // LayerZero Chain IDs
-export const l0_ethereum = -1; // Fill in when deployed
 export const l0_polygon = 10121;
 
 // Delegator Addresses

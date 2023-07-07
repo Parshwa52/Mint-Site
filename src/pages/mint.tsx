@@ -36,11 +36,15 @@ const Mint = () => {
       opacity: 1,
       duration: 1,
       onComplete() {
-        bridgeVideo.current!.play();
+        if (bridgeVideo.current) {
+          // bridgeVideo.current.oncanplay = function () {
+          bridgeVideo.current?.play();
 
-        const bridgingAudio = getAudio("audio-bridging");
-        bridgingAudio.volume = 1;
-        bridgingAudio.play();
+          const bridgingAudio = getAudio("audio-bridging");
+          bridgingAudio.volume = 1;
+          bridgingAudio.play();
+          // };
+        }
       },
     });
 
@@ -67,16 +71,16 @@ const Mint = () => {
 
         gsap.set(".ui-space", { display: "block" });
 
-        // Show for at least 5 seconds
+        // Show for at least a few seconds
         setTimeout(() => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
-            waitFunc.current(2).then(() => {
+            waitFunc.current(1).then(() => {
               fadeOut();
               hideDrag();
             });
           } else router.push("/");
-        }, 5000);
+        }, 2000);
       },
     });
   }
@@ -131,36 +135,35 @@ const Mint = () => {
   return (
     <PageLayout
       pageTitle="Pluto mint - Minted"
-      pageDesc="Cillum pariatur in Lorem consequat velit reprehenderit enim proident."
+      pageDesc="Pluto Misfits Minted Page"
     >
       <UI visible />
 
-      <div className="bridging-video-container opacity-0">
-        <video
-          ref={bridgeVideo}
-          style={{
-            width: "100vw",
-            height: "100vh",
-          }}
-          onCanPlay={() => console.log("Video can play")}
-          onEnded={() => toGalaxy()}
-          preload="true"
-          muted
-        >
-          <source src="/assets/media/Bridge.mp4" type="video/mp4" />
-        </video>
-        <audio
-          id="audio-bridging"
-          muted
-          style={{
-            display: "none",
-          }}
-        >
-          <source src="/assets/sounds/Bridging.mp3" type="audio/mp3" />
-        </audio>
-      </div>
-
-      {!state0 && (
+      {state0 ? (
+        <div className="bridging-video-container opacity-0">
+          <video
+            ref={bridgeVideo}
+            style={{
+              width: "100vw",
+              height: "100vh",
+            }}
+            onEnded={() => toGalaxy()}
+            preload="true"
+            muted
+          >
+            <source src="/assets/media/Bridge.mp4" type="video/mp4" />
+          </video>
+          <audio
+            id="audio-bridging"
+            muted
+            style={{
+              display: "none",
+            }}
+          >
+            <source src="/assets/sounds/Bridging.mp3" type="audio/mp3" />
+          </audio>
+        </div>
+      ) : (
         <>
           {state ? <></> : <ThreeJSLoading />}
           {state ? <VideoScreen /> : <></>}
