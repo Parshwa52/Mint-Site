@@ -40,12 +40,14 @@ export const minterAddress = "0xB192282B7E82C4900cc9DCE905F5cCFD224462b7"; // Mu
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 export const wethPolygon = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619";
 
+export const fromAssetAddressNative =
+  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Native Token
+
 // Bridging Params
 export const fromChainId = 1;
 export const toChainId = 137;
 
-export const fromAssetAddressNative =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Native Token
+
 export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
 
 export const toAssetAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // WETH on Polygon
@@ -60,9 +62,3 @@ export const targetAmount = parseUnits(targetAmountNumber.toString(), 18);
 // Mint Amount
 const mintAmountNumber = 0.05; // In WETH
 export const mintAmount = parseUnits(mintAmountNumber.toString(), 18);
-
-// Popup Modal Data
-export const INSUFFICIENT_FUNDS_DATA: ModalData = {
-  title: "Insufficient Funds",
-  text: `You need ${mintAmountNumber} WETH on Polygon for minting. Or at least ${targetAmountNumber} WETH/ETH on Ethereum to bridge over to Polygon.`,
-};

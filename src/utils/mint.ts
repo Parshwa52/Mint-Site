@@ -54,9 +54,9 @@ export async function mint(signer: Signer, chainId = 137) {
 
   if (tokenResult === null) throw new Error("Insufficient Funds");
 
-  // Add 10% buffer to estimatedFees
+  // Add 20% buffer to estimatedFees
   let nativeAmount = parseEther(
-    (+formatEther(estimatedFees) * 1.1).toFixed(18)
+    (+formatEther(estimatedFees) * 1.20).toFixed(18)
   );
 
   if (tokenResult.symbol === "NATIVE")
@@ -76,6 +76,7 @@ export async function mint(signer: Signer, chainId = 137) {
     vault: ethers.constants.AddressZero,
     value: nativeAmount,
   });
+ 
   return await delegatorContract.payAndMintTokens(
     Signature,
     tokenResult.address,
@@ -85,7 +86,6 @@ export async function mint(signer: Signer, chainId = 137) {
     {
       // TODO: Mint Value will depend on how the user is paying. With native tokens or ERC20 tokens
       value: nativeAmount,
-      gasLimit: 21000,
     }
   );
 }
