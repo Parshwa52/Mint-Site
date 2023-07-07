@@ -1,7 +1,6 @@
 import {
   API_URL,
   delegatorAddress,
-  fromAssetAddressNative,
   l0_ethereum,
   l0_polygon,
   primaryChainId,
@@ -10,7 +9,8 @@ import { BigNumber, Contract, Signer, ethers } from "ethers";
 
 // NFT Contract ABI
 import DelegatorABI from "@/json/PlutoDelegator.json";
-import { parseEther } from "ethers/lib/utils.js";
+import { preparePayment } from "./payment";
+import { formatEther, parseEther } from "ethers/lib/utils.js";
 
 export async function getSignature(chainId: number, address: string) {
   // TODO: Check delegatecash vault if connected
@@ -31,31 +31,6 @@ export async function mint(signer: Signer, chainId = 137) {
 
   const userAddress = await signer.getAddress();
 
-  // Construct EIP-712 Signature
-  // const domain = {
-  //   name: "PlutoSigner",
-  //   version: "1",
-  //   chainId: chainId.toString(),
-  //   verifyingContract: delegatorAddress,
-  // };
-
-  // const types = {
-  //   Signature: [
-  //     { name: "timestamp", type: "uint32" },
-  //     { name: "userAddress", type: "address" },
-  //   ],
-  // };
-
-  // const value = {
-  //   timestamp: Math.round(Date.now() / 1000).toString(),
-  //   userAddress: userAddress,
-  // };
-
-  // // @ts-ignore
-  // const signedBytes = await signer._signTypedData(domain, types, value);
-
-  // const Signature = [value.timestamp, userAddress, signedBytes];
-
   const Signature = (await (await getSignature(chainId, userAddress)).json())
     .tuple;
 
@@ -74,11 +49,28 @@ export async function mint(signer: Signer, chainId = 137) {
     "1"
   )) as [BigNumber, BigNumber];
 
-  console.log("Estimated Fees", estimatedFees);
-  const nativeAmount = estimatedFees.add(parseEther("0.03"));
+  // Fetch token for payment, either native or ERC20
+  const tokenResult = await preparePayment(chainId, signer);
+
+  if (tokenResult === null) throw new Error("Insufficient Funds");
+
+  // Add 10% buffer to estimatedFees
+  let nativeAmount = parseEther(
+    (+formatEther(estimatedFees) * 1.1).toFixed(18)
+  );
+
+  if (tokenResult.symbol === "NATIVE")
+    nativeAmount = nativeAmount.add(tokenResult.mintPrice);
+
+  console.log({
+    estimatedFees,
+    mintPrice: tokenResult.mintPrice,
+    nativeAmount,
+  });
+
   console.log("Params to payAndMintTokens", {
     Signature,
-    fromAssetAddressNative,
+    tokenAdress: tokenResult.address,
     amount: "1",
     userAddress,
     vault: ethers.constants.AddressZero,
@@ -86,13 +78,14 @@ export async function mint(signer: Signer, chainId = 137) {
   });
   return await delegatorContract.payAndMintTokens(
     Signature,
-    fromAssetAddressNative,
+    tokenResult.address,
     "1",
     userAddress,
     ethers.constants.AddressZero,
     {
       // TODO: Mint Value will depend on how the user is paying. With native tokens or ERC20 tokens
       value: nativeAmount,
+      gasLimit: 21000,
     }
   );
 }

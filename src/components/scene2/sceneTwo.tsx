@@ -829,7 +829,7 @@ const Q2 = (props: any) => {
         // await new Promise((resolve, _) => setTimeout(resolve, 5000))
 
         // Bridge and Mint Process (Which shall trigger Txn animation upon completion)
-        bridgeAndMint();
+        beginMint();
 
         // Simulate Mint and then final page
         // setTimeout(() => {
@@ -879,11 +879,6 @@ const Q2 = (props: any) => {
 
   async function callMint() {
     const result = await mint(signer.data as Signer, chainId);
-    // const sleep = (time?: number) =>
-    //   new Promise<string>((res, _) =>
-    //     setTimeout(() => res("OK"), time ?? 1000)
-    //   );
-    // const result = { hash: "0x00", wait: sleep(8000) };
 
     setTxnHash("Txn Hash: " + result.hash);
     waitFunc.current = result.wait;
@@ -901,118 +896,21 @@ const Q2 = (props: any) => {
     }, 1000);
   }
 
-  async function bridgeAndMint() {
-    const { ethereumBalance, wethBalanceETH, wethBalancePolygon } =
-      await getBalances(signer.data as Signer);
-
+  async function beginMint() {
     try {
-      //////////////////////////////////////
-      // Case 1: User Has WETH on Polygon //
-      //////////////////////////////////////
-      if (1 === 1) {
-        // True value without typescript errors
-        // if (wethBalancePolygon.gte(mintAmount)) {
-        // Make sure network is Polygon
-        // if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
-
-        // @ts-ignore
-        // if (chainId !== 137) {
-        //   console.warn("Switch to Polygon Chain");
-        //   props.animations.doBridgeFailure(); // Switch to Polygon Animation
-        //   return;
-        // }
-
-        // Approve WETH on Polygon to NFT Contract
-        // await approveWETHForNFT(signer.data as Signer);
-
-        // Mint
-        await callMint();
-      }
-
-      ///////////////////////////////////////////////
-      // Case 2: User has WETH on Ethereum Network //
-      ///////////////////////////////////////////////
-      else if (wethBalanceETH.gte(targetAmount)) {
-        // Make sure network is Ethereum
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
-
-        if (chainId !== 1) {
-          console.warn("Switch to Ethereum Chain");
-          props.animations.doEthFailure(); // Switch to Ethereum Animation
-          return;
-        }
-
-        // Bridge WETH to Polygon
-        const hash = await bridgeFromETHToPolygon(signer.data as Signer, false);
-        setTxnHash(hash);
-
-        // Switch to Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
-
-        // @ts-ignore
-        if (chainId !== 137) {
-          console.warn("Switch to Polygon Chain");
-          props.animations.doBridgeFailure(); // Switch to Polygon Animation
-          return;
-        }
-
-        // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer);
-
-        // Mint
-        await callMint();
-      }
-
-      //////////////////////////////////////////////
-      // Case 3: User has ETH on Ethereum Network //
-      //////////////////////////////////////////////
-      else if (ethereumBalance.gte(targetAmount)) {
-        // Make sure network is Ethereum
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(1);
-
-        if (chainId !== 1) {
-          console.warn("Switch to Ethereum Chain");
-          props.animations.doEthFailure(); // Switch to Ethereum Animation
-          return;
-        }
-
-        // Bridge Native ETH to Polygon
-        const hash = await bridgeFromETHToPolygon(signer.data as Signer, true);
-        setTxnHash("Txn Hash: " + hash);
-
-        // Switch to Polygon
-        if (switchNetwork.switchNetwork) switchNetwork.switchNetwork(137);
-
-        // @ts-ignore
-        if (chainId !== 137) {
-          console.warn("Switch to Polygon Chain");
-          props.animations.doBridgeFailure(); // Switch to Polygon Animation
-          return;
-        }
-
-        // Approve WETH on Polygon to NFT Contract
-        await approveWETHForNFT(signer.data as Signer);
-
-        // Mint
-        await callMint();
-      }
-
-      /////////////////////////////////////////
-      // Case 4: User has insufficient funds //
-      /////////////////////////////////////////
-      else {
+      await callMint();
+    } catch (e: any) {
+      if (e.message === "Insufficient Funds") {
         console.warn("Insufficient funds on this chain");
         setHudText("Insufficient funds on this chain");
         showCustomText();
         props.animations.doFailureAnimation();
+      } else {
+        console.error("An error occurred. Please try again", e);
+        setHudText("An error occurred. Please try again");
+        showCustomText();
+        props.animations.doFailureAnimation();
       }
-
-      console.log("Bridge and Mint Process Done");
-    } catch (e) {
-      console.error(
-        "Error during bridge and mint process. Possible that user rejected txn",
-        e
-      );
     }
   }
 

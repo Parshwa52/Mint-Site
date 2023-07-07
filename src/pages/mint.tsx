@@ -135,31 +135,32 @@ const Mint = () => {
     >
       <UI visible />
 
-      {state0 ? (
-        <div className="bridging-video-container opacity-0">
-          <video
-            ref={bridgeVideo}
-            style={{
-              width: "100vw",
-              height: "100vh",
-            }}
-            onCanPlay={() => console.log("Video can play")}
-            onEnded={() => toGalaxy()}
-            muted
-          >
-            <source src="/assets/media/Bridge.mp4" type="video/mp4" />
-          </video>
-          <audio
-            id="audio-bridging"
-            muted
-            style={{
-              display: "none",
-            }}
-          >
-            <source src="/assets/sounds/Bridging.mp3" type="audio/mp3" />
-          </audio>
-        </div>
-      ) : (
+      <div className="bridging-video-container opacity-0">
+        <video
+          ref={bridgeVideo}
+          style={{
+            width: "100vw",
+            height: "100vh",
+          }}
+          onCanPlay={() => console.log("Video can play")}
+          onEnded={() => toGalaxy()}
+          preload="true"
+          muted
+        >
+          <source src="/assets/media/Bridge.mp4" type="video/mp4" />
+        </video>
+        <audio
+          id="audio-bridging"
+          muted
+          style={{
+            display: "none",
+          }}
+        >
+          <source src="/assets/sounds/Bridging.mp3" type="audio/mp3" />
+        </audio>
+      </div>
+
+      {!state0 && (
         <>
           {state ? <></> : <ThreeJSLoading />}
           {state ? <VideoScreen /> : <></>}

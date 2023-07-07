@@ -37,7 +37,11 @@ export async function approveToken(
 
   // If allowance is lower than mint amount, approve more WETH
   if (allowance.lt(minAmount)) {
-    await tokenContract.approve(targetAddress, ethers.constants.MaxUint256);
+    const result = await tokenContract.approve(
+      targetAddress,
+      ethers.constants.MaxUint256
+    );
+    await result.wait(1);
   }
 }
 
@@ -66,9 +70,20 @@ export function getPaymentToken(
         provider
       );
 
-      const mintPrice = (await mintContract.getMintPrice(
-        item.address
-      )) as BigNumber;
+      console.log({
+        a: chainId === primaryChainId ? minterAddress : delegatorAddress,
+        b: chainId === primaryChainId ? MinterABI : DelegatorABI,
+        c: provider,
+      });
+
+      let mintPrice;
+      if (chainId === primaryChainId) {
+        mintPrice = (await mintContract.getMintPrice(
+          item.address
+        )) as BigNumber;
+      } else {
+        mintPrice = (await mintContract.mintPrice(item.address)) as BigNumber;
+      }
 
       if (balance.gte(mintPrice)) {
         resolve({ ...item, mintPrice });
@@ -112,9 +127,22 @@ export async function preparePayment(chainId: number, signer: Signer) {
       chainId === primaryChainId ? MinterABI : DelegatorABI,
       provider
     );
-    const mintPrice = (await mintContract.getMintPrice(
-      fromAssetAddressNative
-    )) as BigNumber;
+
+    console.log({
+      a: chainId === primaryChainId ? minterAddress : delegatorAddress,
+      b: chainId === primaryChainId ? MinterABI : DelegatorABI,
+      c: provider,
+    });
+    let mintPrice;
+    if (chainId === primaryChainId) {
+      mintPrice = (await mintContract.getMintPrice(
+        fromAssetAddressNative
+      )) as BigNumber;
+    } else {
+      mintPrice = (await mintContract.mintPrice(
+        fromAssetAddressNative
+      )) as BigNumber;
+    }
 
     // Check user's native token balance
     const nativeBalance = await provider.getBalance(userAddress);
@@ -124,7 +152,7 @@ export async function preparePayment(chainId: number, signer: Signer) {
       (+formatEther(mintPrice) * 1.05).toString()
     );
 
-    console.log({ mintPriceWithMargin });
+    console.log({ mintPrice, mintPriceWithMargin });
 
     if (nativeBalance.gte(mintPriceWithMargin)) {
       return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };
