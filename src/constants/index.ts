@@ -33,7 +33,7 @@ export const l0_polygon = 10121;
 export const delegatorAddress = "0x4560eE1c798F9e21089AA27Bc1d7fE3DE3a0cE3B"; // Goerli
 
 // Minter Addresses
-export const minterAddress = "0xB192282B7E82C4900cc9DCE905F5cCFD224462b7"; // Mumbai
+export const minterAddress = "0x27D33C9161bA0519D1c077EFAaa952E2902fB593"; // Mumbai
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";

@@ -714,6 +714,91 @@
     {
         "inputs": [
             {
+                "internalType": "uint32",
+                "name": "_signatureValidity",
+                "type": "uint32"
+            }
+        ],
+        "name": "changeSignatureTime",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_signer",
+                "type": "address"
+            }
+        ],
+        "name": "changeSinger",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "timestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "signature",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct whitelistWizard.whitelist",
+                "name": "_signature",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "checkSignature",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isSignatureValid",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isDesignatedSignerValid",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "dc",
+        "outputs": [
+            {
+                "internalType": "contract IDelegationRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "address[]",
                 "name": "traitContracts",
                 "type": "address[]"
@@ -787,6 +872,13 @@
             }
         ],
         "name": "forceResumeReceive",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "freeMintTokens",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -1340,6 +1432,11 @@
                 "internalType": "address",
                 "name": "paymentToken",
                 "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_vault",
+                "type": "address"
             }
         ],
         "name": "payAndMint",
@@ -1845,6 +1942,25 @@
                 "internalType": "string",
                 "name": "",
                 "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "tokensAllocated",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
