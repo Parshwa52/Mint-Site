@@ -9,7 +9,7 @@ const VideoScreen: React.FC<Props> = ({}) => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://www.bandisoft.com/honeycam/help/file_format/sample.webp')",
+            "url('/testImage.png')",
         }}
       />
       {/* <div className='absolute items-center justify-end flex w-full top-0 p-4 '>

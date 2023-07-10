@@ -14,7 +14,7 @@ const Mint = () => {
 
   const { soundsArray } = useGlobalContext();
 
-  const [state0, setState0] = useState(true);
+  const [state0, setState0] = useState(false);
   const [state, setState] = useState(false);
 
   const bridgeVideo = useRef(null as HTMLVideoElement | null);
@@ -31,22 +31,26 @@ const Mint = () => {
     //   fadeOut()
     //   hideDrag()
     // }, 10000)
+    
+    // For Testing
+    fadeOut()
+    hideDrag()
 
-    gsap.to(".bridging-video-container", {
-      opacity: 1,
-      duration: 1,
-      onComplete() {
-        if (bridgeVideo.current) {
-          // bridgeVideo.current.oncanplay = function () {
-          bridgeVideo.current?.play();
+    // gsap.to(".bridging-video-container", {
+    //   opacity: 1,
+    //   duration: 1,
+    //   onComplete() {
+    //     if (bridgeVideo.current) {
+    //       // bridgeVideo.current.oncanplay = function () {
+    //       bridgeVideo.current?.play();
 
-          const bridgingAudio = getAudio("audio-bridging");
-          bridgingAudio.volume = 1;
-          bridgingAudio.play();
-          // };
-        }
-      },
-    });
+    //       const bridgingAudio = getAudio("audio-bridging");
+    //       bridgingAudio.volume = 1;
+    //       bridgingAudio.play();
+    //       // };
+    //     }
+    //   },
+    // });
 
     // soundsArray[1].play()
 
