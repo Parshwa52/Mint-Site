@@ -807,7 +807,9 @@ const Q2 = (props: any) => {
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     await hideCustomText();
-    setHudText("You have 1 free and 2 paid mints");
+    setHudText(
+      "You have 1 free and 2 paid mints. Click on me to check out why I'm so excited!"
+    );
     const mintAudio = getAudio("audio-mint");
     mintAudio.volume = 1;
     mintAudio.play();
@@ -901,7 +903,9 @@ const Q2 = (props: any) => {
         props.animations.doFailureAnimation();
       } else {
         console.error("An error occurred. Please try again", e);
-        setHudText("An error occurred. Please try again");
+        setHudText(
+          "Hey, looks like the transaction attempt failed. Can you please try again?"
+        );
         showCustomText();
         props.animations.doFailureAnimation();
       }

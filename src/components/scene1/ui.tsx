@@ -133,7 +133,7 @@ export const UI = ({ visible }: { visible?: boolean }) => {
             <Image src={midPanelWorld} alt="ui mid" className="ui-img-img" />
             <div className="ui-text">
               <div className="text-2">
-                <p className="phrase-3" id="custom-p-1">
+                <p className="phrase-3 text-lg mt-16" id="custom-p-1">
                   <Split splitWords splitChars textToSplit={hudText} />
                 </p>
               </div>
