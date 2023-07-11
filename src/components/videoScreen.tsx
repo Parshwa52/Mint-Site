@@ -5,13 +5,21 @@ type Props = {};
 const VideoScreen: React.FC<Props> = ({}) => {
   return (
     <div className="relative h-screen video">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://www.bandisoft.com/honeycam/help/file_format/sample.webp')",
-        }}
-      />
+      <div className="relative inset-0 bg-cover bg-center" />
+      <video
+        className="absolute left-0 bottom-0 top-0 right-0 min-w-full min-h-full w-screen h-auto"
+        loop
+        autoPlay
+      >
+        <source
+          src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689076626/Pluto/Mint/PreRevealHQWide_rreahd.mp4"
+          type="video/mp4"
+        />
+      </video>
+      <audio
+        src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689076616/Pluto/Mint/Pre_Reveal_Audio_e6touw.mp3"
+        autoPlay
+      ></audio>
       {/* <div className='absolute items-center justify-end flex w-full top-0 p-4 '>
         <a
           href='#'
@@ -42,7 +50,10 @@ const VideoScreen: React.FC<Props> = ({}) => {
         <a href="#" target="_blank">
           View on OpenSea
         </a>
-        <a target="_blank" href="http://twitter.com/share?text=I am officially a misfit @plutomisfits!&url=https://magicbatch.xyz/&hashtags=pluto,misfit,randomCat123">
+        <a
+          target="_blank"
+          href="http://twitter.com/share?text=I am officially a misfit @plutomisfits!&url=https://magicbatch.xyz/&hashtags=pluto,misfit,randomCat123"
+        >
           Share on Twitter
         </a>
       </div>
