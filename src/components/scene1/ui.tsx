@@ -141,10 +141,10 @@ export const UI = ({ visible }: { visible?: boolean }) => {
             <div className="ui-sounds">
               {mounted && (
                 <>
-                  {/* <div className="address">
+                  <div className="address">
                     {address ? compactAddress(address as string) : ""}
-                  </div> */}
-                  <div style={{ zIndex: 100 }}>
+                  </div>
+                  {/* <div style={{ zIndex: 100 }}>
                     <DelegateCashButton
                       // @ts-ignore
                       connectedWallet="0xf475D99Be3241c69454eA8AF7B12F38078F697bc"
@@ -154,7 +154,7 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                       onButtonClick={(event: any) => console.log(event.detail)}
                       onWalletSelect={(event: any) => console.log(event.detail)}
                     />
-                  </div>
+                  </div> */}
                 </>
               )}
               <SoundButton />
