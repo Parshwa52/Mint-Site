@@ -33,11 +33,17 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
     signatureInfo.Sale3MaxMint +
     signatureInfo.Sale4MaxMint;
 
-  // TODO
-  // const alreadyMinted = await mintControllerContract.readRegister(
-  //   address,
-  //   signatureInfo.PhaseType
-  // );
+  // TODO: Determine current phase based on timestamps and check if any tokens left to mint for the user
+
+  const alreadyMintedRaw = await Promise.all([
+    mintControllerContract.readRegister(address, 1),
+    mintControllerContract.readRegister(address, 2),
+    mintControllerContract.readRegister(address, 3),
+    mintControllerContract.readRegister(address, 4),
+  ]);
+
+  const alreadyMinted = alreadyMintedRaw.map((item) => +formatEther(item));
+  console.log({ alreadyMinted });
 
   return {
     free: freeAllowance,

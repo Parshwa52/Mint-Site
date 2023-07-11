@@ -47,7 +47,7 @@ import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
-import { getSignature, mint } from "@/utils/mint";
+import { getMintAllocation, getSignature, mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
@@ -772,13 +772,34 @@ const Q2 = (props: any) => {
   // UI Context
   const { setTxnHash, setHudText, waitFunc } = useUIContext();
 
+  const isRunning = useRef(false);
+
   useEffect(() => {
     props.setInstance(q2.current);
   }, [q2]);
 
   useEffect(() => {
-    if (props.whitelisted === true) props.animations.doSuccessAnimation();
-    else if (props.whitelisted === false) {
+    onWhitelistChange();
+    console.log("isRunning", isRunning.current);
+  }, [props.whitelisted]);
+
+  async function onWhitelistChange() {
+    if (!props.isWorldScene) {
+      hideCustomText();
+      return;
+    }
+
+    if (isRunning.current) return;
+
+    isRunning.current = true;
+    console.log("onWhitelistChange", props.whitelisted);
+
+    if (props.whitelisted === true) {
+      props.animations.doSuccessAnimation();
+
+      // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
+      if (props.isWorldScene) checkMintAllocation();
+    } else if (props.whitelisted === false) {
       // Check if in scene Two or not, don't want it to play on load
       if (!props.isWorldScene) return;
 
@@ -786,29 +807,33 @@ const Q2 = (props: any) => {
       props.animations.doFailureAnimation();
 
       // Set HUD text. TODO: Should happen after whielisting is checked on connection
-      hideCustomText();
+      await hideCustomText();
       setHudText(
-        "It looks like you couldn't make it to Pluto this time around. Please try next time!"
+        "Looks like you couldn't make it to Pluto this time around. Please try next time!"
       );
 
       setTimeout(() => showCustomText(), 500);
-      setTimeout(() => hideCustomText(), 10000);
+      // setTimeout(() => hideCustomText(), 10000);
       const failureAudio = getAudio("audio-failure");
       failureAudio.volume = 1;
       failureAudio.play();
     }
-  }, [props.whitelisted]);
+
+    isRunning.current = false;
+  }
 
   async function checkMintAllocation() {
     if (!address) return;
 
-    // const result = await getMintAllocation(address);
-    // console.log("Mint Allocation", result);
+    const signatureInfo = await (await getSignature(chainId, address)).json();
+    const result = await getMintAllocation(signatureInfo, address);
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     await hideCustomText();
     setHudText(
-      "You have 1 free and 2 paid mints. Click on me to check out why I'm so excited!"
+      `You have ${result.free > 0 ? result.free + " free and" : ""} ${
+        result.paid
+      } paid mints. Click on me to check out why I'm so excited!`
     );
     const mintAudio = getAudio("audio-mint");
     mintAudio.volume = 1;
@@ -823,7 +848,6 @@ const Q2 = (props: any) => {
         // await new Promise((resolve, _) => setTimeout(resolve, 5000))
 
         props.animations.doTransactionAnimation();
-        await checkMintAllocation();
 
         // Mint Process (Which shall trigger Txn animation upon completion)
         beginMint();
@@ -839,18 +863,7 @@ const Q2 = (props: any) => {
         //   });
         // }, 5000);
       } else {
-        // Failure animation
-        props.animations.doFailureAnimation();
-
-        // Set HUD text. TODO: Should happen after whielisting is checked on connection
-        setHudText(
-          "It looks like you couldn't make it to Pluto this time around. Please try next time!"
-        );
-        showCustomText();
-
-        const failureAudio = getAudio("audio-failure");
-        failureAudio.volume = 1;
-        failureAudio.play();
+        onWhitelistChange();
       }
     } else {
       //@ts-ignore
