@@ -5,10 +5,17 @@ export * from "./uniswap";
 export * from "./tokens";
 
 // Phase timings
+
+// For testing
+const currentPhase = {
+  // Since time will be in seconds from contract
+  startTime: new Date().getTime() / 1000,
+  endTime: new Date().getTime() / 1000,
+};
 export const PHASE = {
   1: {
-    startTime: 0,
-    endTime: 0,
+    startTime: currentPhase.startTime,
+    endTime: currentPhase.endTime,
   },
   2: {
     startTime: 0,
@@ -50,7 +57,7 @@ export const rpc_secondary = rpc_goerli;
 export const l0_polygon = 10121; // TODO: Change when deployed on mainnets
 
 // Core Contract Addresses
-export const delegatorAddress = "0x2Dd7017fEc40D29028B016f1B9C700eE8e9EAc57"; // Goerli
+export const delegatorAddress = "0xa1e9177e7642A234D26652AfC69752b0Ae5F2e0F"; // Goerli
 export const minterAddress = "0x7559FEd25DA66e12761cB32A109F7cE6292261ad"; // Mumbai
 export const mintControllerAddress =
   "0x32AC68403747Eb776EEA9Cd505924A559e763A59"; // Mumbai

@@ -86,20 +86,21 @@ export async function mint(signer: Signer, chainId = 137) {
 
   if (chainId === primaryChainId) {
     // Polygon (Primary)
-    const minterContract = new Contract(
+    const mintControllerContract = new Contract(
       mintControllerAddress,
       MintControllerABI,
       signer
     );
 
-    console.log("Params to Minter payAndMint", {
+    console.log("Params to MintContoller payAndMint", {
+      mintControllerAddress,
       Signature,
       tokenAdress: tokenResult.address,
       amount: "1",
       vault: ethers.constants.AddressZero,
       value: nativeAmount,
     });
-    return await minterContract.payAndMint(
+    return await mintControllerContract.payAndMint(
       Signature,
       "1",
       tokenResult.address,
