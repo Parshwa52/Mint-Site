@@ -47,7 +47,7 @@ import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import { useUIContext } from "@/provider/uiProvider";
 import { hideCustomText, showCustomText } from "@/utils";
-import { getMintAllocation, getSignature, mint } from "@/utils/mint";
+import { getSignature, mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
@@ -802,8 +802,8 @@ const Q2 = (props: any) => {
   async function checkMintAllocation() {
     if (!address) return;
 
-    const result = await getMintAllocation(address);
-    console.log("Mint Allocation", result);
+    // const result = await getMintAllocation(address);
+    // console.log("Mint Allocation", result);
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     await hideCustomText();

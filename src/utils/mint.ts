@@ -2,7 +2,7 @@ import {
   API_URL,
   delegatorAddress,
   l0_polygon,
-  minterAddress,
+  mintControllerAddress,
   primaryChainId,
   rpc_primary,
 } from "@/constants";
@@ -10,16 +10,17 @@ import { BigNumber, Contract, Signer, ethers } from "ethers";
 
 // Contract ABIs
 import DelegatorABI from "@/json/PlutoDelegator.json";
-import MinterABI from "@/json/PlutoMinter.json";
+import MintControllerABI from "@/json/PlutoMintController.json";
+
 import { preparePayment } from "./payment";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
 
-export async function getMintAllocation(address: string) {
-  const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
-  const minterContract = new Contract(minterAddress, MinterABI, provider);
+// export async function getMintAllocation(address: string) {
+//   const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
+//   const minterContract = new Contract(mintControllerAddress, MinterABI, provider);
 
-  return await minterContract.isFreeMintAvailable(address);
-}
+//   return await minterContract.isFreeMintAvailable(address);
+// }
 
 export async function getSignature(chainId: number, address: string) {
   // TODO: Check delegatecash vault if connected
@@ -56,7 +57,11 @@ export async function mint(signer: Signer, chainId = 137) {
 
   if (chainId === primaryChainId) {
     // Polygon (Primary)
-    const minterContract = new Contract(minterAddress, MinterABI, signer);
+    const minterContract = new Contract(
+      mintControllerAddress,
+      MintControllerABI,
+      signer
+    );
 
     console.log("Params to Minter payAndMint", {
       Signature,

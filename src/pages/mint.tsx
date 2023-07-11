@@ -32,7 +32,6 @@ const Mint = () => {
     //   hideDrag()
     // }, 10000)
 
-    // TODO: Add a check for url to see from what chain it is being minted, fetch from wagmi too perhaps
     console.log({ chainId, isConnected });
     if (isConnected && chainId === secondaryChainId) {
       gsap.to("body", {

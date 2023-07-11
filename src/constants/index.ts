@@ -27,13 +27,12 @@ export const rpc_primary = rpc_mumbai;
 export const rpc_secondary = rpc_goerli;
 
 // LayerZero Chain IDs
-export const l0_polygon = 10121;
+export const l0_polygon = 10121; // TODO: Change when deployed on mainnets
 
-// Delegator Addresses
-export const delegatorAddress = "0x4560eE1c798F9e21089AA27Bc1d7fE3DE3a0cE3B"; // Goerli
-
-// Minter Addresses
-export const minterAddress = "0x27D33C9161bA0519D1c077EFAaa952E2902fB593"; // Mumbai
+// Core Contract Addresses
+export const delegatorAddress = "0x2Dd7017fEc40D29028B016f1B9C700eE8e9EAc57"; // Goerli
+export const minterAddress = "0x7559FEd25DA66e12761cB32A109F7cE6292261ad"; // Mumbai
+export const mintControllerAddress = "0x32AC68403747Eb776EEA9Cd505924A559e763A59" // Mumbai
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";

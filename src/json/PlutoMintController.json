@@ -1,22 +1,7 @@
 [
   {
     "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidParams",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "MaxSupplyReached",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Overpriced",
+    "name": "MaxMintReached",
     "type": "error"
   },
   {
@@ -38,29 +23,6 @@
     "inputs": [],
     "name": "SignatureInvalid",
     "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Unauthorized",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Underpriced",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
-    ],
-    "name": "ChangeMintPrice",
-    "type": "event"
   },
   {
     "anonymous": false,
@@ -258,19 +220,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "TokenWhitelisted",
-    "type": "event"
-  },
-  {
     "inputs": [],
     "name": "DEFAULT_PAYLOAD_SIZE_LIMIT",
     "outputs": [
@@ -357,19 +306,6 @@
   },
   {
     "inputs": [],
-    "name": "NFTAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "Public",
     "outputs": [
       {
@@ -396,6 +332,50 @@
   {
     "inputs": [
       {
+        "internalType": "address[]",
+        "name": "_address",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "count",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "allocateTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "allowToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "avatarMinter",
+    "outputs": [
+      {
+        "internalType": "contract IAvatarMinter",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes",
         "name": "data",
         "type": "bytes"
@@ -410,42 +390,6 @@
       }
     ],
     "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_gas",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_changeGasPerToken",
-        "type": "uint256"
-      }
-    ],
-    "name": "changeGas",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
-    ],
-    "name": "changeMintPrice",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -546,53 +490,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "destinationChainId",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "userAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint16",
-        "name": "chainId",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint256",
-        "name": "mintAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "estimateFees",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "nativeFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "zroFee",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint16",
@@ -641,15 +538,9 @@
   },
   {
     "inputs": [],
-    "name": "gas",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "freeMintTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -767,23 +658,10 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "increaseGasPerToken",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "endpointAddress",
+        "name": "_endpointAddress",
         "type": "address"
       },
       {
@@ -794,6 +672,11 @@
       {
         "internalType": "address",
         "name": "_dc",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_avatarMinter",
         "type": "address"
       },
       {
@@ -964,7 +847,7 @@
   },
   {
     "inputs": [],
-    "name": "maxTotalSupply",
+    "name": "maxSupply",
     "outputs": [
       {
         "internalType": "uint256",
@@ -989,25 +872,6 @@
       }
     ],
     "name": "minDstGasLookup",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "mintPrice",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1122,27 +986,22 @@
         "type": "tuple"
       },
       {
-        "internalType": "address",
-        "name": "payableTokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "mintAmount",
         "type": "uint256"
       },
       {
-        "internalType": "bytes",
-        "name": "mintTo",
-        "type": "bytes"
+        "internalType": "address",
+        "name": "paymentToken",
+        "type": "address"
       },
       {
-        "internalType": "bytes",
+        "internalType": "address",
         "name": "_vault",
-        "type": "bytes"
+        "type": "address"
       }
     ],
-    "name": "payAndMintTokens",
+    "name": "payAndMint",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -1174,32 +1033,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "phaseEndTime",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "phaseStartTime",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
       }
     ],
     "stateMutability": "view",
@@ -1280,6 +1113,58 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_salePrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "royaltyInfo",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "phase",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "setConditions",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint16",
         "name": "_version",
         "type": "uint16"
@@ -1309,19 +1194,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_dc",
-        "type": "address"
-      }
-    ],
-    "name": "setDCAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "_designatedSigner",
         "type": "address"
       }
@@ -1334,97 +1206,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint16",
-        "name": "_destinationChainId",
-        "type": "uint16"
-      }
-    ],
-    "name": "setDestinationChainId",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTime",
+        "name": "_maxSupply",
         "type": "uint256"
       }
     ],
-    "name": "setFCFSConditions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setGuaranteedConditions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setInvestorsConditions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMBCConditions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_maxTotalSupply",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxTotalSupply",
+    "name": "setMaxSupply",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1456,11 +1243,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_NFTAddress",
+        "name": "paymentToken",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
       }
     ],
-    "name": "setNFTAddress",
+    "name": "setMintPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1486,48 +1278,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint32",
-        "name": "_startTime",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "_endTime",
-        "type": "uint32"
-      }
-    ],
-    "name": "setPhaseTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_precrime",
         "type": "address"
       }
     ],
     "name": "setPrecrime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_endTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setPublicConditions",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1597,12 +1353,31 @@
   {
     "inputs": [
       {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
       }
     ],
-    "name": "tokensMinted",
+    "name": "tokensAllocated",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1643,38 +1418,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "usedSignatures",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "_tokens",
-        "type": "address[]"
-      }
-    ],
-    "name": "whitelistTokens",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
