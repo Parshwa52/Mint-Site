@@ -17,12 +17,12 @@ function Test() {
 
   return (
     <div className="bg-white text-black min-h-screen cursor-default">
-      {/* <ConnectWallet /> */}
+      <ConnectWallet />
       {/* <ThreeJSLoading /> */}
       {address}
       <DelegateCashButton
         // @ts-ignore
-        connectedWallet={address}
+        connectedWallet="0xf4acbf0822620c0eba37b30f86e9d2e8add427a2"
         rpcUrl="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
         rounded={true}
         theme="dark"

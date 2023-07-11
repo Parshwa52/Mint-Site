@@ -1,14 +1,14 @@
 import { BigNumber, Contract, Signer, ethers } from "ethers";
 
 import DelegatorABI from "@/json/PlutoDelegator.json";
-import MinterABI from "@/json/PlutoMinter.json";
+import MintControllerABI from "@/json/PlutoMintController.json";
 import TokenABI from "@/json/WETH.json";
 
 import {
   WhitelistToken,
   delegatorAddress,
   fromAssetAddressNative,
-  minterAddress,
+  mintControllerAddress,
   primaryChainId,
   rpc_primary,
   rpc_secondary,
@@ -28,7 +28,7 @@ export async function approveToken(
   const tokenContract = new Contract(tokenAddress, TokenABI, signer);
 
   const targetAddress =
-    chainId === primaryChainId ? minterAddress : delegatorAddress;
+    chainId === primaryChainId ? mintControllerAddress : delegatorAddress;
 
   const allowance: BigNumber = await tokenContract.allowance(
     await signer.getAddress(),
@@ -65,14 +65,15 @@ export function getPaymentToken(
 
       // Get mint amount for this token from appropriate contract
       const mintContract = new Contract(
-        chainId === primaryChainId ? minterAddress : delegatorAddress,
-        chainId === primaryChainId ? MinterABI : DelegatorABI,
+        chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
+        chainId === primaryChainId ? MintControllerABI : DelegatorABI,
         provider
       );
 
       console.log({
-        a: chainId === primaryChainId ? minterAddress : delegatorAddress,
-        b: chainId === primaryChainId ? MinterABI : DelegatorABI,
+        a:
+          chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
+        b: chainId === primaryChainId ? MintControllerABI : DelegatorABI,
         c: provider,
       });
 
@@ -122,27 +123,21 @@ export async function preparePayment(chainId: number, signer: Signer) {
   // Pay with Native token
   else {
     // Get Mint Price for Native token
-    const mintContract = new Contract(
-      chainId === primaryChainId ? minterAddress : delegatorAddress,
-      chainId === primaryChainId ? MinterABI : DelegatorABI,
+    const mintControllerContract = new Contract(
+      chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
+      chainId === primaryChainId ? MintControllerABI : DelegatorABI,
       provider
     );
 
     console.log({
-      a: chainId === primaryChainId ? minterAddress : delegatorAddress,
-      b: chainId === primaryChainId ? MinterABI : DelegatorABI,
+      a: chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
+      b: chainId === primaryChainId ? MintControllerABI : DelegatorABI,
       c: provider,
     });
-    let mintPrice;
-    if (chainId === primaryChainId) {
-      mintPrice = (await mintContract.getMintPrice(
-        fromAssetAddressNative
-      )) as BigNumber;
-    } else {
-      mintPrice = (await mintContract.mintPrice(
-        fromAssetAddressNative
-      )) as BigNumber;
-    }
+
+    const mintPrice = (await mintControllerContract.mintPrice(
+      fromAssetAddressNative
+    )) as BigNumber;
 
     // Check user's native token balance
     const nativeBalance = await provider.getBalance(userAddress);

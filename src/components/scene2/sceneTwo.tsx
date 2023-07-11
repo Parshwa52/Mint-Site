@@ -863,7 +863,7 @@ const Q2 = (props: any) => {
         //   });
         // }, 5000);
       } else {
-        onWhitelistChange();
+        // onWhitelistChange();
       }
     } else {
       //@ts-ignore

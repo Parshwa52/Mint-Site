@@ -4,6 +4,26 @@ import { parseUnits } from "ethers/lib/utils.js";
 export * from "./uniswap";
 export * from "./tokens";
 
+// Phase timings
+export const PHASE = {
+  1: {
+    startTime: 0,
+    endTime: 0,
+  },
+  2: {
+    startTime: 0,
+    endTime: 0,
+  },
+  3: {
+    startTime: 0,
+    endTime: 0,
+  },
+  4: {
+    startTime: 0,
+    endTime: 0,
+  },
+};
+
 // ChainIds
 export const primaryChainId = 80001; // Mumbai Testnet, Minter Contract
 export const secondaryChainId = 5; // Goerli Testnet, Delegator Contract
@@ -32,7 +52,8 @@ export const l0_polygon = 10121; // TODO: Change when deployed on mainnets
 // Core Contract Addresses
 export const delegatorAddress = "0x2Dd7017fEc40D29028B016f1B9C700eE8e9EAc57"; // Goerli
 export const minterAddress = "0x7559FEd25DA66e12761cB32A109F7cE6292261ad"; // Mumbai
-export const mintControllerAddress = "0x32AC68403747Eb776EEA9Cd505924A559e763A59" // Mumbai
+export const mintControllerAddress =
+  "0x32AC68403747Eb776EEA9Cd505924A559e763A59"; // Mumbai
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
@@ -44,7 +65,6 @@ export const fromAssetAddressNative =
 // Bridging Params
 export const fromChainId = 1;
 export const toChainId = 137;
-
 
 export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
 
