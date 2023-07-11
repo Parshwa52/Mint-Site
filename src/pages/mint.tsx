@@ -8,6 +8,8 @@ import { useGlobalContext } from "@/provider/globalProvider";
 import { useRouter } from "next/router";
 import { useUIContext } from "@/provider/uiProvider";
 import { getAudio } from "@/components/audioManager";
+import { useAccount, useChainId } from "wagmi";
+import { secondaryChainId } from "@/constants";
 
 const Mint = () => {
   const router = useRouter();
@@ -19,39 +21,69 @@ const Mint = () => {
 
   const bridgeVideo = useRef(null as HTMLVideoElement | null);
 
-  const { waitFunc, setTxnHash, setHudText } = useUIContext();
+  const { waitFunc } = useUIContext();
+
+  const chainId = useChainId();
+  const { isConnected } = useAccount();
 
   useEffect(() => {
-    // if (!soundsArray[1]) {
-    //   router.push('/')
-    //   return
-    // }
-
     // setTimeout(() => {
     //   fadeOut()
     //   hideDrag()
     // }, 10000)
 
-    gsap.to(".bridging-video-container", {
-      opacity: 1,
-      duration: 1,
-      onComplete() {
-        if (bridgeVideo.current) {
-          // bridgeVideo.current.oncanplay = function () {
-          bridgeVideo.current?.play();
-
-          const bridgingAudio = getAudio("audio-bridging");
-          bridgingAudio.volume = 1;
-          bridgingAudio.play();
-          // };
-        }
-      },
-    });
+    // TODO: Add a check for url to see from what chain it is being minted, fetch from wagmi too perhaps
+    console.log({ chainId, isConnected });
+    if (isConnected && chainId === secondaryChainId) {
+      gsap.to("body", {
+        autoAlpha: 1,
+        duration: 1.5,
+        ease: "expo",
+        onComplete() {
+          gsap.to(".bridging-video-container", {
+            opacity: 1,
+            duration: 1,
+            onComplete() {
+              if (bridgeVideo.current) {
+                if (bridgeVideo.current.readyState === 4) {
+                  playBridgeVideoAndAudio();
+                  console.log("Play video state", bridgeVideo.current);
+                } else {
+                  console.log("Play video after event, state");
+                  bridgeVideo.current.oncanplay = playBridgeVideoAndAudio;
+                }
+              }
+            },
+          });
+        },
+      });
+    } else {
+      gsap.to("body", {
+        autoAlpha: 1,
+        duration: 1.5,
+        ease: "expo",
+        onComplete() {
+          toGalaxy();
+        },
+      });
+    }
 
     // soundsArray[1].play()
 
     // gsap.set('.ui-space #sound-button', { display: 'block', autoAlpha: 1 })
   }, [soundsArray]);
+
+  function playBridgeVideoAndAudio() {
+    if (!bridgeVideo.current) {
+      console.warn("No bridge video...");
+      return;
+    }
+    bridgeVideo.current.play();
+
+    const bridgingAudio = getAudio("audio-bridging");
+    bridgingAudio.volume = 1;
+    bridgingAudio.play();
+  }
 
   function toGalaxy() {
     gsap.to(".bridging-video-container", {
@@ -62,12 +94,6 @@ const Mint = () => {
         setState0(false);
 
         showDrag();
-
-        gsap.to("body", {
-          autoAlpha: 1,
-          duration: 1.5,
-          ease: "expo",
-        });
 
         gsap.set(".ui-space", { display: "block" });
 
