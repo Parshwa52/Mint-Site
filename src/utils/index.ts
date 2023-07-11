@@ -37,27 +37,30 @@ export async function showCustomText(paragraphId: string = "custom-p-1") {
 export async function hideCustomText(
   paragraphId: string = "custom-p-1"
 ): Promise<void> {
-  const target = document.getElementById(paragraphId) as HTMLParagraphElement;
-  gsap
-    .timeline()
-    .to(
-      target.querySelectorAll("span span"),
-      {
-        display: "none",
-        duration: 0.1,
-        stagger: -0.05,
-        ease: "none",
-      },
-      ">+=.5"
-    )
-    .set(
-      "#ui .ui-text",
-      {
-        display: "none",
-      },
-      ">-=.25"
-    );
-
-  // Resolve after 0.15 seconds (almost 0.1 plus margin)
-  await new Promise((resolve, _) => setTimeout(resolve, 150));
+  return new Promise((resolve, _) => {
+    const target = document.getElementById(paragraphId) as HTMLParagraphElement;
+    gsap
+      .timeline({
+        onComplete() {
+          resolve();
+        },
+      })
+      .to(
+        target.querySelectorAll("span span"),
+        {
+          display: "none",
+          duration: 0.1,
+          stagger: -0.05,
+          ease: "none",
+        },
+        ">+=.5"
+      )
+      .set(
+        "#ui .ui-text",
+        {
+          display: "none",
+        },
+        ">-=.25"
+      );
+  });
 }

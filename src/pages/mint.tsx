@@ -27,11 +27,6 @@ const Mint = () => {
   const { isConnected } = useAccount();
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   fadeOut()
-    //   hideDrag()
-    // }, 10000)
-
     console.log({ chainId, isConnected });
     if (isConnected && chainId === secondaryChainId) {
       gsap.to("body", {
@@ -40,7 +35,7 @@ const Mint = () => {
         ease: "expo",
         onComplete() {
           gsap.to(".bridging-video-container", {
-            opacity: 1,
+            autoAlpha: 1,
             duration: 1,
             onComplete() {
               if (bridgeVideo.current) {
@@ -86,7 +81,7 @@ const Mint = () => {
 
   function toGalaxy() {
     gsap.to(".bridging-video-container", {
-      opacity: 0,
+      autoAlpha: 0,
       duration: 1.5,
       ease: "expo",
       onComplete() {
@@ -165,7 +160,7 @@ const Mint = () => {
       <UI visible />
 
       {state0 ? (
-        <div className="bridging-video-container opacity-0">
+        <div className="bridging-video-container opacity-0 invisible">
           <video
             ref={bridgeVideo}
             style={{

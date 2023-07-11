@@ -15,12 +15,35 @@ import MintControllerABI from "@/json/PlutoMintController.json";
 import { preparePayment } from "./payment";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
 
-// export async function getMintAllocation(address: string) {
-//   const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
-//   const minterContract = new Contract(mintControllerAddress, MinterABI, provider);
+export async function getMintAllocation(signatureInfo: any, address: string) {
+  const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
+  const mintControllerContract = new Contract(
+    mintControllerAddress,
+    MintControllerABI,
+    provider
+  );
 
-//   return await minterContract.isFreeMintAvailable(address);
-// }
+  const freeAllowance = +formatEther(
+    await mintControllerContract.tokensAllocated(address)
+  );
+
+  const paidAllowance =
+    signatureInfo.Sale1MaxMint +
+    signatureInfo.Sale2MaxMint +
+    signatureInfo.Sale3MaxMint +
+    signatureInfo.Sale4MaxMint;
+
+  // TODO
+  // const alreadyMinted = await mintControllerContract.readRegister(
+  //   address,
+  //   signatureInfo.PhaseType
+  // );
+
+  return {
+    free: freeAllowance,
+    paid: paidAllowance,
+  };
+}
 
 export async function getSignature(chainId: number, address: string) {
   // TODO: Check delegatecash vault if connected
