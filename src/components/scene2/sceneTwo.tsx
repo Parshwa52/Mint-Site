@@ -63,13 +63,13 @@ export const SceneTwo = () => {
   const [currExpression, setCurrExpression] = useState(0);
   const [isEntered, setEntered] = useState(false);
   const [isTimeline, setTimeline] = useState(false);
+  const [isEnteredBlur, setEnteredBlur] = useState(false);
   const updater = {
     entryExp: 0,
     failureExp: 0,
     successExp: 0,
     transactionExp: 0,
   };
-  const [whitelisted, setWhitelisted] = useState(null as boolean | null);
 
   // scene building
   // let timer: any
@@ -86,18 +86,6 @@ export const SceneTwo = () => {
   // useEffect(() => {
   //   window.addEventListener("wheel", (e) => handleScroll(e));
   // }, []);
-
-  useEffect(() => {
-    if (isConnected) {
-      checkWhitelistStatus();
-    }
-  }, [isConnected]);
-
-  async function checkWhitelistStatus() {
-    const response = await getSignature(chainId, address!.toString());
-    console.log("Whitelist status!", response.status === 200);
-    setWhitelisted(response.status === 200);
-  }
 
   useEffect(() => {
     if (isEntered && isSoundEnabled) {
@@ -421,19 +409,20 @@ export const SceneTwo = () => {
               stagger: 0,
               duration: 25,
               ease: "none",
+              onStart(e) {
+                console.log("update from blurred background", e);
+                setEnteredBlur(true);
+              },
+              onReverseComplete() {
+                setEnteredBlur(false);
+              },
             },
             ">-25%"
           );
       }
     });
 
-    if (whitelisted) {
-      console.log("Whitelisted success animation coming up");
-      doSuccessAnimation();
-    } else {
-      console.log("Not-connected or not-whitelised Entry animation coming up");
-      doEntryAnimation();
-    }
+    doEntryAnimation();
 
     return () => ctx.revert();
   }, [scrollLenis, soundsArray, q2]);
@@ -696,8 +685,8 @@ export const SceneTwo = () => {
               doBridgeFailure,
               doTransactionAnimation,
             }}
-            whitelisted={whitelisted}
             isWorldScene={isTimeline}
+            isEnteredBlur={isEnteredBlur}
           />
         </Canvas>
       </div>
@@ -706,7 +695,7 @@ export const SceneTwo = () => {
         <button onClick={() => doTransactionAnimation()}>
           Transaction animation
         </button>
-        <button onClick={() => doFailureAnimation(false)}>
+        <button onClick={() => animations.(false)}>
           Failure animation
         </button>
         <button onClick={() => doEntryAnimation()}>Reset animation</button>
@@ -779,26 +768,37 @@ const Q2 = (props: any) => {
   const { setTxnHash, setHudText, waitFunc } = useUIContext();
 
   const isRunning = useRef(false);
+  const [whitelisted, setWhitelisted] = useState(null as boolean | null);
+
+  const [currentAnimation, setCurrentAnimation] = useState("");
 
   useEffect(() => {
     props.setInstance(q2.current);
   }, [q2]);
 
   useEffect(() => {
-    onWhitelistChange();
-    if (props.whitelisted === true) {
-      props.animations.doSuccessAnimation();
-    } else {
-      props.animations.doFailureAnimation();
+    if (isConnected) {
+      playSuccess();
+
+      if (whitelisted === null && (props.isWorldScene || props.isEnteredBlur))
+        checkWhitelistStatus();
     }
-  }, [props.whitelisted, isConnected]);
+  }, [isConnected]);
 
   useEffect(() => {
+    console.log({
+      isWorldScene: props.isWorldScene,
+      isEnteredBlur: props.isEnteredBlur,
+    });
     if (!props.isWorldScene) {
       hideCustomText();
       return;
+    } else if (props.isWorldScene || props.isEnteredBlur) {
+      if (isConnected) {
+        checkWhitelistStatus();
+      }
     }
-  }, [props.isWorldScene]);
+  }, [props.isWorldScene, props.isEnteredBlur]);
 
   // HUD Text Manager so it doesn't race to show text
   const hudManager = {
@@ -829,32 +829,76 @@ const Q2 = (props: any) => {
     },
   };
 
-  async function onWhitelistChange() {
-    if (isRunning.current) return;
+  function playFailure(text: string) {
+    // Set HUD text. TODO: Should happen after whielisting is checked on connection
+    hudManager.queueText(text);
 
-    isRunning.current = true;
-    console.log("onWhitelistChange", props.whitelisted);
+    const failureAudio = getAudio("audio-failure");
+    failureAudio.volume = 1;
+    failureAudio.play();
 
-    if (props.whitelisted === true) {
-      // props.animations.doSuccessAnimation();
+    if (currentAnimation !== "failure") {
+      props.animations.doFailureAnimation();
+      setCurrentAnimation("failure");
+    }
+  }
 
-      // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
-      checkMintAllocation();
-    } else if (props.whitelisted === false) {
-      // Check if in scene Two or not, don't want it to play on load
-      if (!props.isWorldScene) return;
+  function playSuccess() {
+    if (currentAnimation !== "success") {
+      props.animations.doSuccessAnimation();
+      setCurrentAnimation("success");
+    }
+  }
 
-      // Set HUD text. TODO: Should happen after whielisting is checked on connection
-      hudManager.queueText(
+  function playTransaction() {
+    if (currentAnimation !== "transaction") {
+      props.animations.doTransactionAnimation();
+      setCurrentAnimation("transaction");
+    }
+  }
+
+  // async function onWhitelistChange() {
+  //   if (isRunning.current) return;
+
+  //   isRunning.current = true;
+  //   console.log("onWhitelistChange", whitelisted);
+
+  //   if (whitelisted === true) {
+  //     // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
+  //     checkMintAllocation();
+  //   } else if (whitelisted === false) {
+  //     // Check if in scene Two or not, don't want it to play on load
+  //     if (!props.isWorldScene) return;
+
+  //     console.log("Play failure for not-whitelisted in onWhitelistchange");
+  //     playFailure(
+  //       "Looks like you couldn't make it to Pluto this time around. Please try next time!"
+  //     );
+  //   }
+
+  //   isRunning.current = false;
+  // }
+
+  async function checkWhitelistStatus() {
+    console.log("checkWhitelistStatus called", chainId, address);
+
+    if (!address || !chainId) return;
+
+    const response = await getSignature(chainId, address.toString());
+    const isWhitelisted = response.status === 200;
+
+    console.log("Whitelist status!", isWhitelisted);
+    setWhitelisted(isWhitelisted);
+
+    if (isWhitelisted) checkMintAllocation();
+    else if (response.status === 500)
+      playFailure("No Sale is Active at the moment");
+    else
+      playFailure(
         "Looks like you couldn't make it to Pluto this time around. Please try next time!"
       );
 
-      const failureAudio = getAudio("audio-failure");
-      failureAudio.volume = 1;
-      failureAudio.play();
-    }
-
-    isRunning.current = false;
+    // onWhitelistChange();
   }
 
   async function checkMintAllocation() {
@@ -865,11 +909,11 @@ const Q2 = (props: any) => {
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     // Logic until phase timings are used: If no free or paid mints but still whitelisted, must be in Public phase
-    // hudManager.queueText(
-    //   `You have ${result.free > 0 ? result.free + " free and" : ""} ${
-    //     result.paid > 0 ? result.paid : ""
-    //   } paid mints. Click on me to check out why I'm so excited!`
-    // );
+    hudManager.queueText(
+      `You have ${result.free > 0 ? result.free + " free and" : ""} ${
+        result.paid > 0 ? result.paid : ""
+      } paid mints. Click on me to check out why I'm so excited!`
+    );
     const mintAudio = getAudio("audio-mint");
     mintAudio.volume = 1;
     mintAudio.play();
@@ -877,11 +921,11 @@ const Q2 = (props: any) => {
 
   async function handleClick() {
     if (isConnected) {
-      if (props.whitelisted) {
+      if (whitelisted) {
         // Simulate bridge txn
         // await new Promise((resolve, _) => setTimeout(resolve, 5000))
 
-        props.animations.doTransactionAnimation();
+        playTransaction();
 
         // Mint Process (Which shall trigger Txn animation upon completion)
         beginMint();
@@ -897,7 +941,7 @@ const Q2 = (props: any) => {
         //   });
         // }, 5000);
       } else {
-        onWhitelistChange();
+        // onWhitelistChange();
       }
     } else {
       //@ts-ignore
@@ -926,16 +970,12 @@ const Q2 = (props: any) => {
     } catch (e: any) {
       if (e.message === "Insufficient Funds") {
         console.warn("Insufficient funds on this chain");
-        hudManager.queueText("Insufficient funds on this chain");
-        showCustomText();
-        props.animations.doFailureAnimation();
+        playFailure("Insufficient funds on this chain");
       } else {
         console.error("An error occurred. Please try again", e);
-        hudManager.queueText(
+        playFailure(
           "Hey, looks like the transaction attempt failed. Can you please try again?"
         );
-        showCustomText();
-        props.animations.doFailureAnimation();
       }
     }
   }
