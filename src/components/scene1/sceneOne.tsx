@@ -124,7 +124,7 @@ export const SceneOne = () => {
             onStart: () => {
               // Play Welcome Audio as typing starts
               const welcomeAudio = getAudio("audio-welcome");
-              welcomeAudio.volume = 1
+              welcomeAudio.volume = 1;
               welcomeAudio.play();
             },
             onComplete: () => {
@@ -1068,8 +1068,12 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         className="start-screen"
         onClick={() => onLoaded()}
         // style={{ cursor: 'pointer' }}
+        style={{
+          fontSize: "24px"
+        }}
       >
         <p>Please scroll slowly through the website for the best experience.</p>
+        <p>Please click to enable sound and start your journey.</p>
       </div>
     </div>
   );
