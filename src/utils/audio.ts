@@ -3,7 +3,8 @@ export function fadeInAudio(audio: HTMLAudioElement) {
   audio.play();
 
   const interval = setInterval(() => {
-    if (audio.volume < 1) audio.volume = audio.volume + 0.1;
+    if (audio.volume < 1 && audio.volume + 0.1 <= 1)
+      audio.volume = audio.volume + 1 / 10;
     else {
       clearInterval(interval);
     }

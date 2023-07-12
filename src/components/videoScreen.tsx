@@ -1,8 +1,29 @@
-import React from "react";
+import { primaryChainId, secondaryChainId } from "@/constants";
+import React, { useEffect, useState } from "react";
+import { useChainId } from "wagmi";
 
-type Props = {};
+type Props = {
+  receipt: any;
+};
 
-const VideoScreen: React.FC<Props> = ({}) => {
+const VideoScreen: React.FC<Props> = ({ receipt }) => {
+  const chainId = useChainId();
+
+  const [tokenId, setTokenId] = useState(null as string | null);
+
+  async function fetchTokenId() {
+    if (chainId === secondaryChainId) {
+      setTokenId("XXXX");
+    } else setTokenId("____");
+  }
+
+  useEffect(() => {
+    if (receipt) {
+      console.log("Video Screen", chainId);
+      fetchTokenId();
+    }
+  }, [receipt]);
+
   return (
     <div className="relative h-screen video cursor-none">
       <div className="relative inset-0 bg-cover bg-center" />
@@ -38,7 +59,7 @@ const VideoScreen: React.FC<Props> = ({}) => {
             textShadow: "2px 2px 10px #222",
           }}
         >
-          Congrats #123, now, you are a Misfit.
+          Congrats #{tokenId}, now, you are a Misfit.
         </a>
       </div>
 
@@ -48,9 +69,13 @@ const VideoScreen: React.FC<Props> = ({}) => {
           textShadow: "2px 2px 10px #222",
         }}
       >
-        <a href="https://opensea.io/collection/pluto-12" target="_blank">
-          View on OpenSea
-        </a>
+        {chainId === primaryChainId ? (
+          <a href="https://opensea.io/collection/pluto-12" target="_blank">
+            View on OpenSea
+          </a>
+        ) : (
+          <></>
+        )}
         <a
           target="_blank"
           href="http://twitter.com/share?text=I am officially a misfit @plutomisfits!&url=https://magicbatch.xyz/&hashtags=pluto,misfit,randomCat123"

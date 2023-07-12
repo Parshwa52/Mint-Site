@@ -19,6 +19,7 @@ const Mint = () => {
 
   const [state0, setState0] = useState(true);
   const [state, setState] = useState(false);
+  const [receipt, setReceipt] = useState(null as any);
 
   const bridgeVideo = useRef(null as HTMLVideoElement | null);
 
@@ -97,12 +98,17 @@ const Mint = () => {
 
         gsap.set(".ui-space", { display: "block" });
 
+        // TESTING
+        // fadeOut();
+        // hideDrag();
+
         // Show galaxy for at least a few seconds
         setTimeout(() => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
-            waitFunc.current(1).then(() => {
-              // FETHC NUMEBR
+            waitFunc.current(1).then((receipt) => {
+              console.log("Txn receipt", receipt);
+              setReceipt(receipt);
 
               const galaxyAudio = getAudio("galaxy-audio")!;
 
@@ -210,7 +216,7 @@ const Mint = () => {
       ) : (
         <>
           {state ? <></> : <ThreeJSLoading />}
-          {state ? <VideoScreen /> : <></>}
+          {state ? <VideoScreen receipt={receipt} /> : <></>}
         </>
       )}
     </PageLayout>
