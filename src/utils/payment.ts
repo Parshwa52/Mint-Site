@@ -50,6 +50,7 @@ export async function approveToken(
  * The Native Token has the least priority and will be checked if user has none of these tokens.
  */
 export function getPaymentToken(
+  tokensToMint: number,
   userAddress: string,
   chainId: number
 ): Promise<(WhitelistToken & { mintPrice: BigNumber }) | null> {
@@ -86,8 +87,15 @@ export function getPaymentToken(
         mintPrice = (await mintContract.mintPrice(item.address)) as BigNumber;
       }
 
-      if (balance.gte(mintPrice)) {
-        resolve({ ...item, mintPrice });
+      const finalMintPrice = mintPrice.mul(tokensToMint.toString());
+      console.log("getPaymentToken", {
+        finalMintPrice,
+        mintPrice,
+        tokensToMint,
+      });
+
+      if (balance.gte(finalMintPrice)) {
+        resolve({ ...item, mintPrice: finalMintPrice });
         break;
       }
     }
@@ -103,7 +111,11 @@ export function getPaymentToken(
  * 1) Native Token (first priority)
  * 2) Whitelisted Tokens in priority order while checking and asking for allowance
  */
-export async function preparePayment(chainId: number, signer: Signer) {
+export async function preparePayment(
+  tokensToMint: number,
+  chainId: number,
+  signer: Signer
+) {
   const userAddress = await signer.getAddress();
 
   const provider = new ethers.providers.JsonRpcProvider(
@@ -137,7 +149,7 @@ export async function preparePayment(chainId: number, signer: Signer) {
     return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };
   } else {
     // Check if user can pay with any ERC20 token
-    const token = await getPaymentToken(userAddress, chainId);
+    const token = await getPaymentToken(tokensToMint, userAddress, chainId);
 
     // Pay with ERC20 token
     if (token !== null) {

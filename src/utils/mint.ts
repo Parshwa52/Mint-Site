@@ -86,12 +86,14 @@ export async function mint(signer: Signer, chainId = 137) {
   let nativeAmount = parseEther("0");
 
   // Fetch token for payment, either native or ERC20
-  const tokenResult = await preparePayment(chainId, signer);
+  const tokenResult = await preparePayment(tokensToMint, chainId, signer);
 
   if (tokenResult === null) throw new Error("Insufficient Funds");
 
   if (tokenResult.symbol === "NATIVE")
-    nativeAmount = nativeAmount.add(tokenResult.mintPrice);
+    nativeAmount = nativeAmount.add(
+      tokenResult.mintPrice.mul(tokensToMint.toString())
+    );
 
   if (chainId === primaryChainId) {
     // Polygon (Primary)
