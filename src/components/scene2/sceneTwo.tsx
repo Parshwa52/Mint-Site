@@ -95,6 +95,7 @@ export const SceneTwo = () => {
 
   async function checkWhitelistStatus() {
     const response = await getSignature(chainId, address!.toString());
+    console.log("Whitelist status!", response.status === 200);
     setWhitelisted(response.status === 200);
   }
 
@@ -426,8 +427,13 @@ export const SceneTwo = () => {
       }
     });
 
-    if (whitelisted) doSuccessAnimation();
-    else doEntryAnimation();
+    if (whitelisted) {
+      console.log("Whitelisted success animation coming up");
+      doSuccessAnimation();
+    } else {
+      console.log("Not-connected or not-whitelised Entry animation coming up");
+      doEntryAnimation();
+    }
 
     return () => ctx.revert();
   }, [scrollLenis, soundsArray, q2]);
@@ -780,8 +786,10 @@ const Q2 = (props: any) => {
 
   useEffect(() => {
     onWhitelistChange();
-    console.log("isRunning", isRunning.current);
-  }, [props.whitelisted]);
+    if (props.whitelisted === true) {
+      props.animations.doSuccessAnimation();
+    }
+  }, [props.whitelisted, isConnected]);
 
   async function onWhitelistChange() {
     if (!props.isWorldScene) {
@@ -795,7 +803,7 @@ const Q2 = (props: any) => {
     console.log("onWhitelistChange", props.whitelisted);
 
     if (props.whitelisted === true) {
-      props.animations.doSuccessAnimation();
+      // props.animations.doSuccessAnimation();
 
       // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
       if (props.isWorldScene) checkMintAllocation();
@@ -863,7 +871,7 @@ const Q2 = (props: any) => {
         //   });
         // }, 5000);
       } else {
-        // onWhitelistChange();
+        onWhitelistChange();
       }
     } else {
       //@ts-ignore
@@ -902,7 +910,7 @@ const Q2 = (props: any) => {
           router.push("/mint");
         },
       });
-    }, 2000);
+    }, 1000);
   }
 
   async function beginMint() {

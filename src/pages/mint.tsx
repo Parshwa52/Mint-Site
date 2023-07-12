@@ -80,6 +80,12 @@ const Mint = () => {
   }
 
   function toGalaxy() {
+    const galaxyAudio = getAudio("galaxy-audio");
+    if (galaxyAudio) {
+      galaxyAudio.volume = 1;
+      galaxyAudio.play();
+    }
+
     gsap.to(".bridging-video-container", {
       autoAlpha: 0,
       duration: 1.5,
@@ -96,6 +102,21 @@ const Mint = () => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
             waitFunc.current(1).then(() => {
+              const galaxyAudio = getAudio("galaxy-audio")!;
+
+              // Fade out audio
+              if (galaxyAudio) {
+                const interval = setInterval(() => {
+                  console.log("Galaxy Audio Volume", galaxyAudio.volume);
+                  if (galaxyAudio.volume >= 0.1)
+                    galaxyAudio.volume = galaxyAudio.volume - 0.1;
+                  else {
+                    galaxyAudio.pause();
+                    clearInterval(interval);
+                  }
+                }, 100);
+              }
+
               fadeOut();
               hideDrag();
             });
@@ -158,6 +179,17 @@ const Mint = () => {
       pageDesc="Pluto Misfits Minted Page"
     >
       <UI visible />
+
+      <audio
+        id="galaxy-audio"
+        muted
+        loop
+        style={{
+          display: "none",
+        }}
+      >
+        <source src="/assets/sounds/Loop_Space_Drone.mp3" type="audio/mp3" />
+      </audio>
 
       {state0 ? (
         <div className="bridging-video-container opacity-0 invisible">

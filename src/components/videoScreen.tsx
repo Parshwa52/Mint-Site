@@ -4,7 +4,7 @@ type Props = {};
 
 const VideoScreen: React.FC<Props> = ({}) => {
   return (
-    <div className="relative h-screen video">
+    <div className="relative h-screen video cursor-none">
       <div className="relative inset-0 bg-cover bg-center" />
       <video
         className="absolute left-0 bottom-0 top-0 right-0 min-w-full min-h-full w-screen h-auto"

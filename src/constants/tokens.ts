@@ -1,9 +1,9 @@
-// List of whitelisted tokens by chainId in priority order
 export interface WhitelistToken {
   symbol: string;
   address: string;
 }
 
+// List of whitelisted tokens by chainId in priority order
 export const tokens = {
   // Goerli Testnet
   5: [
