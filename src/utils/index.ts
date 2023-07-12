@@ -1,4 +1,4 @@
-import { PHASE } from "@/constants";
+
 import { gsap } from "gsap";
 
 export function compactAddress(address: string) {
