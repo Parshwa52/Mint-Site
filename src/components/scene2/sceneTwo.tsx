@@ -46,7 +46,7 @@ import PlutoText from "@/assets/Pluto Text Transparent.png";
 import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import { useUIContext } from "@/provider/uiProvider";
-import { getCurrentPhase, hideCustomText, showCustomText } from "@/utils";
+import { hideCustomText, showCustomText } from "@/utils";
 import {
   getMaxSupplyReached,
   getMintAllocation,
@@ -936,11 +936,11 @@ const Q2 = (props: any) => {
     console.log("Whitelist status!", isWhitelisted);
     setWhitelisted(isWhitelisted);
 
-    const currentPhase = getCurrentPhase();
-    if (!currentPhase) {
-      playFailure("No Sale is Active at the moment");
-      return;
-    }
+    // const currentPhase = getCurrentPhase();
+    // if (!currentPhase) {
+    //   playFailure("No Sale is Active at the moment");
+    //   return;
+    // }
 
     if (isWhitelisted) {
       checkMintAllocation();
@@ -972,21 +972,21 @@ const Q2 = (props: any) => {
       );
 
       const mintAudio = getAudio("audio-success");
-      mintAudio.volume = 0.6;
+      mintAudio.volume = 1;
       mintAudio?.play();
     } else if (result.paid === -1) {
       hudManager.queueText(
         `You have mints available! Click on my face to check out why I'm so excited!`
       );
       const mintAudio = getAudio("audio-success");
-      mintAudio.volume = 0.6;
+      mintAudio.volume = 1;
       mintAudio?.play();
     }
   }
 
   async function handleClick() {
     if (maxSupplyReached) return;
-    if (isConnected) {
+    if (isConnected && address) {
       if (whitelisted) {
         // Simulate bridge txn
         // await new Promise((resolve, _) => setTimeout(resolve, 5000))
@@ -994,16 +994,18 @@ const Q2 = (props: any) => {
         playTransaction();
 
         // Mint Process (Which shall trigger Txn animation upon completion)
-        const currentPhase = getCurrentPhase();
-        if (currentPhase) {
-          if (currentPhase === 1) {
-            // Investor & MBC, Guaranteed
-            beginMint();
-          } else {
-            // FCFS, Public Mint
-            setModalData({ ...modalData, max: 3 });
-            setModalOpen(true);
-          }
+        const signatureInfo = await (
+          await getSignature(chainId, address)
+        ).json();
+
+        const currentPhase = signatureInfo.PhaseType;
+        if (currentPhase <= 3) {
+          // Investor & MBC, Guaranteed
+          beginMint();
+        } else {
+          // FCFS, Public Mint
+          setModalData({ ...modalData, max: 3 });
+          setModalOpen(true);
         }
 
         // Simulate Mint and then final page

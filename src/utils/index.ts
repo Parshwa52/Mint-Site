@@ -66,13 +66,13 @@ export async function hideCustomText(
   });
 }
 
-export function getCurrentPhase() {
-  const currentTime = new Date().getTime() / 1000; //  Current Time in Seconds
+// export function getCurrentPhase() {
+//   const currentTime = new Date().getTime() / 1000; //  Current Time in Seconds
 
-  for (const [key, value] of Object.entries(PHASE)) {
-    if (currentTime > value.startTime && currentTime < value.endTime)
-      return +key;
-  }
+//   for (const [key, value] of Object.entries(PHASE)) {
+//     if (currentTime > value.startTime && currentTime < value.endTime)
+//       return +key;
+//   }
 
-  return null;
-}
+//   return null;
+// }

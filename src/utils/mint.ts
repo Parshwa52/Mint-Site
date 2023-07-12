@@ -16,7 +16,6 @@ import MinterABI from "@/json/PlutoMinter.json";
 
 import { preparePayment } from "./payment";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
-import { getCurrentPhase } from ".";
 
 export async function getMaxSupplyReached() {
   const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
@@ -35,7 +34,7 @@ export async function getMaxSupplyReached() {
 }
 
 export async function getMintAllocation(signatureInfo: any, address: string) {
-  const currentPhase = getCurrentPhase();
+  const currentPhase = signatureInfo.PhaseType;
   if (!currentPhase)
     return {
       free: 0,

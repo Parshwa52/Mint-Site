@@ -48,7 +48,7 @@ const VideoScreen: React.FC<Props> = ({}) => {
           textShadow: "2px 2px 10px #222",
         }}
       >
-        <a href="#" target="_blank">
+        <a href="https://opensea.io/collection/pluto-12" target="_blank">
           View on OpenSea
         </a>
         <a

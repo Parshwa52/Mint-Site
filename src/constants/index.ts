@@ -4,28 +4,28 @@ export * from "./tokens";
 
 // Phase timings
 
-export const PHASE = {
-  // Investor & MBC
-  1: {
-    startTime: 1689186600,
-    endTime: 1689187500,
-  },
-  // Guaranteed
-  3: {
-    startTime: 1689187500,
-    endTime: 1689188400,
-  },
-  // FCFS
-  4: {
-    startTime: 1689188400,
-    endTime: 1689189300,
-  },
-  // Public Mint
-  5: {
-    startTime: 1689189300,
-    endTime: 1689198800,
-  },
-};
+// export const PHASE = {
+//   // Investor & MBC
+//   1: {
+//     startTime: 1689186600,
+//     endTime: 1689187500,
+//   },
+//   // Guaranteed
+//   3: {
+//     startTime: 1689187500,
+//     endTime: 1689188400,
+//   },
+//   // FCFS
+//   4: {
+//     startTime: 1689188400,
+//     endTime: 1689189300,
+//   },
+//   // Public Mint
+//   5: {
+//     startTime: 1689189300,
+//     endTime: 1689198800,
+//   },
+// };
 
 // ChainIds
 export const primaryChainId = 137; // Polygon Mainnet, Minter & MintController Contracts

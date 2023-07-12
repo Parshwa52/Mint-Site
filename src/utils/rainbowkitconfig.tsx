@@ -11,6 +11,7 @@ export const { chains, provider } = configureChains(
 
 export const { connectors } = getDefaultWallets({
   appName: "Mint-Site",
+  projectId: "6ab6cf6581716e2d41493bbc9854436b",
   chains,
 });
 
