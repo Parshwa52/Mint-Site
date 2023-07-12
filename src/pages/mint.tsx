@@ -11,7 +11,7 @@ import { getAudio } from "@/components/audioManager";
 import { useAccount, useChainId } from "wagmi";
 import { primaryChainId, rpc_primary, secondaryChainId } from "@/constants";
 import { fadeInAudio, fadeOutAudio } from "@/utils/audio";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import MinterABI from "@/json/PlutoMinter.json";
 import { formatEther } from "ethers/lib/utils.js";
 
@@ -180,7 +180,7 @@ const Mint = () => {
       const iface = new ethers.utils.Interface(MinterABI);
       const event = iface.parseLog(receipt.logs[1]);
 
-      const id = formatEther(event.args.tokenId);
+      const id = (event.args.tokenId as BigNumber).toNumber().toString();
       console.log({ tokenId: id });
       setTokenId(id);
     }

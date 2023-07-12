@@ -56,9 +56,10 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
     provider
   );
 
-  const freeAllowance = +formatEther(
-    await mintControllerContract.tokensAllocated(address)
-  );
+  // Not doing free mints rn
+  // const freeAllowance = +formatEther(
+  //   await mintControllerContract.tokensAllocated(address)
+  // );
 
   // Paid Allowance
   const paidAllowance = signatureInfo[`Sale${signatureInfo.PhaseType}MaxMint`];
@@ -73,7 +74,7 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
   console.log({ paidAllowance, alreadyMinted });
 
   return {
-    free: freeAllowance,
+    free: 0,
     paid: paidLeft,
   };
 }
