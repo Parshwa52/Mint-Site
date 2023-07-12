@@ -1069,11 +1069,13 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         onClick={() => onLoaded()}
         // style={{ cursor: 'pointer' }}
         style={{
-          fontSize: "24px"
+          fontSize: "24px",
         }}
       >
-        <p>Please scroll slowly through the website for the best experience.</p>
-        <p>Please click to enable sound and start your journey.</p>
+        <p>
+          Please scroll slowly through the website for the best experience.
+          Click to enable sound and start your journey.
+        </p>
       </div>
     </div>
   );

@@ -47,7 +47,12 @@ import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import { useUIContext } from "@/provider/uiProvider";
 import { getCurrentPhase, hideCustomText, showCustomText } from "@/utils";
-import { getMintAllocation, getSignature, mint } from "@/utils/mint";
+import {
+  getMaxSupplyReached,
+  getMintAllocation,
+  getSignature,
+  mint,
+} from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
 export const SceneTwo = () => {
@@ -780,6 +785,8 @@ const Q2 = (props: any) => {
 
   const [currentAnimation, setCurrentAnimation] = useState("");
 
+  const [maxSupplyReached, setMaxSupplyReached] = useState(false);
+
   // const [allocation, setAllocation] = useState<
   //   Awaited<ReturnType<typeof getMintAllocation>>
   // >({ free: -1, paid: -1 });
@@ -899,6 +906,21 @@ const Q2 = (props: any) => {
 
     isRunning.current = true;
 
+    // Check total supply first
+    if (!maxSupplyReached) {
+      const isSupplyReached = await getMaxSupplyReached();
+      setMaxSupplyReached(isSupplyReached);
+
+      if (isSupplyReached) {
+        playFailure("We have minted out. See you around next time!");
+        return;
+      }
+    } else {
+      // In case it is run another time
+      playFailure("We have minted out. See you around next time!");
+      return;
+    }
+
     const response = await getSignature(chainId, address.toString());
     const isWhitelisted = response.status === 200;
 
@@ -943,6 +965,7 @@ const Q2 = (props: any) => {
   }
 
   async function handleClick() {
+    if (maxSupplyReached) return;
     if (isConnected) {
       if (whitelisted) {
         // Simulate bridge txn

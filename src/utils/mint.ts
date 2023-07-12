@@ -3,6 +3,7 @@ import {
   delegatorAddress,
   l0_polygon,
   mintControllerAddress,
+  minterAddress,
   primaryChainId,
   rpc_primary,
 } from "@/constants";
@@ -11,10 +12,28 @@ import { BigNumber, Contract, Signer, ethers } from "ethers";
 // Contract ABIs
 import DelegatorABI from "@/json/PlutoDelegator.json";
 import MintControllerABI from "@/json/PlutoMintController.json";
+import MinterABI from "@/json/PlutoMinter.json";
 
 import { preparePayment } from "./payment";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
 import { getCurrentPhase } from ".";
+
+export async function getMaxSupplyReached() {
+  const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
+
+  const mintControllerContract = new Contract(
+    mintControllerAddress,
+    MintControllerABI,
+    provider
+  );
+
+  const minterContract = new Contract(minterAddress, MinterABI, provider);
+
+  const totalMinted = +formatEther(await minterContract.totalMinted());
+  const maxSupply = +formatEther(await mintControllerContract.maxSupply());
+
+  return totalMinted > maxSupply;
+}
 
 export async function getMintAllocation(signatureInfo: any, address: string) {
   const currentPhase = getCurrentPhase();
@@ -69,8 +88,12 @@ export async function getSignature(chainId: number, address: string) {
   );
 }
 
-export async function mint(signer: Signer, chainId = 137, usertokensToMint?: number) {
-  console.log("Mint got tokens", usertokensToMint)
+export async function mint(
+  signer: Signer,
+  chainId = 137,
+  usertokensToMint?: number
+) {
+  console.log("Mint got tokens", usertokensToMint);
   if (!signer.provider) {
     console.error("Could not find provider on signer");
     return;
@@ -82,8 +105,9 @@ export async function mint(signer: Signer, chainId = 137, usertokensToMint?: num
   const Signature = signatureInfo.tuple;
 
   // Mint
-  const tokensToMint = usertokensToMint || (await getMintAllocation(signatureInfo, userAddress))
-    .paid;
+  const tokensToMint =
+    usertokensToMint ||
+    (await getMintAllocation(signatureInfo, userAddress)).paid;
   let nativeAmount = parseEther("0");
 
   // Fetch token for payment, either native or ERC20
