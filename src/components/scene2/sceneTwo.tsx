@@ -981,6 +981,8 @@ const Q2 = (props: any) => {
       const mintAudio = getAudio("audio-success");
       mintAudio.volume = 1;
       mintAudio?.play();
+    } else {
+      hudManager.queueText(`You have minted all your NFTs!`);
     }
   }
 
