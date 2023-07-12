@@ -20,27 +20,32 @@ export default function MintModal({}: Props) {
   const [loading, setLoading] = useState(false);
 
   async function mintAndClose() {
-    setLoading(true);
-    const result = await mint(
-      signer.data as Signer,
-      chainId,
-      modalData.tokensToMint
-    );
-    setLoading(true);
-    waitFunc.current = result.wait;
-    
-    // Transition to loading screen now
-    setTimeout(() => {
-      setModalOpen(false);
-      gsap.to("body", {
-        autoAlpha: 0,
-        duration: 1.25,
-        delay: 5,
-        onComplete: () => {
-          router.push("/mint");
-        },
-      });
-    }, 1000);
+    try {
+      setLoading(true);
+      const result = await mint(
+        signer.data as Signer,
+        chainId,
+        modalData.tokensToMint
+      );
+      setLoading(false);
+      waitFunc.current = result.wait;
+
+      // Transition to loading screen now
+      setTimeout(() => {
+        setModalOpen(false);
+        gsap.to("body", {
+          autoAlpha: 0,
+          duration: 1.25,
+          delay: 5,
+          onComplete: () => {
+            router.push("/mint");
+          },
+        });
+      }, 1000);
+    } catch (e) {
+      setLoading(false);
+      console.error(e);
+    }
 
     // setModalData({
     //   tokensToMint: 0,
