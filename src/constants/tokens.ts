@@ -24,5 +24,14 @@ export const tokens = {
       address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     },
   ],
-  137: [],// matic, poly eth, usdc
+  137: [
+    {
+      symbol: "WETH",
+      address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    },
+    {
+      symbol: "USDC",
+      address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    },
+  ], // matic, poly eth, usdc
 } as Record<number, Array<WhitelistToken>>;
