@@ -78,14 +78,7 @@ export function getPaymentToken(
         c: provider,
       });
 
-      let mintPrice;
-      if (chainId === primaryChainId) {
-        mintPrice = (await mintContract.getMintPrice(
-          item.address
-        )) as BigNumber;
-      } else {
-        mintPrice = (await mintContract.mintPrice(item.address)) as BigNumber;
-      }
+      const mintPrice = (await mintContract.mintPrice(item.address)) as BigNumber;
 
       const finalMintPrice = mintPrice.mul(tokensToMint.toString());
       console.log("getPaymentToken", {
