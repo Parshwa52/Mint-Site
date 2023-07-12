@@ -957,7 +957,7 @@ const Q2 = (props: any) => {
     hudManager.queueText(
       `You have ${result?.free > 0 ? result.free + " free and" : ""} ${
         result.paid > 0 ? result.paid : ""
-      } paid mints. Click on my face to check out why I'm so excited!`
+      } mints. Click on my face to check out why I'm so excited!`
     );
     const mintAudio = getAudio("audio-mint");
     mintAudio.volume = 1;
