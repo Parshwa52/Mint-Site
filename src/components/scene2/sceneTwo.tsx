@@ -959,10 +959,14 @@ const Q2 = (props: any) => {
           result.paid > 0 ? result.paid : ""
         } mints. Click on my face to check out why I'm so excited!`
       );
-      const mintAudio = getAudio("audio-mint");
-      mintAudio.volume = 1;
-      mintAudio.play();
+    } else if (result.paid === -1) {
+      hudManager.queueText(
+        `You have mints available! Click on my face to check out why I'm so excited!`
+      );
     }
+    const mintAudio = getAudio("audio-mint");
+    mintAudio.volume = 1;
+    mintAudio.play();
   }
 
   async function handleClick() {
