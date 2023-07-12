@@ -13,7 +13,6 @@ export const AspectRatioManager = () => {
         /Android/i.test(navigator.userAgent) ||
         "ontouchstart" in window ||
         navigator.maxTouchPoints > 0;
-      console.log({ isMobile });
       if (window.innerHeight > window.innerWidth || isMobile)
         setScreenStatus(true);
       else setScreenStatus(false);

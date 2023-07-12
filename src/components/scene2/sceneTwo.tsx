@@ -796,9 +796,8 @@ const Q2 = (props: any) => {
   }, [q2]);
 
   useEffect(() => {
+    console.log({ isConnected });
     if (isConnected) {
-      playSuccess();
-
       if (whitelisted === null && (props.isWorldScene || props.isEnteredBlur))
         checkWhitelistStatus();
     }
@@ -817,6 +816,10 @@ const Q2 = (props: any) => {
         checkWhitelistStatus();
       }
     }
+
+    // if (isConnected && props.isWorldScene && !props.isEnteredBlur) {
+    //   playSuccess();
+    // }
   }, [props.isWorldScene, props.isEnteredBlur]);
 
   // HUD Text Manager so it doesn't race to show text
@@ -864,6 +867,11 @@ const Q2 = (props: any) => {
   }
 
   function playSuccess() {
+    console.log(
+      "Play success reached. Current=",
+      currentAnimation,
+      props.animations
+    );
     if (currentAnimation !== "success") {
       props.animations.doSuccessAnimation();
       setCurrentAnimation("success");
@@ -900,9 +908,10 @@ const Q2 = (props: any) => {
   // }
 
   async function checkWhitelistStatus() {
-    console.log("checkWhitelistStatus called", chainId, address);
+    console.log("checkWhitelistStatus called", whitelisted, isRunning.current);
 
-    if (!address || !chainId || isRunning.current) return;
+    if (!address || !chainId || isRunning.current || whitelisted !== null)
+      return;
 
     isRunning.current = true;
 
