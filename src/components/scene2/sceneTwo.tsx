@@ -765,7 +765,7 @@ const Q2 = (props: any) => {
   const chainId = useChainId();
 
   // UI Context
-  const { setTxnHash, setHudText, waitFunc } = useUIContext();
+  const { setTxnHash, hudText, setHudText, waitFunc } = useUIContext();
 
   const isRunning = useRef(false);
   const [whitelisted, setWhitelisted] = useState(null as boolean | null);
@@ -830,12 +830,11 @@ const Q2 = (props: any) => {
   };
 
   function playFailure(text: string) {
-    // Set HUD text. TODO: Should happen after whielisting is checked on connection
-    hudManager.queueText(text);
-
     const failureAudio = getAudio("audio-failure");
     failureAudio.volume = 1;
     failureAudio.play();
+
+    if (text !== hudText) hudManager.queueText(text);
 
     if (currentAnimation !== "failure") {
       props.animations.doFailureAnimation();
