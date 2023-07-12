@@ -46,7 +46,7 @@ import PlutoText from "@/assets/Pluto Text Transparent.png";
 import { useRouter } from "next/router";
 import { Signer } from "ethers";
 import { useUIContext } from "@/provider/uiProvider";
-import { hideCustomText, showCustomText } from "@/utils";
+import { getCurrentPhase, hideCustomText, showCustomText } from "@/utils";
 import { getMintAllocation, getSignature, mint } from "@/utils/mint";
 import { getAudio } from "../audioManager";
 
@@ -805,6 +805,8 @@ const Q2 = (props: any) => {
     queue: [] as string[],
     active: false,
     queueText(text: string) {
+      if (this.queue.indexOf(text) !== -1) return;
+
       this.queue.push(text);
       console.log("Queued", text);
       this.run();
@@ -859,7 +861,7 @@ const Q2 = (props: any) => {
   // async function onWhitelistChange() {
   //   if (isRunning.current) return;
 
-  //   isRunning.current = true;
+  // isRunning.current = true;
   //   console.log("onWhitelistChange", whitelisted);
 
   //   if (whitelisted === true) {
@@ -881,13 +883,21 @@ const Q2 = (props: any) => {
   async function checkWhitelistStatus() {
     console.log("checkWhitelistStatus called", chainId, address);
 
-    if (!address || !chainId) return;
+    if (!address || !chainId || isRunning.current) return;
+
+    isRunning.current = true;
 
     const response = await getSignature(chainId, address.toString());
     const isWhitelisted = response.status === 200;
 
     console.log("Whitelist status!", isWhitelisted);
     setWhitelisted(isWhitelisted);
+
+    const currentPhase = getCurrentPhase();
+    if (!currentPhase) {
+      playFailure("No Sale is Active at the moment");
+      return;
+    }
 
     if (isWhitelisted) checkMintAllocation();
     else if (response.status === 500)
@@ -896,6 +906,8 @@ const Q2 = (props: any) => {
       playFailure(
         "Looks like you couldn't make it to Pluto this time around. Please try next time!"
       );
+
+    isRunning.current = false;
 
     // onWhitelistChange();
   }
@@ -909,7 +921,7 @@ const Q2 = (props: any) => {
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     // Logic until phase timings are used: If no free or paid mints but still whitelisted, must be in Public phase
     hudManager.queueText(
-      `You have ${result.free > 0 ? result.free + " free and" : ""} ${
+      `You have ${result?.free > 0 ? result.free + " free and" : ""} ${
         result.paid > 0 ? result.paid : ""
       } paid mints. Click on my face to check out why I'm so excited!`
     );

@@ -6,26 +6,29 @@ export * from "./tokens";
 
 // Phase timings
 
-// For testing
-const currentPhase = {
-  // Since time will be in seconds from contract
-  startTime: new Date().getTime() / 1000,
-  endTime: new Date().getTime() / 1000,
-};
 export const PHASE = {
+  // Investor
   1: {
-    startTime: currentPhase.startTime,
-    endTime: currentPhase.endTime,
+    startTime: 0,
+    endTime: 0,
   },
+  // MBC
   2: {
     startTime: 0,
     endTime: 0,
   },
+  // Guaranteed
   3: {
     startTime: 0,
     endTime: 0,
   },
+  // FCFS
   4: {
+    startTime: 0,
+    endTime: 0,
+  },
+  // Public Mint
+  5: {
     startTime: 0,
     endTime: 0,
   },

@@ -14,8 +14,24 @@ import MintControllerABI from "@/json/PlutoMintController.json";
 
 import { preparePayment } from "./payment";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
+import { getCurrentPhase } from ".";
 
 export async function getMintAllocation(signatureInfo: any, address: string) {
+  const currentPhase = getCurrentPhase();
+  if (!currentPhase)
+    return {
+      free: 0,
+      paid: 0,
+    };
+
+  // Public Mint, unlimited
+  if (currentPhase == 5) {
+    return {
+      paid: -1,
+      free: -1,
+    };
+  }
+
   const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
   const mintControllerContract = new Contract(
     mintControllerAddress,
@@ -27,27 +43,18 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
     await mintControllerContract.tokensAllocated(address)
   );
 
-  const paidAllowance =
-    signatureInfo.Sale1MaxMint +
-    signatureInfo.Sale2MaxMint +
-    signatureInfo.Sale3MaxMint +
-    signatureInfo.Sale4MaxMint;
+  // Paid Allowance
+  const paidAllowance = signatureInfo[`Sale${currentPhase}MaxMint`];
+  const alreadyMinted = +formatEther(
+    await mintControllerContract.readRegister(address, currentPhase)
+  );
 
-  // TODO: Determine current phase based on timestamps and check if any tokens left to mint for the user
-
-  const alreadyMintedRaw = await Promise.all([
-    mintControllerContract.readRegister(address, 1),
-    mintControllerContract.readRegister(address, 2),
-    mintControllerContract.readRegister(address, 3),
-    mintControllerContract.readRegister(address, 4),
-  ]);
-
-  const alreadyMinted = alreadyMintedRaw.map((item) => +formatEther(item));
-  console.log({ alreadyMinted });
+  const paidLeft = paidAllowance - alreadyMinted;
+  console.log({ paidAllowance, alreadyMinted });
 
   return {
     free: freeAllowance,
-    paid: paidAllowance,
+    paid: paidLeft,
   };
 }
 
@@ -70,10 +77,12 @@ export async function mint(signer: Signer, chainId = 137) {
 
   const userAddress = await signer.getAddress();
 
-  const Signature = (await (await getSignature(chainId, userAddress)).json())
-    .tuple;
+  const signatureInfo = await (await getSignature(chainId, userAddress)).json();
+  const Signature = signatureInfo.tuple;
 
   // Mint
+  const tokensToMint = (await getMintAllocation(signatureInfo, userAddress))
+    .paid;
   let nativeAmount = parseEther("0");
 
   // Fetch token for payment, either native or ERC20
@@ -96,13 +105,13 @@ export async function mint(signer: Signer, chainId = 137) {
       mintControllerAddress,
       Signature,
       tokenAdress: tokenResult.address,
-      amount: "1",
+      tokensToMint,
       vault: ethers.constants.AddressZero,
       value: nativeAmount,
     });
     return await mintControllerContract.payAndMint(
       Signature,
-      "1",
+      tokensToMint,
       tokenResult.address,
       ethers.constants.AddressZero,
       {
@@ -131,7 +140,7 @@ export async function mint(signer: Signer, chainId = 137) {
     console.log("Params to Delegator payAndMintTokens", {
       Signature,
       tokenAdress: tokenResult.address,
-      amount: "1",
+      tokensToMint,
       userAddress,
       vault: ethers.constants.AddressZero,
       value: nativeAmount,
@@ -139,7 +148,7 @@ export async function mint(signer: Signer, chainId = 137) {
     return await delegatorContract.payAndMintTokens(
       Signature,
       tokenResult.address,
-      "1",
+      tokensToMint,
       userAddress,
       ethers.constants.AddressZero,
       {

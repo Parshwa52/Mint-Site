@@ -1,3 +1,4 @@
+import { PHASE } from "@/constants";
 import { gsap } from "gsap";
 
 export function compactAddress(address: string) {
@@ -65,6 +66,16 @@ export async function hideCustomText(
   });
 }
 
-export async function queueCustomText(){
-  
+export function getCurrentPhase() {
+  const currentTime = new Date().getTime() / 1000; //  Current Time in Seconds
+
+  // TESTING
+  return 4
+
+  // for (const [key, value] of Object.entries(PHASE)) {
+  //   if (currentTime > value.startTime && currentTime < value.endTime)
+  //     return +key;
+  // }
+
+  // return null;
 }
