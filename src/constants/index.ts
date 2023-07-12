@@ -54,7 +54,7 @@ export const rpc_primary = rpc_polygon;
 export const rpc_secondary = rpc_ethereum;
 
 // LayerZero Chain IDs
-export const l0_polygon = 10121; // TODO: Change when deployed on mainnets
+export const l0_polygon = 109; // LayerZero Polygon Mainnet
 
 // Core Contract Addresses
 export const delegatorAddress = "0x52e3a2ae070E1428cb3B9b95608812cf652Db7CA"; // Ethereum Mainnet
