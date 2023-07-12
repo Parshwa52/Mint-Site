@@ -1,28 +1,14 @@
 import { primaryChainId, secondaryChainId } from "@/constants";
+import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useChainId } from "wagmi";
 
 type Props = {
-  receipt: any;
+  tokenId: string;
 };
 
-const VideoScreen: React.FC<Props> = ({ receipt }) => {
+const VideoScreen: React.FC<Props> = ({ tokenId }) => {
   const chainId = useChainId();
-
-  const [tokenId, setTokenId] = useState(null as string | null);
-
-  async function fetchTokenId() {
-    if (chainId === secondaryChainId) {
-      setTokenId("XXXX");
-    } else setTokenId("____");
-  }
-
-  useEffect(() => {
-    if (receipt) {
-      console.log("Video Screen", chainId);
-      fetchTokenId();
-    }
-  }, [receipt]);
 
   return (
     <div className="relative h-screen video cursor-none">
@@ -63,6 +49,15 @@ const VideoScreen: React.FC<Props> = ({ receipt }) => {
         </a>
       </div>
 
+      {chainId === secondaryChainId ? (
+        <div className="text-purple-200">
+          Your NFT will be minted in approximately 10 minutes or less on
+          Polygon!
+        </div>
+      ) : (
+        <></>
+      )}
+
       <div
         className="absolute space-x-5 justify-center flex w-full bottom-5 p-4 text-[22px] font-semibold text-purple-200"
         style={{
@@ -70,8 +65,8 @@ const VideoScreen: React.FC<Props> = ({ receipt }) => {
         }}
       >
         {chainId === primaryChainId ? (
-          <a href="https://opensea.io/collection/pluto-12" target="_blank">
-            View on OpenSea
+          <a href="" target="_blank">
+            View on MagicEden
           </a>
         ) : (
           <></>

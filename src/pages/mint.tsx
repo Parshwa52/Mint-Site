@@ -9,8 +9,11 @@ import { useRouter } from "next/router";
 import { useUIContext } from "@/provider/uiProvider";
 import { getAudio } from "@/components/audioManager";
 import { useAccount, useChainId } from "wagmi";
-import { secondaryChainId } from "@/constants";
+import { primaryChainId, rpc_primary, secondaryChainId } from "@/constants";
 import { fadeInAudio, fadeOutAudio } from "@/utils/audio";
+import { ethers } from "ethers";
+import MinterABI from "@/json/PlutoMinter.json";
+import { formatEther } from "ethers/lib/utils.js";
 
 const Mint = () => {
   const router = useRouter();
@@ -19,7 +22,7 @@ const Mint = () => {
 
   const [state0, setState0] = useState(true);
   const [state, setState] = useState(false);
-  const [receipt, setReceipt] = useState(null as any);
+  const [tokenId, setTokenId] = useState("");
 
   const bridgeVideo = useRef(null as HTMLVideoElement | null);
 
@@ -107,8 +110,7 @@ const Mint = () => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
             waitFunc.current(1).then((receipt) => {
-              console.log("Txn receipt", receipt);
-              setReceipt(receipt);
+              fetchTokenId(receipt);
 
               const galaxyAudio = getAudio("galaxy-audio")!;
 
@@ -171,6 +173,19 @@ const Mint = () => {
       });
   }
 
+  function fetchTokenId(receipt: any) {
+    if (chainId === secondaryChainId) {
+      setTokenId("XXXX");
+    } else if (chainId === primaryChainId) {
+      const iface = new ethers.utils.Interface(MinterABI);
+      const event = iface.parseLog(receipt.logs[1]);
+
+      const id = formatEther(event.args.tokenId);
+      console.log({ tokenId: id });
+      setTokenId(id);
+    }
+  }
+
   return (
     <PageLayout
       pageTitle="Pluto mint - Minted"
@@ -216,7 +231,7 @@ const Mint = () => {
       ) : (
         <>
           {state ? <></> : <ThreeJSLoading />}
-          {state ? <VideoScreen receipt={receipt} /> : <></>}
+          {state ? <VideoScreen tokenId={tokenId} /> : <></>}
         </>
       )}
     </PageLayout>

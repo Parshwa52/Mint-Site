@@ -1,8 +1,14 @@
 import ThreeJSLoading from "@/components/threeJSLoading";
 import ConnectWallet from "@/components/ui/ConnectWallet";
+import { primaryChainId, rpc_primary, rpc_secondary } from "@/constants";
+import { ethers } from "ethers";
 import dynamic from "next/dynamic";
 import React from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
+
+import DelegatorABI from "@/json/PlutoDelegator.json";
+import MintControllerABI from "@/json/PlutoMintController.json";
+import MinterABI from "@/json/PlutoMinter.json";
 
 function Test() {
   const DelegateCashButton = dynamic(
@@ -14,21 +20,28 @@ function Test() {
   );
 
   const { address } = useAccount();
+  const chainId = useChainId();
+
+  async function decode() {
+    // Only on polygon
+    const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
+    const receipt = await provider.getTransactionReceipt(
+      "0x2dc7f4aaa148152d36e65a8ffc10dd2d2d7c61c1bf39fcfa252160bafcf40c60"
+    );
+
+    const abi = MinterABI;
+
+    console.log("Receipt", receipt);
+
+    const iface = new ethers.utils.Interface(abi);
+    const events = iface.parseLog(receipt.logs[1]);
+    console.log({ events });
+    console.log("ID", events.args.tokenId)
+  }
 
   return (
     <div className="bg-white text-black min-h-screen cursor-default">
-      <ConnectWallet />
-      {/* <ThreeJSLoading /> */}
-      {address}
-      <DelegateCashButton
-        // @ts-ignore
-        connectedWallet="0xf4acbf0822620c0eba37b30f86e9d2e8add427a2"
-        rpcUrl="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-        rounded={true}
-        theme="dark"
-        onButtonClick={(event: any) => console.log(event.detail)}
-        onWalletSelect={(event: any) => console.log(event.detail)}
-      />
+      <button onClick={decode}>Decode</button>
     </div>
   );
 }
