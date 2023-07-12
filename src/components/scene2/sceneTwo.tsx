@@ -953,15 +953,16 @@ const Q2 = (props: any) => {
     const result = await getMintAllocation(signatureInfo, address);
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
-    // Logic until phase timings are used: If no free or paid mints but still whitelisted, must be in Public phase
-    hudManager.queueText(
-      `You have ${result?.free > 0 ? result.free + " free and" : ""} ${
-        result.paid > 0 ? result.paid : ""
-      } mints. Click on my face to check out why I'm so excited!`
-    );
-    const mintAudio = getAudio("audio-mint");
-    mintAudio.volume = 1;
-    mintAudio.play();
+    if (result.paid > 0) {
+      hudManager.queueText(
+        `You have ${result?.free > 0 ? result.free + " free and" : ""} ${
+          result.paid > 0 ? result.paid : ""
+        } mints. Click on my face to check out why I'm so excited!`
+      );
+      const mintAudio = getAudio("audio-mint");
+      mintAudio.volume = 1;
+      mintAudio.play();
+    }
   }
 
   async function handleClick() {
