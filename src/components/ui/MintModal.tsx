@@ -5,7 +5,7 @@ import { Signer } from "ethers";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useChainId, useSigner } from "wagmi";
-import gsap from 'gsap'
+import gsap from "gsap";
 
 type Props = {};
 
@@ -16,7 +16,7 @@ export default function MintModal({}: Props) {
   const signer = useSigner();
   const chainId = useChainId();
 
-  async function closeModal() {
+  async function mintAndClose() {
     const result = await mint(
       signer.data as Signer,
       chainId,
@@ -40,6 +40,10 @@ export default function MintModal({}: Props) {
     // setModalData({
     //   tokensToMint: 0,
     // });
+  }
+
+  function closeModal() {
+    setModalOpen(false);
   }
 
   return (
@@ -108,7 +112,7 @@ export default function MintModal({}: Props) {
                     <button
                       type="button"
                       className="mt-5 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={mintAndClose}
                     >
                       Let&apos;s go!
                     </button>
