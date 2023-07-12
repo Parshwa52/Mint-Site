@@ -64,3 +64,7 @@ export async function hideCustomText(
       );
   });
 }
+
+export async function queueCustomText(){
+  
+}

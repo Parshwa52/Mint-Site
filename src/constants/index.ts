@@ -32,11 +32,11 @@ export const PHASE = {
 };
 
 // ChainIds
-export const primaryChainId = 80001; // Mumbai Testnet, Minter Contract
-export const secondaryChainId = 5; // Goerli Testnet, Delegator Contract
+export const primaryChainId = 137; // Polygon Mainnet, Minter & MintController Contracts
+export const secondaryChainId = 1; // Ethereum Mainnet, Delegator Contract
 
 // Whitelist, Signature API
-export const API_URL = "https://pluto-whitelist-5c37p.ondigitalocean.app";
+export const API_URL = "https://pluto-whitelist-i5isf.ondigitalocean.app";
 
 // RPC URLs used for fetching multi-chain balances
 export const rpc_ethereum =
@@ -44,23 +44,23 @@ export const rpc_ethereum =
 export const rpc_polygon =
   "https://polygon-mainnet.g.alchemy.com/v2/n16AHrpBeF5nc3nlNxaRaSZLHeYKedUz";
 
-export const rpc_goerli =
-  "https://eth-goerli.g.alchemy.com/v2/p2H_3LDh1SZAiCMCNZQyFPYY7K8Kxtty";
+// export const rpc_goerli =
+//   "https://eth-goerli.g.alchemy.com/v2/p2H_3LDh1SZAiCMCNZQyFPYY7K8Kxtty";
 
-export const rpc_mumbai =
-  "https://polygon-mumbai.g.alchemy.com/v2/xScLHgyYFvlGKWZ5SxstjeZqLC6mDgB-";
+// export const rpc_mumbai =
+//   "https://polygon-mumbai.g.alchemy.com/v2/xScLHgyYFvlGKWZ5SxstjeZqLC6mDgB-";
 
-export const rpc_primary = rpc_mumbai;
-export const rpc_secondary = rpc_goerli;
+export const rpc_primary = rpc_polygon;
+export const rpc_secondary = rpc_ethereum;
 
 // LayerZero Chain IDs
 export const l0_polygon = 10121; // TODO: Change when deployed on mainnets
 
 // Core Contract Addresses
-export const delegatorAddress = "0xa1e9177e7642A234D26652AfC69752b0Ae5F2e0F"; // Goerli
-export const minterAddress = "0x7559FEd25DA66e12761cB32A109F7cE6292261ad"; // Mumbai
+export const delegatorAddress = "0x52e3a2ae070E1428cb3B9b95608812cf652Db7CA"; // Ethereum Mainnet
+export const minterAddress = "0x35171Cb57488e23Ba52875adae2eE939F34117e0"; // Polygon Mainnet
 export const mintControllerAddress =
-  "0x32AC68403747Eb776EEA9Cd505924A559e763A59"; // Mumbai
+  "0xfCC564A846150bD6D77982E6BF396b0b6a04DEd9"; // Polygon Mainnet
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
@@ -70,20 +70,20 @@ export const fromAssetAddressNative =
   "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // Native Token
 
 // Bridging Params
-export const fromChainId = 1;
-export const toChainId = 137;
+// export const fromChainId = 1;
+// export const toChainId = 137;
 
-export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
+// export const fromAssetAddressWETH = wethETH; // WETH Token (Ethereum Mainnet)
 
-export const toAssetAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // WETH on Polygon
-export const uniqueRoutesPerBridge = true; // Returns the best route for a given DEX / bridge combination
-export const sort = "output"; // "output" | "gas" | "time"
-export const singleTxOnly = true;
+// export const toAssetAddress = "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"; // WETH on Polygon
+// export const uniqueRoutesPerBridge = true; // Returns the best route for a given DEX / bridge combination
+// export const sort = "output"; // "output" | "gas" | "time"
+// export const singleTxOnly = true;
 
-// Amount to be bridged over if necessary
-const targetAmountNumber = 0.051; // In WETH
-export const targetAmount = parseUnits(targetAmountNumber.toString(), 18);
+// // Amount to be bridged over if necessary
+// const targetAmountNumber = 0.051; // In WETH
+// export const targetAmount = parseUnits(targetAmountNumber.toString(), 18);
 
-// Mint Amount
-const mintAmountNumber = 0.05; // In WETH
-export const mintAmount = parseUnits(mintAmountNumber.toString(), 18);
+// // Mint Amount
+// const mintAmountNumber = 0.05; // In WETH
+// export const mintAmount = parseUnits(mintAmountNumber.toString(), 18);

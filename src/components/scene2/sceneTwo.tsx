@@ -788,15 +788,48 @@ const Q2 = (props: any) => {
     onWhitelistChange();
     if (props.whitelisted === true) {
       props.animations.doSuccessAnimation();
+    } else {
+      props.animations.doFailureAnimation();
     }
   }, [props.whitelisted, isConnected]);
 
-  async function onWhitelistChange() {
+  useEffect(() => {
     if (!props.isWorldScene) {
       hideCustomText();
       return;
     }
+  }, [props.isWorldScene]);
 
+  // HUD Text Manager so it doesn't race to show text
+  const hudManager = {
+    queue: [] as string[],
+    active: false,
+    queueText(text: string) {
+      this.queue.push(text);
+      console.log("Queued", text);
+      this.run();
+    },
+    async run() {
+      const text = this.queue[0];
+      console.log("Entered run function with", text, this.queue);
+      if (text && !this.active) {
+        this.active = true;
+        this.queue.shift();
+        console.log("Actively running: ", text, this.queue);
+
+        await hideCustomText();
+        setHudText(text);
+        showCustomText();
+
+        setTimeout(() => {
+          this.active = false;
+          this.run();
+        }, 3000); // Show text for 3 seconds if another one is queued
+      }
+    },
+  };
+
+  async function onWhitelistChange() {
     if (isRunning.current) return;
 
     isRunning.current = true;
@@ -806,22 +839,16 @@ const Q2 = (props: any) => {
       // props.animations.doSuccessAnimation();
 
       // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
-      if (props.isWorldScene) checkMintAllocation();
+      checkMintAllocation();
     } else if (props.whitelisted === false) {
       // Check if in scene Two or not, don't want it to play on load
       if (!props.isWorldScene) return;
 
-      // Failure animation
-      props.animations.doFailureAnimation();
-
       // Set HUD text. TODO: Should happen after whielisting is checked on connection
-      await hideCustomText();
-      setHudText(
+      hudManager.queueText(
         "Looks like you couldn't make it to Pluto this time around. Please try next time!"
       );
 
-      setTimeout(() => showCustomText(), 500);
-      // setTimeout(() => hideCustomText(), 10000);
       const failureAudio = getAudio("audio-failure");
       failureAudio.volume = 1;
       failureAudio.play();
@@ -837,16 +864,15 @@ const Q2 = (props: any) => {
     const result = await getMintAllocation(signatureInfo, address);
 
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
-    await hideCustomText();
-    setHudText(
-      `You have ${result.free > 0 ? result.free + " free and" : ""} ${
-        result.paid
-      } paid mints. Click on me to check out why I'm so excited!`
-    );
+    // Logic until phase timings are used: If no free or paid mints but still whitelisted, must be in Public phase
+    // hudManager.queueText(
+    //   `You have ${result.free > 0 ? result.free + " free and" : ""} ${
+    //     result.paid > 0 ? result.paid : ""
+    //   } paid mints. Click on me to check out why I'm so excited!`
+    // );
     const mintAudio = getAudio("audio-mint");
     mintAudio.volume = 1;
     mintAudio.play();
-    showCustomText();
   }
 
   async function handleClick() {
@@ -894,6 +920,26 @@ const Q2 = (props: any) => {
     // }, 1000)
   }
 
+  async function beginMint() {
+    try {
+      await callMint();
+    } catch (e: any) {
+      if (e.message === "Insufficient Funds") {
+        console.warn("Insufficient funds on this chain");
+        hudManager.queueText("Insufficient funds on this chain");
+        showCustomText();
+        props.animations.doFailureAnimation();
+      } else {
+        console.error("An error occurred. Please try again", e);
+        hudManager.queueText(
+          "Hey, looks like the transaction attempt failed. Can you please try again?"
+        );
+        showCustomText();
+        props.animations.doFailureAnimation();
+      }
+    }
+  }
+
   async function callMint() {
     const result = await mint(signer.data as Signer, chainId);
 
@@ -911,26 +957,6 @@ const Q2 = (props: any) => {
         },
       });
     }, 1000);
-  }
-
-  async function beginMint() {
-    try {
-      await callMint();
-    } catch (e: any) {
-      if (e.message === "Insufficient Funds") {
-        console.warn("Insufficient funds on this chain");
-        setHudText("Insufficient funds on this chain");
-        showCustomText();
-        props.animations.doFailureAnimation();
-      } else {
-        console.error("An error occurred. Please try again", e);
-        setHudText(
-          "Hey, looks like the transaction attempt failed. Can you please try again?"
-        );
-        showCustomText();
-        props.animations.doFailureAnimation();
-      }
-    }
   }
 
   return (
