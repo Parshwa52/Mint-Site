@@ -3,7 +3,7 @@ import { mint } from "@/utils/mint";
 import { Dialog, Transition } from "@headlessui/react";
 import { Signer } from "ethers";
 import { useRouter } from "next/router";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useChainId, useSigner } from "wagmi";
 import gsap from "gsap";
 
@@ -12,21 +12,26 @@ type Props = {};
 export default function MintModal({}: Props) {
   const { modalOpen, setModalOpen, modalData, setModalData, waitFunc } =
     useUIContext();
+
   const router = useRouter();
   const signer = useSigner();
   const chainId = useChainId();
 
+  const [loading, setLoading] = useState(false);
+
   async function mintAndClose() {
+    setLoading(true);
     const result = await mint(
       signer.data as Signer,
       chainId,
       modalData.tokensToMint
     );
-    setModalOpen(false);
+    setLoading(true);
     waitFunc.current = result.wait;
-
+    
     // Transition to loading screen now
     setTimeout(() => {
+      setModalOpen(false);
       gsap.to("body", {
         autoAlpha: 0,
         duration: 1.25,
@@ -111,10 +116,11 @@ export default function MintModal({}: Props) {
                     <br />
                     <button
                       type="button"
-                      className="mt-5 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="mt-5 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:bg-blue-50 text-blue-500"
                       onClick={mintAndClose}
+                      disabled={loading}
                     >
-                      Let&apos;s go!
+                      {loading ? "Loading..." : "Let's go!"}
                     </button>
                     {/* {modalData.max} |
                     {modalData.tokensToMint} */}
