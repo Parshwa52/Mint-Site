@@ -21,6 +21,7 @@ export default function MintModal({}: Props) {
       chainId,
       modalData.tokensToMint
     );
+    setModalOpen(false);
     waitFunc.current = result.wait;
 
     // Transition to loading screen now
@@ -34,8 +35,6 @@ export default function MintModal({}: Props) {
         },
       });
     }, 1000);
-
-    setModalOpen(false);
 
     // setModalData({
     //   tokensToMint: 0,
