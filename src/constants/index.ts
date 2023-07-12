@@ -11,19 +11,19 @@ export const PHASE = {
     endTime: 1689187500,
   },
   // Guaranteed
-  2: {
+  3: {
     startTime: 1689187500,
     endTime: 1689188400,
   },
   // FCFS
-  3: {
+  4: {
     startTime: 1689188400,
     endTime: 1689189300,
   },
   // Public Mint
-  4: {
+  5: {
     startTime: 1689189300,
-    endTime: 1689190200,
+    endTime: 1689194296,
   },
 };
 

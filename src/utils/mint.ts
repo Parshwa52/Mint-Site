@@ -31,7 +31,6 @@ export async function getMaxSupplyReached() {
 
   const totalMinted = +formatEther(await minterContract.totalMinted());
   const maxSupply = +formatEther(await mintControllerContract.maxSupply());
-
   return totalMinted > maxSupply;
 }
 

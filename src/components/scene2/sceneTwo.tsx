@@ -981,7 +981,7 @@ const Q2 = (props: any) => {
         // Mint Process (Which shall trigger Txn animation upon completion)
         const currentPhase = getCurrentPhase();
         if (currentPhase) {
-          if (currentPhase <= 2) {
+          if (currentPhase === 1) {
             // Investor & MBC, Guaranteed
             beginMint();
           } else {
