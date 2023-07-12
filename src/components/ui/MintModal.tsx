@@ -2,19 +2,39 @@ import { useUIContext } from "@/provider/uiProvider";
 import { mint } from "@/utils/mint";
 import { Dialog, Transition } from "@headlessui/react";
 import { Signer } from "ethers";
+import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useChainId, useSigner } from "wagmi";
 
 type Props = {};
 
 export default function MintModal({}: Props) {
-  const { modalOpen, setModalOpen, modalData, setModalData } = useUIContext();
-
+  const { modalOpen, setModalOpen, modalData, setModalData, waitFunc } =
+    useUIContext();
+  const router = useRouter();
   const signer = useSigner();
   const chainId = useChainId();
 
   async function closeModal() {
-    await mint(signer.data as Signer, chainId, modalData.tokensToMint);
+    const result = await mint(
+      signer.data as Signer,
+      chainId,
+      modalData.tokensToMint
+    );
+    waitFunc.current = result.wait;
+
+    // Transition to loading screen now
+    setTimeout(() => {
+      gsap.to("body", {
+        autoAlpha: 0,
+        duration: 1.25,
+        delay: 5,
+        onComplete: () => {
+          router.push("/mint");
+        },
+      });
+    }, 1000);
+
     setModalOpen(false);
 
     // setModalData({
