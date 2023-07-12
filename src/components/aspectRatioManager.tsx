@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import icon from "@/assets/monitor.png";
 
 export const AspectRatioManager = () => {
   const [screenEnabled, setScreenStatus] = useState(false);
@@ -25,9 +24,9 @@ export const AspectRatioManager = () => {
   if (screenEnabled)
     return (
       <div id="aspect-ratio-screen">
-        <Image
-          src={icon}
-          alt="rotate your device icon"
+        <img
+          src="“https://res.cloudinary.com/dyplx2t1x/image/upload/v1689200558/q2_reveal_reveal-modified_utgn9q.png”"
+          alt="Switch to desktop icon"
           className="aspect-icon"
         />
         <p className="aspect-text heading-font">
