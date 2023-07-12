@@ -62,9 +62,12 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
 
   // Paid Allowance
   const paidAllowance = signatureInfo[`Sale${signatureInfo.PhaseType}MaxMint`];
-  const alreadyMinted = +formatEther(
-    await mintControllerContract.readRegister(address, signatureInfo.PhaseType)
-  );
+  const alreadyMinted = (
+    (await mintControllerContract.readRegister(
+      address,
+      signatureInfo.PhaseType
+    )) as BigNumber
+  ).toNumber();
 
   const paidLeft = paidAllowance - alreadyMinted;
   console.log({ paidAllowance, alreadyMinted });
