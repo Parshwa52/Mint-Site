@@ -100,7 +100,7 @@ export function getPaymentToken(
 /**
  * Main Function
  * Prepare to mint with:
- * 1) Native Token
+ * 1) Native Token (first priority)
  * 2) Whitelisted Tokens in priority order while checking and asking for allowance
  */
 export async function preparePayment(chainId: number, signer: Signer) {
@@ -110,47 +110,41 @@ export async function preparePayment(chainId: number, signer: Signer) {
     chainId === primaryChainId ? rpc_primary : rpc_secondary
   );
 
-  // Check if user can pay with any ERC20 token
-  const token = await getPaymentToken(userAddress, chainId);
-
-  // Pay with ERC20 token
-  if (token !== null) {
-    // Check Approval
-    await approveToken(token.address, token.mintPrice, chainId, signer);
-
-    return token;
-  }
   // Pay with Native token
-  else {
-    // Get Mint Price for Native token
-    const mintControllerContract = new Contract(
-      chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
-      chainId === primaryChainId ? MintControllerABI : DelegatorABI,
-      provider
-    );
 
-    console.log({
-      a: chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
-      b: chainId === primaryChainId ? MintControllerABI : DelegatorABI,
-      c: provider,
-    });
+  // Get Mint Price for Native token
+  const mintControllerContract = new Contract(
+    chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
+    chainId === primaryChainId ? MintControllerABI : DelegatorABI,
+    provider
+  );
 
-    const mintPrice = (await mintControllerContract.mintPrice(
-      fromAssetAddressNative
-    )) as BigNumber;
+  const mintPrice = (await mintControllerContract.mintPrice(
+    fromAssetAddressNative
+  )) as BigNumber;
 
-    // Check user's native token balance
-    const nativeBalance = await provider.getBalance(userAddress);
+  // Check user's native token balance
+  const nativeBalance = await provider.getBalance(userAddress);
 
-    // Check if user's native balance is at least 5% more
-    const mintPriceWithMargin = parseEther(
-      (+formatEther(mintPrice) * 1.05).toString()
-    );
+  // Check if user's native balance is at least 5% more
+  const mintPriceWithMargin = parseEther(
+    (+formatEther(mintPrice) * 1.05).toString()
+  );
 
-    console.log({ mintPrice, mintPriceWithMargin });
+  console.log({ mintPrice, mintPriceWithMargin });
 
-    if (nativeBalance.gte(mintPriceWithMargin)) {
-      return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };
+  if (nativeBalance.gte(mintPriceWithMargin)) {
+    return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };
+  } else {
+    // Check if user can pay with any ERC20 token
+    const token = await getPaymentToken(userAddress, chainId);
+
+    // Pay with ERC20 token
+    if (token !== null) {
+      // Check Approval
+      await approveToken(token.address, token.mintPrice, chainId, signer);
+
+      return token;
     } else return null;
   }
 }

@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, lightTheme, Theme } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, goerli, mainnet } from "wagmi";
-import { polygon, polygonMumbai } from "wagmi/chains";
+import { configureChains, createClient, mainnet } from "wagmi";
+import { polygon } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 
 export const { chains, provider } = configureChains(
