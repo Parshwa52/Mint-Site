@@ -10,6 +10,7 @@ import { useUIContext } from "@/provider/uiProvider";
 import { getAudio } from "@/components/audioManager";
 import { useAccount, useChainId } from "wagmi";
 import { secondaryChainId } from "@/constants";
+import { fadeInAudio, fadeOutAudio } from "@/utils/audio";
 
 const Mint = () => {
   const router = useRouter();
@@ -75,16 +76,15 @@ const Mint = () => {
     bridgeVideo.current.play();
 
     const bridgingAudio = getAudio("audio-bridging");
-    bridgingAudio.volume = 1;
-    bridgingAudio.play();
+    if (bridgingAudio) fadeInAudio(bridgingAudio);
   }
 
   function toGalaxy() {
+    const bridgingAudio = getAudio("audio-bridging");
+    if (bridgingAudio) fadeOutAudio(bridgingAudio);
+
     const galaxyAudio = getAudio("galaxy-audio");
-    if (galaxyAudio) {
-      galaxyAudio.volume = 1;
-      galaxyAudio.play();
-    }
+    if (galaxyAudio) fadeInAudio(galaxyAudio);
 
     gsap.to(".bridging-video-container", {
       autoAlpha: 0,
@@ -97,7 +97,7 @@ const Mint = () => {
 
         gsap.set(".ui-space", { display: "block" });
 
-        // Show for at least a few seconds
+        // Show galaxy for at least a few seconds
         setTimeout(() => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
@@ -105,23 +105,13 @@ const Mint = () => {
               const galaxyAudio = getAudio("galaxy-audio")!;
 
               // Fade out audio
-              if (galaxyAudio) {
-                const interval = setInterval(() => {
-                  console.log("Galaxy Audio Volume", galaxyAudio.volume);
-                  if (galaxyAudio.volume >= 0.1)
-                    galaxyAudio.volume = galaxyAudio.volume - 0.1;
-                  else {
-                    galaxyAudio.pause();
-                    clearInterval(interval);
-                  }
-                }, 100);
-              }
+              if (galaxyAudio) fadeOutAudio(galaxyAudio);
 
               fadeOut();
               hideDrag();
             });
           } else router.push("/");
-        }, 2000);
+        }, 5000);
       },
     });
   }
