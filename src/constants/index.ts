@@ -23,7 +23,7 @@ export const PHASE = {
   // Public Mint
   5: {
     startTime: 1689189300,
-    endTime: 1689194296,
+    endTime: 1689198800,
   },
 };
 
