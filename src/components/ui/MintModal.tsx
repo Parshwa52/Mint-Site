@@ -5,6 +5,7 @@ import { Signer } from "ethers";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useChainId, useSigner } from "wagmi";
+import gsap from 'gsap'
 
 type Props = {};
 
