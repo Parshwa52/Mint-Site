@@ -12,15 +12,15 @@ const VideoScreen: React.FC<Props> = ({}) => {
         autoPlay
       >
         <source
-          src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689076626/Pluto/Mint/PreRevealHQWide_rreahd.mp4"
+          src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689182739/PRWide_irylq3.mp4"
           type="video/mp4"
         />
       </video>
-      <audio
+      {/* <audio
         src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689076616/Pluto/Mint/Pre_Reveal_Audio_e6touw.mp3"
         autoPlay
         loop
-      ></audio>
+      ></audio> */}
       {/* <div className='absolute items-center justify-end flex w-full top-0 p-4 '>
         <a
           href='#'
