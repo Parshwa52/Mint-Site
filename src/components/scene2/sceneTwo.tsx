@@ -933,8 +933,10 @@ const Q2 = (props: any) => {
       return;
     }
 
-    if (isWhitelisted) checkMintAllocation();
-    else if (response.status === 500)
+    if (isWhitelisted) {
+      checkMintAllocation();
+      playSuccess();
+    } else if (response.status === 500)
       playFailure("No Sale is Active at the moment");
     else
       playFailure(
@@ -959,14 +961,18 @@ const Q2 = (props: any) => {
           result.paid > 0 ? result.paid : ""
         } mints. Click on my face to check out why I'm so excited!`
       );
+
+      const mintAudio = getAudio("audio-success");
+      mintAudio.volume = 0.6;
+      mintAudio?.play();
     } else if (result.paid === -1) {
       hudManager.queueText(
         `You have mints available! Click on my face to check out why I'm so excited!`
       );
+      const mintAudio = getAudio("audio-success");
+      mintAudio.volume = 0.6;
+      mintAudio?.play();
     }
-    const mintAudio = getAudio("audio-mint");
-    mintAudio.volume = 1;
-    mintAudio.play();
   }
 
   async function handleClick() {

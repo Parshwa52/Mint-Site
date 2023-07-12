@@ -179,6 +179,15 @@ export const AudioManager = () => {
       >
         <source src="/assets/sounds/Q2_Failure_Voice.wav" type="audio/wav" />
       </audio>
+      <audio
+        id="audio-success"
+        muted
+        style={{
+          display: "none",
+        }}
+      >
+        <source src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689183180/Dialogues/Q2_You_have_x_mints_lnqigs.mp3" type="audio/wav" />
+      </audio>
     </>
   );
 };

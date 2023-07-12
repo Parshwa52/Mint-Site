@@ -19,6 +19,7 @@ const VideoScreen: React.FC<Props> = ({}) => {
       <audio
         src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689076616/Pluto/Mint/Pre_Reveal_Audio_e6touw.mp3"
         autoPlay
+        loop
       ></audio>
       {/* <div className='absolute items-center justify-end flex w-full top-0 p-4 '>
         <a

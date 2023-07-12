@@ -102,6 +102,8 @@ const Mint = () => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
             waitFunc.current(1).then(() => {
+              // FETHC NUMEBR
+
               const galaxyAudio = getAudio("galaxy-audio")!;
 
               // Fade out audio
