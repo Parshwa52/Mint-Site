@@ -5,8 +5,7 @@ import { polygon, polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 
 export const { chains, provider } = configureChains(
-  // [polygon, mainnet],
-  [goerli, polygonMumbai],
+  [polygon, mainnet],
   [alchemyProvider({ apiKey: "I3K5UoJriahPrauT3HRuT7FDdHdyE_Um" })]
 );
 
