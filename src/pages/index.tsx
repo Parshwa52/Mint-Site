@@ -5,9 +5,12 @@ import { UI } from "@/components/scene1/ui";
 // custom components
 import { HomepageHero } from "@/sections/hero";
 import { AudioManager } from "@/components/audioManager";
-import Modal from "@/components/ui/Modal";
+import { useUIContext } from "@/provider/uiProvider";
+import MintModal from "@/components/ui/MintModal";
 
 export default function Home() {
+  const { setModalOpen } = useUIContext();
+
   return (
     <PageLayout
       pageTitle="Pluto Mint Website"
@@ -18,9 +21,18 @@ export default function Home() {
       <HomepageCity />
       <UI />
       <AudioManager />
-      <Modal />
       {/* <Mouse /> */}
       {/* <SoundButton /> */}
+
+      <MintModal />
+
+      {/* Testing */}
+      <button
+        onClick={() => setModalOpen(true)}
+        className="fixed top-5 right-0 z-50"
+      >
+        Open Mint Modal
+      </button>
     </PageLayout>
   );
 }

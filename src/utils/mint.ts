@@ -69,7 +69,8 @@ export async function getSignature(chainId: number, address: string) {
   );
 }
 
-export async function mint(signer: Signer, chainId = 137) {
+export async function mint(signer: Signer, chainId = 137, usertokensToMint?: number) {
+  console.log("Mint got tokens", usertokensToMint)
   if (!signer.provider) {
     console.error("Could not find provider on signer");
     return;
@@ -81,7 +82,7 @@ export async function mint(signer: Signer, chainId = 137) {
   const Signature = signatureInfo.tuple;
 
   // Mint
-  const tokensToMint = (await getMintAllocation(signatureInfo, userAddress))
+  const tokensToMint = usertokensToMint || (await getMintAllocation(signatureInfo, userAddress))
     .paid;
   let nativeAmount = parseEther("0");
 

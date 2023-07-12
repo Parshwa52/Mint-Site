@@ -9,8 +9,8 @@ import {
 } from "react";
 
 export interface ModalData {
-  title: string;
-  text: string;
+  max: number;
+  tokensToMint: number;
 }
 
 interface UIContextInterface {
@@ -34,8 +34,8 @@ const defaultState: UIContextInterface = {
   setModalOpen: () => {},
 
   modalData: {
-    title: "",
-    text: "",
+    max: 10000,
+    tokensToMint: 0,
   },
   setModalData: () => {},
 
@@ -53,8 +53,8 @@ const uiContext = createContext<UIContextInterface>(defaultState);
 const UIProvider = ({ children }: { children: any }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState<ModalData>({
-    title: "",
-    text: "",
+    max: 10000,
+    tokensToMint: 0,
   });
 
   const [txnHash, setTxnHash] = useState("");

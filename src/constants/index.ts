@@ -1,5 +1,3 @@
-import { ModalData } from "@/provider/uiProvider";
-import { parseUnits } from "ethers/lib/utils.js";
 
 export * from "./uniswap";
 export * from "./tokens";
@@ -7,30 +5,25 @@ export * from "./tokens";
 // Phase timings
 
 export const PHASE = {
-  // Investor
+  // Investor & MBC
   1: {
-    startTime: 0,
-    endTime: 0,
-  },
-  // MBC
-  2: {
-    startTime: 0,
-    endTime: 0,
+    startTime: 1689186600,
+    endTime: 1689187500,
   },
   // Guaranteed
-  3: {
-    startTime: 0,
-    endTime: 0,
+  2: {
+    startTime: 1689187500,
+    endTime: 1689188400,
   },
   // FCFS
-  4: {
-    startTime: 0,
-    endTime: 0,
+  3: {
+    startTime: 1689188400,
+    endTime: 1689189300,
   },
   // Public Mint
-  5: {
-    startTime: 0,
-    endTime: 0,
+  4: {
+    startTime: 1689189300,
+    endTime: 1689190200,
   },
 };
 

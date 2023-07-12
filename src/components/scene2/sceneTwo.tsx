@@ -765,12 +765,24 @@ const Q2 = (props: any) => {
   const chainId = useChainId();
 
   // UI Context
-  const { setTxnHash, hudText, setHudText, waitFunc } = useUIContext();
+  const {
+    setTxnHash,
+    hudText,
+    setHudText,
+    waitFunc,
+    modalData,
+    setModalData,
+    setModalOpen,
+  } = useUIContext();
 
   const isRunning = useRef(false);
   const [whitelisted, setWhitelisted] = useState(null as boolean | null);
 
   const [currentAnimation, setCurrentAnimation] = useState("");
+
+  // const [allocation, setAllocation] = useState<
+  //   Awaited<ReturnType<typeof getMintAllocation>>
+  // >({ free: -1, paid: -1 });
 
   useEffect(() => {
     props.setInstance(q2.current);
@@ -939,7 +951,17 @@ const Q2 = (props: any) => {
         playTransaction();
 
         // Mint Process (Which shall trigger Txn animation upon completion)
-        beginMint();
+        const currentPhase = getCurrentPhase();
+        if (currentPhase) {
+          if (currentPhase <= 2) {
+            // Investor & MBC, Guaranteed
+            beginMint();
+          } else {
+            // FCFS, Public Mint
+            setModalData({ ...modalData, max: 3 });
+            setModalOpen(true);
+          }
+        }
 
         // Simulate Mint and then final page
         // setTimeout(() => {
