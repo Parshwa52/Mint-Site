@@ -102,26 +102,26 @@ const Mint = () => {
         gsap.set(".ui-space", { display: "block" });
 
         // TESTING
-        fadeOut();
-        hideDrag();
+        // fadeOut();
+        // hideDrag();
 
         // Show galaxy for at least a few seconds
-        // setTimeout(() => {
-        //   if (waitFunc.current) {
-        //     // Wait for a certain number of block confirmations
-        //     waitFunc.current(1).then((receipt) => {
-        //       fetchTokenId(receipt);
+        setTimeout(() => {
+          if (waitFunc.current) {
+            // Wait for a certain number of block confirmations
+            waitFunc.current(1).then((receipt) => {
+              fetchTokenId(receipt);
 
-        //       const galaxyAudio = getAudio("galaxy-audio")!;
+              const galaxyAudio = getAudio("galaxy-audio")!;
 
-        //       // Fade out audio
-        //       if (galaxyAudio) fadeOutAudio(galaxyAudio);
+              // Fade out audio
+              if (galaxyAudio) fadeOutAudio(galaxyAudio);
 
-        //       fadeOut();
-        //       hideDrag();
-        //     });
-        //   } else router.push("/");
-        // }, 5000);
+              fadeOut();
+              hideDrag();
+            });
+          } else router.push("/");
+        }, 5000);
       },
     });
   }
