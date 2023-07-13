@@ -71,7 +71,6 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
   ).toNumber();
 
   const paidLeft = paidAllowance - alreadyMinted;
-  console.log({ paidAllowance, alreadyMinted });
 
   return {
     free: 0,
@@ -96,7 +95,6 @@ export async function mint(
   chainId = 137,
   usertokensToMint?: number
 ) {
-  console.log("Mint got tokens", usertokensToMint);
   if (!signer.provider) {
     console.error("Could not find provider on signer");
     return;
@@ -131,14 +129,6 @@ export async function mint(
       signer
     );
 
-    console.log("Params to MintContoller payAndMint", {
-      mintControllerAddress,
-      Signature,
-      tokenAdress: tokenResult.address,
-      tokensToMint,
-      vault: ethers.constants.AddressZero,
-      value: nativeAmount,
-    });
     return {
       result: await mintControllerContract.payAndMint(
         Signature,
@@ -170,14 +160,6 @@ export async function mint(
       parseEther((+formatEther(estimatedFees) * 1.2).toFixed(18))
     );
 
-    console.log("Params to Delegator payAndMintTokens", {
-      Signature,
-      tokenAdress: tokenResult.address,
-      tokensToMint,
-      userAddress,
-      vault: ethers.constants.AddressZero,
-      value: nativeAmount,
-    });
     return {
       result: await delegatorContract.payAndMintTokens(
         Signature,

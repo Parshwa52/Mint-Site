@@ -1374,30 +1374,6 @@ const Kiwi = (props: any) => {
     }
   }, [isSoundEnabled, hovered, props.isKiwiHoverable]);
 
-  // useEffect(() => {
-  //   console.log(gl, camera, scene)
-  //   if (light.current && !composer.current) {
-  //     const composerLocal = new EffectComposer(gl, {
-  //       multisampling: 0,
-  //     })
-  //     const renderpass = new RenderPass(scene, camera)
-  //     composerLocal.addPass(renderpass)
-  //     composerLocal.addPass(
-  //       new EffectPass(
-  //         camera,
-  //         new GodRaysEffect(camera, light.current, {
-  //           samples: 128,
-  //           density: 1,
-  //           decay: 0.98,
-  //           weight: 0.5,
-  //           exposure: 0.75,
-  //           clampMax: 1,
-  //         })
-  //       )
-  //     )
-  //     composer.current = composerLocal
-  //   }
-  // }, [light, composer])
 
   useFrame(() => {
     composer.current && composer.current.render();

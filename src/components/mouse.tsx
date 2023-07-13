@@ -133,7 +133,6 @@ export const Mouse = () => {
   }, [pointerTl, clickingTl]);
 
   const handleClick = () => {
-    console.log("clicked");
     setSoundStatus(true);
     window.removeEventListener("click", handleClick);
   };

@@ -144,17 +144,6 @@ export const UI = ({ visible }: { visible?: boolean }) => {
                   <div className="address">
                     {address ? compactAddress(address as string) : ""}
                   </div>
-                  {/* <div style={{ zIndex: 100 }}>
-                    <DelegateCashButton
-                      // @ts-ignore
-                      connectedWallet="0xf475D99Be3241c69454eA8AF7B12F38078F697bc"
-                      rpcUrl="https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-                      rounded={true}
-                      theme="dark"
-                      onButtonClick={(event: any) => console.log(event.detail)}
-                      onWalletSelect={(event: any) => console.log(event.detail)}
-                    />
-                  </div> */}
                 </>
               )}
               <SoundButton />

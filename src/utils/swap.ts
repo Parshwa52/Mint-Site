@@ -76,7 +76,6 @@ export async function swap(signer: Signer) {
   // Get required amountIn
   const { amountIn, amountInFormatted } = await getSwapQuote();
 
-  console.log({ amountInFormatted });
 
   const txnArgs = {
     from: userAddress,
@@ -86,12 +85,9 @@ export async function swap(signer: Signer) {
     gasLimit: 10000,
   };
 
-  console.log({ txnArgs });
 
   const { hash, wait } = await signer.sendTransaction(txnArgs);
-  console.log("TXN SENT", hash);
 
   wait(1).then(() => {
-    console.log("TRANSACTION SUCCEEDED!");
   });
 }

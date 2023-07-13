@@ -416,7 +416,6 @@ export const SceneTwo = () => {
               duration: 25,
               ease: "none",
               onStart(e) {
-                console.log("update from blurred background", e);
                 setEnteredBlur(true);
               },
               onReverseComplete() {
@@ -794,7 +793,6 @@ const Q2 = (props: any) => {
   }, [q2]);
 
   useEffect(() => {
-    console.log({ isConnected });
     if (isConnected) {
       if (whitelisted === null && (props.isWorldScene || props.isEnteredBlur))
         checkWhitelistStatus();
@@ -802,10 +800,6 @@ const Q2 = (props: any) => {
   }, [isConnected]);
 
   useEffect(() => {
-    console.log({
-      isWorldScene: props.isWorldScene,
-      isEnteredBlur: props.isEnteredBlur,
-    });
     if (!props.isWorldScene) {
       hideCustomText();
       return;
@@ -828,16 +822,13 @@ const Q2 = (props: any) => {
       if (this.queue.indexOf(text) !== -1) return;
 
       this.queue.push(text);
-      console.log("Queued", text);
       this.run();
     },
     async run() {
       const text = this.queue[0];
-      console.log("Entered run function with", text, this.queue);
       if (text && !this.active) {
         this.active = true;
         this.queue.shift();
-        console.log("Actively running: ", text, this.queue);
 
         await hideCustomText();
         setHudText(text);
@@ -865,11 +856,6 @@ const Q2 = (props: any) => {
   }
 
   function playSuccess() {
-    console.log(
-      "Play success reached. Current=",
-      currentAnimation,
-      props.animations
-    );
     if (currentAnimation !== "success") {
       props.animations.doSuccessAnimation();
       setCurrentAnimation("success");
@@ -883,31 +869,7 @@ const Q2 = (props: any) => {
     }
   }
 
-  // async function onWhitelistChange() {
-  //   if (isRunning.current) return;
-
-  // isRunning.current = true;
-  //   console.log("onWhitelistChange", whitelisted);
-
-  //   if (whitelisted === true) {
-  //     // Only set custom HUD text in scene 2, otherwise scene 1 text doesn't appear
-  //     checkMintAllocation();
-  //   } else if (whitelisted === false) {
-  //     // Check if in scene Two or not, don't want it to play on load
-  //     if (!props.isWorldScene) return;
-
-  //     console.log("Play failure for not-whitelisted in onWhitelistchange");
-  //     playFailure(
-  //       "Looks like you couldn't make it to Pluto this time around. Please try next time!"
-  //     );
-  //   }
-
-  //   isRunning.current = false;
-  // }
-
   async function checkWhitelistStatus() {
-    console.log("checkWhitelistStatus called", whitelisted, isRunning.current);
-
     if (!address || !chainId || isRunning.current || whitelisted !== null)
       return;
 
@@ -931,7 +893,6 @@ const Q2 = (props: any) => {
     const response = await getSignature(chainId, address.toString());
     const isWhitelisted = response.status === 200;
 
-    console.log("Whitelist status!", isWhitelisted);
     setWhitelisted(isWhitelisted);
 
     // const currentPhase = getCurrentPhase();

@@ -71,23 +71,12 @@ export function getPaymentToken(
         provider
       );
 
-      console.log({
-        a:
-          chainId === primaryChainId ? mintControllerAddress : delegatorAddress,
-        b: chainId === primaryChainId ? MintControllerABI : DelegatorABI,
-        c: provider,
-      });
 
       const mintPrice = (await mintContract.mintPrice(
         item.address
       )) as BigNumber;
 
       const finalMintPrice = mintPrice.mul(tokensToMint.toString());
-      console.log("getPaymentToken", {
-        finalMintPrice,
-        mintPrice,
-        tokensToMint,
-      });
 
       if (balance.gte(finalMintPrice)) {
         resolve({ ...item, mintPrice: finalMintPrice });
@@ -138,7 +127,6 @@ export async function preparePayment(
     (+formatEther(mintPrice) * 1.05).toString()
   );
 
-  console.log({ mintPrice, mintPriceWithMargin });
 
   if (nativeBalance.gte(mintPriceWithMargin)) {
     return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };

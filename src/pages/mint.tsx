@@ -31,31 +31,6 @@ const Mint = () => {
   const chainId = useChainId();
 
   useEffect(() => {
-    // Don't play the briding video
-    // if (isConnected && chainId === secondaryChainId) {
-    //   gsap.to("body", {
-    //     autoAlpha: 1,
-    //     duration: 1.5,
-    //     ease: "expo",
-    //     onComplete() {
-    //       gsap.to(".bridging-video-container", {
-    //         autoAlpha: 1,
-    //         duration: 1,
-    //         onComplete() {
-    //           if (bridgeVideo.current) {
-    //             if (bridgeVideo.current.readyState === 4) {
-    //               playBridgeVideoAndAudio();
-    //               console.log("Play video state", bridgeVideo.current);
-    //             } else {
-    //               console.log("Play video after event, state");
-    //               bridgeVideo.current.oncanplay = playBridgeVideoAndAudio;
-    //             }
-    //           }
-    //         },
-    //       });
-    //     },
-    //   });
-    // } else {
     gsap.to("body", {
       autoAlpha: 1,
       duration: 1.5,
@@ -64,9 +39,6 @@ const Mint = () => {
         toGalaxy();
       },
     });
-    // }
-
-    // soundsArray[1].play()
 
     // gsap.set('.ui-space #sound-button', { display: 'block', autoAlpha: 1 })
   }, [soundsArray]);
@@ -106,7 +78,6 @@ const Mint = () => {
             // Wait for a certain number of block confirmations
             waitFunc.current(1).then((receipt) => {
               fetchTokenId(receipt);
-              console.log({ receipt });
 
               const galaxyAudio = getAudio("galaxy-audio")!;
 
@@ -177,7 +148,6 @@ const Mint = () => {
       const event = iface.parseLog(receipt.logs[mintType === "NATIVE" ? 1 : 2]);
 
       const id = (event.args.tokenId as BigNumber).toNumber().toString();
-      console.log({ tokenId: id });
       setTokenId(id);
     }
   }
