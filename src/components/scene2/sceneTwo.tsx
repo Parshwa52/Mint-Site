@@ -972,6 +972,8 @@ const Q2 = (props: any) => {
           if (isClickRunning.current === true) return;
           isClickRunning.current = true;
 
+          playTransaction();
+
           const signatureInfo = await (
             await getSignature(chainId, address)
           ).json();
@@ -979,10 +981,9 @@ const Q2 = (props: any) => {
           const result = await getMintAllocation(signatureInfo, address);
           if (result.mintedAll || result.paid === 0) {
             isClickRunning.current = false;
+            playSuccess();
             return;
           }
-
-          playTransaction();
 
           const currentPhase = signatureInfo.PhaseType;
           if (currentPhase <= 3) {
