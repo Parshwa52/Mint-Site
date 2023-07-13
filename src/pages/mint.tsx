@@ -154,7 +154,7 @@ const Mint = () => {
 
   return (
     <PageLayout
-      pageTitle="Pluto mint - Minted"
+      pageTitle="Minted - Pluto Misfits"
       pageDesc="Pluto Misfits Minted Page"
     >
       <UI visible />
