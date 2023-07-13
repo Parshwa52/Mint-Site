@@ -78,7 +78,9 @@ export function getPaymentToken(
         c: provider,
       });
 
-      const mintPrice = (await mintContract.mintPrice(item.address)) as BigNumber;
+      const mintPrice = (await mintContract.mintPrice(
+        item.address
+      )) as BigNumber;
 
       const finalMintPrice = mintPrice.mul(tokensToMint.toString());
       console.log("getPaymentToken", {
@@ -147,7 +149,12 @@ export async function preparePayment(
     // Pay with ERC20 token
     if (token !== null) {
       // Check Approval
-      await approveToken(token.address, token.mintPrice, chainId, signer);
+      await approveToken(
+        token.address,
+        token.mintPrice.mul(tokensToMint.toString()),
+        chainId,
+        signer
+      );
 
       return token;
     } else return null;

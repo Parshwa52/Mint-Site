@@ -26,10 +26,9 @@ const Mint = () => {
 
   const bridgeVideo = useRef(null as HTMLVideoElement | null);
 
-  const { waitFunc } = useUIContext();
+  const { waitFunc, mintType } = useUIContext();
 
   const chainId = useChainId();
-  const { isConnected } = useAccount();
 
   useEffect(() => {
     // Don't play the briding video
@@ -101,16 +100,13 @@ const Mint = () => {
 
         gsap.set(".ui-space", { display: "block" });
 
-        // TESTING
-        // fadeOut();
-        // hideDrag();
-
         // Show galaxy for at least a few seconds
         setTimeout(() => {
           if (waitFunc.current) {
             // Wait for a certain number of block confirmations
             waitFunc.current(1).then((receipt) => {
               fetchTokenId(receipt);
+              console.log({ receipt });
 
               const galaxyAudio = getAudio("galaxy-audio")!;
 
@@ -178,7 +174,7 @@ const Mint = () => {
       setTokenId("XXXX");
     } else if (chainId === primaryChainId) {
       const iface = new ethers.utils.Interface(MinterABI);
-      const event = iface.parseLog(receipt.logs[1]);
+      const event = iface.parseLog(receipt.logs[mintType === "NATIVE" ? 1 : 2]);
 
       const id = (event.args.tokenId as BigNumber).toNumber().toString();
       console.log({ tokenId: id });

@@ -139,15 +139,18 @@ export async function mint(
       vault: ethers.constants.AddressZero,
       value: nativeAmount,
     });
-    return await mintControllerContract.payAndMint(
-      Signature,
-      tokensToMint,
-      tokenResult.address,
-      ethers.constants.AddressZero,
-      {
-        value: nativeAmount,
-      }
-    );
+    return {
+      result: await mintControllerContract.payAndMint(
+        Signature,
+        tokensToMint,
+        tokenResult.address,
+        ethers.constants.AddressZero,
+        {
+          value: nativeAmount,
+        }
+      ),
+      tokenAddress: tokenResult.address,
+    };
   } else {
     // Ethereum (Secondary)
     const delegatorContract = new Contract(
@@ -175,15 +178,18 @@ export async function mint(
       vault: ethers.constants.AddressZero,
       value: nativeAmount,
     });
-    return await delegatorContract.payAndMintTokens(
-      Signature,
-      tokenResult.address,
-      tokensToMint,
-      userAddress,
-      ethers.constants.AddressZero,
-      {
-        value: nativeAmount,
-      }
-    );
+    return {
+      result: await delegatorContract.payAndMintTokens(
+        Signature,
+        tokenResult.address,
+        tokensToMint,
+        userAddress,
+        ethers.constants.AddressZero,
+        {
+          value: nativeAmount,
+        }
+      ),
+      tokenAddress: tokenResult.address,
+    };
   }
 }

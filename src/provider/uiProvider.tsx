@@ -27,6 +27,9 @@ interface UIContextInterface {
 
   hudText: string;
   setHudText: Dispatch<SetStateAction<string>>;
+  
+  mintType: "NATIVE" | "ERC20" | string;
+  setMintType: Dispatch<SetStateAction<string>>;
 }
 
 const defaultState: UIContextInterface = {
@@ -46,6 +49,9 @@ const defaultState: UIContextInterface = {
 
   hudText: "",
   setHudText: () => {},
+  
+  mintType: "",
+  setMintType: () => {},
 };
 
 const uiContext = createContext<UIContextInterface>(defaultState);
@@ -61,6 +67,7 @@ const UIProvider = ({ children }: { children: any }) => {
   const waitFunc = useRef(null as any);
 
   const [hudText, setHudText] = useState("");
+  const [mintType, setMintType] = useState("");
 
   return (
     <uiContext.Provider
@@ -78,6 +85,9 @@ const UIProvider = ({ children }: { children: any }) => {
 
         hudText,
         setHudText,
+
+        mintType,
+        setMintType,
       }}
     >
       {children}

@@ -26,7 +26,7 @@ function Test() {
     // Only on polygon
     const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
     const receipt = await provider.getTransactionReceipt(
-      "0x2dc7f4aaa148152d36e65a8ffc10dd2d2d7c61c1bf39fcfa252160bafcf40c60"
+      "0x412c5c28bea7ab2e1982a85b6fd1218436e7c05a63633fd7a5781d661e68b09f"
     );
 
     const abi = MinterABI;
@@ -34,7 +34,7 @@ function Test() {
     console.log("Receipt", receipt);
 
     const iface = new ethers.utils.Interface(abi);
-    const events = iface.parseLog(receipt.logs[1]);
+    const events = iface.parseLog(receipt.logs[2]);
     console.log({ events });
     console.log("ID", events.args.tokenId)
   }

@@ -10,6 +10,7 @@ export function compactAddress(address: string) {
   );
 }
 
+
 // ui.tsx paragraph animations
 export async function showCustomText(paragraphId: string = "custom-p-1") {
   const target = document.getElementById(paragraphId) as HTMLParagraphElement;

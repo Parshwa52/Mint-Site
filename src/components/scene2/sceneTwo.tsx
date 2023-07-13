@@ -54,6 +54,7 @@ import {
   mint,
 } from "@/utils/mint";
 import { getAudio } from "../audioManager";
+import { fromAssetAddressNative } from "@/constants";
 
 export const SceneTwo = () => {
   const { isConnected, address } = useAccount();
@@ -778,6 +779,7 @@ const Q2 = (props: any) => {
     modalData,
     setModalData,
     setModalOpen,
+    setMintType,
   } = useUIContext();
 
   const isRunning = useRef(false);
@@ -786,10 +788,6 @@ const Q2 = (props: any) => {
   const [currentAnimation, setCurrentAnimation] = useState("");
 
   const [maxSupplyReached, setMaxSupplyReached] = useState(false);
-
-  // const [allocation, setAllocation] = useState<
-  //   Awaited<ReturnType<typeof getMintAllocation>>
-  // >({ free: -1, paid: -1 });
 
   useEffect(() => {
     props.setInstance(q2.current);
@@ -1063,22 +1061,26 @@ const Q2 = (props: any) => {
   }
 
   async function callMint() {
-    const result = await mint(signer.data as Signer, chainId);
+    hudManager.queueText("Q2 is calculating...");
+    const response = await mint(signer.data as Signer, chainId);
+    const result = response?.result;
+
+    setMintType(
+      response?.tokenAddress === fromAssetAddressNative ? "NATIVE" : "ERC20"
+    );
 
     setTxnHash("Txn Hash: " + result.hash);
     waitFunc.current = result.wait;
 
     // Transition to loading screen now
-    setTimeout(() => {
-      gsap.to("body", {
-        autoAlpha: 0,
-        duration: 1.25,
-        delay: 5,
-        onComplete: () => {
-          router.push("/mint");
-        },
-      });
-    }, 1000);
+    gsap.to("body", {
+      autoAlpha: 0,
+      duration: 1.25,
+      delay: 5,
+      onComplete: () => {
+        router.push("/mint");
+      },
+    });
   }
 
   return (

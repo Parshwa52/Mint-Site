@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useChainId, useSigner } from "wagmi";
 import gsap from "gsap";
+import { hideCustomText, showCustomText } from "@/utils";
+import { fromAssetAddressNative } from "@/constants";
 
 type Props = {};
 
@@ -19,16 +21,34 @@ export default function MintModal({}: Props) {
 
   const [loading, setLoading] = useState(false);
 
+  const { setMintType } = useUIContext();
+
   async function mintAndClose() {
     try {
       setLoading(true);
-      const result = await mint(
+      // if (hudText.length > 0) {
+      //   hideCustomText().then(() => {
+      //     setHudText("Q2 is calculating...");
+      //     showCustomText();
+      //   });
+      // } else {
+      //   setHudText("Q2 is calculating...");
+      //   showCustomText();
+      // }
+
+      const response = await mint(
         signer.data as Signer,
         chainId,
         modalData.tokensToMint
       );
+      const result = response?.result;
+
       setLoading(false);
       waitFunc.current = result.wait;
+
+      setMintType(
+        response?.tokenAddress === fromAssetAddressNative ? "NATIVE" : "ERC20"
+      );
 
       // Transition to loading screen now
       setTimeout(() => {
@@ -100,7 +120,7 @@ export default function MintModal({}: Props) {
                   </Dialog.Title>
                   <div className="mt-1">
                     <p className="text-sm text-gray-400">
-                      Choose how many tokens to mint
+                      Choose how many tokens to mint (Max 3 for FCFS)
                     </p>
                   </div>
 
