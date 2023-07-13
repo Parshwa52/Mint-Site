@@ -75,7 +75,10 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
   return {
     free: 0,
     paid: paidLeft,
-    mintedAll: paidAllowance === alreadyMinted,
+    mintedAll:
+      +paidAllowance > 0 &&
+      alreadyMinted > 0 &&
+      +paidAllowance === alreadyMinted,
   };
 }
 
