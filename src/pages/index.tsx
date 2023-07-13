@@ -11,7 +11,7 @@ import MintModal from "@/components/ui/MintModal";
 export default function Home() {
   return (
     <PageLayout
-      pageTitle="Pluto Mint Website"
+      pageTitle="Pluto's Genesis MISFITS Collection"
       pageDesc="Are you a Misfit? MINTING NOW - The Genesis MISFITS Collection."
     >
       <ThreeJSBackground />
