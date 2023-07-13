@@ -9,9 +9,7 @@ export const AspectRatioManager = () => {
       // Allow on iPad
       const isMobile =
         /iPad|iPhone|iPod/i.test(navigator.userAgent) ||
-        /Android/i.test(navigator.userAgent) ||
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0;
+        /Android/i.test(navigator.userAgent);
       if (window.innerHeight > window.innerWidth || isMobile)
         setScreenStatus(true);
       else setScreenStatus(false);
