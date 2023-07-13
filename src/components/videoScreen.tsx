@@ -51,7 +51,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
 
       {chainId === secondaryChainId ? (
         <div
-          className="absolute bottom-20 left-[30%] text-purple-200 font-semibold"
+          className="absolute bottom-24 w-full text-center text-purple-200 font-semibold"
           style={{
             textShadow: "2px 2px 10px #111",
           }}
@@ -70,10 +70,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
       >
         {chainId === primaryChainId ? (
           <>
-            <a
-              href={`https://dew.gg/collection/pluto`}
-              target="_blank"
-            >
+            <a href={`https://dew.gg/collection/pluto`} target="_blank">
               View on Dew
             </a>
             <a
