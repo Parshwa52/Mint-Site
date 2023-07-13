@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 // Rainbow & Wagmi
 import ConnectWallet from "../ui/ConnectWallet";
-import { useAccount, useChainId, useSigner, useSwitchNetwork } from "wagmi";
+import { useAccount, useChainId, useSigner } from "wagmi";
 // THREE
 import { Canvas } from "@react-three/fiber";
 import {
@@ -471,13 +471,13 @@ export const SceneTwo = () => {
           paused: true,
           defaults: { duration: 2.5, ease: "none" },
         })
-        .call(
-          () => {
-            setCurrExpression(28);
-          },
-          undefined,
-          0
-        )
+        // .call(
+        //   () => {
+        //     setCurrExpression(28);
+        //   },
+        //   undefined,
+        //   0
+        // )
         .fromTo(
           updater,
           {
@@ -561,7 +561,8 @@ export const SceneTwo = () => {
     transactTl.current && transactTl.current?.restart().pause();
     failureTl.current && failureTl.current?.restart().pause();
     if (successTl.current && !successTl.current.isActive()) {
-      doFailureAnimation(true);
+      // doFailureAnimation(true);
+      successTl.current.play()
     }
   }
 
