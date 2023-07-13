@@ -621,22 +621,22 @@ export const SceneTwo = () => {
           {/* <Clouds src={img9} /> */}
         </div>
         <div className="background">
-          <Building src={img4} />
-          <Building src={img4extra} />
+          {/* <Building src={img4} />
+          <Building src={img4extra} /> */}
         </div>
         <div className="buildings buildings-center-right">
           {/* <Building src={img11} /> */}
           {/* <Building src={img13} /> */}
         </div>
         <div className="buildings buildings-center-left">
-          <Building src={img10} />
+          {/* <Building src={img10} /> */}
           {/* <Building src={img12} /> */}
         </div>
         <div className="buildings buildings-left">
           {/* <Building src={img15} /> */}
         </div>
         <div className="buildings buildings-right">
-          <Building src={img21} />
+          {/* <Building src={img21} /> */}
         </div>
         <div className="buildings buildings-center">
           {/* <Building src={img14} /> */}
@@ -645,21 +645,21 @@ export const SceneTwo = () => {
           {/* <Building src={img16} /> */}
         </div>
         <div className="buildings buildings-left">
-          <Building src={img18} />
+          {/* <Building src={img18} /> */}
           {/* <Building src={img23} />
           <Building src={img25} /> */}
         </div>
         <div className="buildings buildings-right">
-          <Building src={img17} />
+          {/* <Building src={img17} /> */}
           {/* <Building src={img19} />
           <Building src={img20} />
           <Building src={img22} />
           <Building src={img24} />
           <Building src={img26} /> */}
-          <Building src={img27} />
+          {/* <Building src={img27} /> */}
         </div>
         <div className="buildings buildings-center">
-          <Building src={img28} />
+          {/* <Building src={img28} /> */}
         </div>
         <div className="buildings buildings-hover-left">
           {/* <Building src={img30} /> */}
