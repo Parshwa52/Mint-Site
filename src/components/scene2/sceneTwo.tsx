@@ -884,7 +884,6 @@ const Q2 = (props: any) => {
   useEffect(() => {
     console.log("isConnected changed", isConnected);
     if (isConnected) {
-
       checkWhitelistStatus();
     }
   }, [isConnected]);
@@ -913,7 +912,6 @@ const Q2 = (props: any) => {
     }
 
     playSuccess();
-
 
     const response = await getSignature(chainId, address.toString());
     const isWhitelisted = response.status === 200;
@@ -961,6 +959,8 @@ const Q2 = (props: any) => {
       mintAudio?.play();
     } else if (result.mintedAll) {
       hudManager.queueText(`You have minted all your NFTs!`);
+    } else if (result.paid === 0) {
+      hudManager.queueText("You have no mints in this phase");
     }
   }
 
@@ -972,11 +972,17 @@ const Q2 = (props: any) => {
           if (isClickRunning.current === true) return;
           isClickRunning.current = true;
 
-          playTransaction();
-
           const signatureInfo = await (
             await getSignature(chainId, address)
           ).json();
+
+          const result = await getMintAllocation(signatureInfo, address);
+          if (result.mintedAll || result.paid === 0) {
+            isClickRunning.current = false;
+            return;
+          }
+
+          playTransaction();
 
           const currentPhase = signatureInfo.PhaseType;
           if (currentPhase <= 3) {
