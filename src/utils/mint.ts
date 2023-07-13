@@ -15,7 +15,7 @@ import MintControllerABI from "@/json/PlutoMintController.json";
 import MinterABI from "@/json/PlutoMinter.json";
 
 import { preparePayment } from "./payment";
-import { formatEther, parseEther } from "ethers/lib/utils.js";
+import { formatEther, parseEther, parseUnits } from "ethers/lib/utils.js";
 
 export async function getMaxSupplyReached() {
   const provider = new ethers.providers.JsonRpcProvider(rpc_primary);
@@ -132,7 +132,7 @@ export async function mint(
       signer
     );
 
-    const estimatedGas = await mintControllerContract.payAndMint(
+    const estimatedGas = await mintControllerContract.estimateGas.payAndMint(
       Signature,
       tokensToMint,
       tokenResult.address,
@@ -144,7 +144,11 @@ export async function mint(
     const gasPrice = await signer.getGasPrice();
     const totalGas = estimatedGas.mul(gasPrice);
 
-    if (tokenResult.nativeBalance.lt(nativeAmount.add(totalGas)))
+    if (
+      tokenResult.nativeBalance.lt(
+        nativeAmount.add(parseUnits(totalGas.toString(), "wei"))
+      )
+    )
       throw new Error("Insufficient Funds");
 
     return {
@@ -174,7 +178,11 @@ export async function mint(
     )) as [BigNumber, BigNumber];
 
     // NEED to add a buffer. Adding 10%
-    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.div("10")));
+    nativeAmount = nativeAmount
+      .add(estimatedFees.add(estimatedFees.div("10")))
+      .add("0.01");
+
+    console.log({ nativeAmount, estimatedFees });
 
     const estimatedGas = await delegatorContract.estimateGas.payAndMintTokens(
       Signature,
@@ -189,7 +197,11 @@ export async function mint(
     const gasPrice = await signer.getGasPrice();
     const totalGas = estimatedGas.mul(gasPrice);
 
-    if (tokenResult.nativeBalance.lt(nativeAmount.add(totalGas)))
+    if (
+      tokenResult.nativeBalance.lt(
+        nativeAmount.add(parseUnits(totalGas.toString(), "wei"))
+      )
+    )
       throw new Error("Insufficient Funds");
 
     return {
