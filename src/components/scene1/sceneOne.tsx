@@ -1073,8 +1073,8 @@ const Loader = ({ onLoaded }: { onLoaded: Function }) => {
         }}
       >
         <p>
-          Please scroll slowly through the website for the best experience.
-          Click to enable sound and start your journey.
+          Click to start your journey and scroll through the website slowly for
+          best experience.
         </p>
       </div>
     </div>
@@ -1373,7 +1373,6 @@ const Kiwi = (props: any) => {
       audio.play();
     }
   }, [isSoundEnabled, hovered, props.isKiwiHoverable]);
-
 
   useFrame(() => {
     composer.current && composer.current.render();
