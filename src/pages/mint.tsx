@@ -142,7 +142,7 @@ const Mint = () => {
 
   function fetchTokenId(receipt: any) {
     if (chainId === secondaryChainId) {
-      setTokenId("XXXX");
+      setTokenId("");
     } else if (chainId === primaryChainId) {
       const iface = new ethers.utils.Interface(MinterABI);
       const event = iface.parseLog(receipt.logs[mintType === "NATIVE" ? 1 : 2]);

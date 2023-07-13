@@ -45,7 +45,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
             textShadow: "2px 2px 10px #111",
           }}
         >
-          Congrats #{tokenId}, now, you are a Misfit.
+          Congrats{tokenId !== "" ? ", #" + tokenId : ""}! You are a Misfit now.
         </a>
       </div>
 
@@ -56,7 +56,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
             textShadow: "2px 2px 10px #111",
           }}
         >
-          It will take upto 10mins for your NFT to reflect in your wallet
+          It will take upto 10 mins for your NFT to reflect in your wallet
         </div>
       ) : (
         <></>
