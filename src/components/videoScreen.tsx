@@ -69,12 +69,20 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
         }}
       >
         {chainId === primaryChainId ? (
-          <a
-            href={`https://magiceden.io/item-details/polygon/0xa131b877B12B0Ae8BB7da7229b8a1095881497A6/${tokenId}`}
-            target="_blank"
-          >
-            View on MagicEden
-          </a>
+          <>
+            <a
+              href={`https://dew.gg/collection/pluto`}
+              target="_blank"
+            >
+              View on Dew
+            </a>
+            <a
+              href={`https://magiceden.io/item-details/polygon/0xa131b877B12B0Ae8BB7da7229b8a1095881497A6/${tokenId}`}
+              target="_blank"
+            >
+              View on MagicEden
+            </a>
+          </>
         ) : (
           <></>
         )}
