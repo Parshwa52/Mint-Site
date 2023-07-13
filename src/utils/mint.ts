@@ -30,7 +30,7 @@ export async function getMaxSupplyReached() {
 
   const totalMinted = +formatEther(await minterContract.totalMinted());
   const maxSupply = +formatEther(await mintControllerContract.maxSupply());
-  return totalMinted > maxSupply;
+  return totalMinted >= maxSupply;
 }
 
 export async function getMintAllocation(signatureInfo: any, address: string) {
@@ -83,8 +83,6 @@ export async function getMintAllocation(signatureInfo: any, address: string) {
 }
 
 export async function getSignature(chainId: number, address: string) {
-  // TODO: Check delegatecash vault if connected
-  // TODO: Change from Goerli to Ethereum ChainId on deployment
   return await fetch(
     API_URL +
       `/rest/whitelist/${

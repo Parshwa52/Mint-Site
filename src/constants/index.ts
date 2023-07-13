@@ -34,7 +34,7 @@ export const secondaryChainId = 1; // Ethereum Mainnet, Delegator Contract
 // Whitelist, Signature API
 export const API_URL = "https://api.pluto.website";
 
-// RPC URLs used for fetching multi-chain balances
+// RPC URLs
 export const rpc_ethereum =
   "https://eth-mainnet.g.alchemy.com/v2/uXqMixV-ZenaLSsJCfYVT7Gy8LRjt5C4";
 export const rpc_polygon =
