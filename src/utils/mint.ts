@@ -178,9 +178,7 @@ export async function mint(
     )) as [BigNumber, BigNumber];
 
     // NEED to add a buffer. Adding 10%
-    nativeAmount = nativeAmount
-      .add(estimatedFees.add(estimatedFees.div("10")))
-      .add("0.01");
+    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.div("10")));
 
     console.log({ nativeAmount, estimatedFees });
 
