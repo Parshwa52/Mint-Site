@@ -56,8 +56,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
             textShadow: "2px 2px 10px #111",
           }}
         >
-          Your NFT will be minted in approximately 10 minutes or less on
-          Polygon!
+          It will take upto 10mins for your NFT to reflect in your wallet
         </div>
       ) : (
         <></>
@@ -81,7 +80,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
         )}
         <a
           target="_blank"
-          href="http://twitter.com/share?text=I am officially a misfit @plutomisfits!&url=https://magicbatch.xyz/&hashtags=pluto,misfit,randomCat123"
+          href="http://twitter.com/share?text=What%27s%20behind%20the%20portal%20%40plutomisfits%3F"
         >
           Share on Twitter
         </a>
