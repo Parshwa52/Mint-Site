@@ -35,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <RainbowKitProvider chains={chains} theme={customTheme}>
           <Component {...pageProps} />
         </RainbowKitProvider>
+        
       </WagmiConfig>
     </GlobalProvider>
   )
