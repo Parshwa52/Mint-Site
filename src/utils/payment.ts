@@ -71,7 +71,6 @@ export function getPaymentToken(
         provider
       );
 
-
       const mintPrice = (await mintContract.mintPrice(
         item.address
       )) as BigNumber;
@@ -127,9 +126,13 @@ export async function preparePayment(
     (+formatEther(mintPrice) * 1.05).toString()
   );
 
-
   if (nativeBalance.gte(mintPriceWithMargin)) {
-    return { address: fromAssetAddressNative, symbol: "NATIVE", mintPrice };
+    return {
+      address: fromAssetAddressNative,
+      symbol: "NATIVE",
+      mintPrice,
+      nativeBalance,
+    };
   } else {
     // Check if user can pay with any ERC20 token
     const token = await getPaymentToken(tokensToMint, userAddress, chainId);
@@ -144,7 +147,7 @@ export async function preparePayment(
         signer
       );
 
-      return token;
+      return { token, nativeBalance };
     } else return null;
   }
 }
