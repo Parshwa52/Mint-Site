@@ -782,6 +782,8 @@ const Q2 = (props: any) => {
   } = useUIContext();
 
   const isRunning = useRef(false);
+  const isClickRunning = useRef(false);
+
   const [whitelisted, setWhitelisted] = useState(null as boolean | null);
 
   const [currentAnimation, setCurrentAnimation] = useState("");
@@ -949,14 +951,13 @@ const Q2 = (props: any) => {
 
   async function handleClick() {
     if (maxSupplyReached) return;
-    if (isConnected && address) {
-      if (whitelisted) {
-        // Simulate bridge txn
-        // await new Promise((resolve, _) => setTimeout(resolve, 5000))
+    if (isConnected && address && whitelisted) {
+      try {
+        if (isClickRunning.current === true) return;
+        isClickRunning.current = true;
 
         playTransaction();
 
-        // Mint Process (Which shall trigger Txn animation upon completion)
         const signatureInfo = await (
           await getSignature(chainId, address)
         ).json();
@@ -964,25 +965,17 @@ const Q2 = (props: any) => {
         const currentPhase = signatureInfo.PhaseType;
         if (currentPhase <= 3) {
           // Investor & MBC, Guaranteed
-          beginMint();
+          await beginMint();
         } else {
           // FCFS, Public Mint
           setModalData({ ...modalData, max: 3 });
           setModalOpen(true);
         }
 
-        // Simulate Mint and then final page
-        // setTimeout(() => {
-        //   gsap.to("body", {
-        //     autoAlpha: 0,
-        //     duration: 1.25,
-        //     onComplete: () => {
-        //       router.push("/mint");
-        //     },
-        //   });
-        // }, 5000);
-      } else {
-        // onWhitelistChange();
+        isClickRunning.current = false;
+      } catch (e) {
+        console.error(e);
+        isClickRunning.current = false;
       }
     } else {
       //@ts-ignore
