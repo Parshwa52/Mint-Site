@@ -130,26 +130,24 @@ export async function mint(
       signer
     );
 
-    const estimatedGas = await mintControllerContract.estimateGas.payAndMint(
-      Signature,
-      tokensToMint,
-      tokenResult.address,
-      ethers.constants.AddressZero,
-      {
-        value: nativeAmount,
-      }
-    );
-    const gasPrice = await signer.getGasPrice();
-    const totalGas = estimatedGas.mul(gasPrice);
+    // const estimatedGas = await mintControllerContract.estimateGas.payAndMint(
+    //   Signature,
+    //   tokensToMint,
+    //   tokenResult.address,
+    //   ethers.constants.AddressZero,
+    //   {
+    //     value: nativeAmount,
+    //   }
+    // );
+    // const gasPrice = await signer.getGasPrice();
+    // const totalGas = estimatedGas.mul(gasPrice);
 
-    console.log({ estimatedGas, gasPrice, totalGas });
-
-    if (
-      tokenResult.nativeBalance.lt(
-        nativeAmount.add(parseUnits(totalGas.toString(), "wei"))
-      )
-    )
-      throw new Error("Insufficient Funds");
+    // if (
+    //   tokenResult.nativeBalance.lt(
+    //     nativeAmount.add(parseUnits(totalGas.toString(), "wei"))
+    //   )
+    // )
+    //   throw new Error("Insufficient Funds");
 
     return {
       result: await mintControllerContract.payAndMint(
