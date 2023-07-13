@@ -170,7 +170,7 @@ export async function mint(
     const [estimatedFees, _] = (await delegatorContract.estimateFees(
       userAddress,
       destinationChainId,
-      "1"
+      tokensToMint
     )) as [BigNumber, BigNumber];
 
     // NEED to add a buffer. Adding 10%
