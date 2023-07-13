@@ -122,11 +122,11 @@ export async function preparePayment(
   const nativeBalance = await provider.getBalance(userAddress);
 
   // Check if user's native balance is at least 5% more
-  const mintPriceWithMargin = parseEther(
-    (+formatEther(mintPrice) * 1.05).toString()
-  );
+  // const mintPriceWithMargin = parseEther(
+  //   (+formatEther(mintPrice) * 1.05).toString()
+  // );
 
-  if (nativeBalance.gte(mintPriceWithMargin)) {
+  if (nativeBalance.gte(mintPrice)) {
     return {
       address: fromAssetAddressNative,
       symbol: "NATIVE",
