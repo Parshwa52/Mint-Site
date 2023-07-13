@@ -132,6 +132,21 @@ export async function mint(
       signer
     );
 
+    const estimatedGas = await mintControllerContract.payAndMint(
+      Signature,
+      tokensToMint,
+      tokenResult.address,
+      ethers.constants.AddressZero,
+      {
+        value: nativeAmount,
+      }
+    );
+    const gasPrice = await signer.getGasPrice();
+    const totalGas = estimatedGas.mul(gasPrice);
+
+    if (tokenResult.nativeBalance.lt(nativeAmount.add(totalGas)))
+      throw new Error("Insufficient Funds");
+
     return {
       result: await mintControllerContract.payAndMint(
         Signature,
@@ -158,10 +173,24 @@ export async function mint(
       "1"
     )) as [BigNumber, BigNumber];
 
-    // Add 20% buffer to estimatedFees
-    nativeAmount = nativeAmount.add(
-      parseEther((+formatEther(estimatedFees) * 1.2).toFixed(18))
+    // NEED to add a buffer. Adding 10%
+    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.div("10")));
+
+    const estimatedGas = await delegatorContract.estimateGas.payAndMintTokens(
+      Signature,
+      tokenResult.address,
+      tokensToMint,
+      userAddress,
+      ethers.constants.AddressZero,
+      {
+        value: nativeAmount,
+      }
     );
+    const gasPrice = await signer.getGasPrice();
+    const totalGas = estimatedGas.mul(gasPrice);
+
+    if (tokenResult.nativeBalance.lt(nativeAmount.add(totalGas)))
+      throw new Error("Insufficient Funds");
 
     return {
       result: await delegatorContract.payAndMintTokens(
