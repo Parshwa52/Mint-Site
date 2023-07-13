@@ -52,11 +52,16 @@ export const rpc_secondary = rpc_ethereum;
 // LayerZero Chain IDs
 export const l0_polygon = 109; // LayerZero Polygon Mainnet
 
+// export const delegatorAddress = "0x52e3a2ae070E1428cb3B9b95608812cf652Db7CA"; // Ethereum Mainnet
+// export const minterAddress = "0x35171Cb57488e23Ba52875adae2eE939F34117e0"; // Polygon Mainnet
+// export const mintControllerAddress =
+//   "0xfCC564A846150bD6D77982E6BF396b0b6a04DEd9"; // Polygon Mainnet
+
 // Core Contract Addresses
-export const delegatorAddress = "0x52e3a2ae070E1428cb3B9b95608812cf652Db7CA"; // Ethereum Mainnet
-export const minterAddress = "0x35171Cb57488e23Ba52875adae2eE939F34117e0"; // Polygon Mainnet
+export const delegatorAddress = "0x66dECaB9413f50E6d8476ECd6FcCC2aB4a5D08ef"; // Ethereum Mainnet
+export const minterAddress = "0xa131b877B12B0Ae8BB7da7229b8a1095881497A6"; // Polygon Mainnet
 export const mintControllerAddress =
-  "0xfCC564A846150bD6D77982E6BF396b0b6a04DEd9"; // Polygon Mainnet
+  "0xbB0a503662203184791E03a7995B0B0b89DC2DCD"; // Polygon Mainnet
 
 // Token Addresses
 export const wethETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
