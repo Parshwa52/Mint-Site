@@ -410,8 +410,8 @@ export const SceneTwo = () => {
           .to(
             ".city-container",
             {
-              willChange: "filter",
-              filter: "blur(3px)",
+              // willChange: "filter",
+              // filter: "blur(3px)",
               stagger: 0,
               duration: 25,
               ease: "none",
@@ -610,7 +610,7 @@ export const SceneTwo = () => {
       <div className="city-container">
         <div className="clouds">
           {/* <Clouds src={img0} /> */}
-          
+
           {/* <Clouds src={img1} />
           <Clouds src={img5} /> */}
           {/* <Clouds src={img7} /> */}
