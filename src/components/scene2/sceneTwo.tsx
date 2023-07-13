@@ -968,7 +968,9 @@ const Q2 = (props: any) => {
       hudManager.queueText(
         `You have ${result?.free > 0 ? result.free + " free and" : ""} ${
           result.paid > 0 ? result.paid : ""
-        } mints. Click on my face to check out why I'm so excited!`
+        } mint${
+          result.paid > 1 ? "s" : ""
+        }. Click on my face to check out why I'm so excited!`
       );
 
       const mintAudio = getAudio("audio-success");
@@ -981,7 +983,7 @@ const Q2 = (props: any) => {
       const mintAudio = getAudio("audio-success");
       mintAudio.volume = 1;
       mintAudio?.play();
-    } else {
+    } else if (result.mintedAll) {
       hudManager.queueText(`You have minted all your NFTs!`);
     }
   }

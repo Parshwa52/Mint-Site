@@ -32,56 +32,56 @@ const Mint = () => {
   const { isConnected } = useAccount();
 
   useEffect(() => {
-    console.log({ chainId, isConnected });
-    if (isConnected && chainId === secondaryChainId) {
-      gsap.to("body", {
-        autoAlpha: 1,
-        duration: 1.5,
-        ease: "expo",
-        onComplete() {
-          gsap.to(".bridging-video-container", {
-            autoAlpha: 1,
-            duration: 1,
-            onComplete() {
-              if (bridgeVideo.current) {
-                if (bridgeVideo.current.readyState === 4) {
-                  playBridgeVideoAndAudio();
-                  console.log("Play video state", bridgeVideo.current);
-                } else {
-                  console.log("Play video after event, state");
-                  bridgeVideo.current.oncanplay = playBridgeVideoAndAudio;
-                }
-              }
-            },
-          });
-        },
-      });
-    } else {
-      gsap.to("body", {
-        autoAlpha: 1,
-        duration: 1.5,
-        ease: "expo",
-        onComplete() {
-          toGalaxy();
-        },
-      });
-    }
+    // Don't play the briding video
+    // if (isConnected && chainId === secondaryChainId) {
+    //   gsap.to("body", {
+    //     autoAlpha: 1,
+    //     duration: 1.5,
+    //     ease: "expo",
+    //     onComplete() {
+    //       gsap.to(".bridging-video-container", {
+    //         autoAlpha: 1,
+    //         duration: 1,
+    //         onComplete() {
+    //           if (bridgeVideo.current) {
+    //             if (bridgeVideo.current.readyState === 4) {
+    //               playBridgeVideoAndAudio();
+    //               console.log("Play video state", bridgeVideo.current);
+    //             } else {
+    //               console.log("Play video after event, state");
+    //               bridgeVideo.current.oncanplay = playBridgeVideoAndAudio;
+    //             }
+    //           }
+    //         },
+    //       });
+    //     },
+    //   });
+    // } else {
+    gsap.to("body", {
+      autoAlpha: 1,
+      duration: 1.5,
+      ease: "expo",
+      onComplete() {
+        toGalaxy();
+      },
+    });
+    // }
 
     // soundsArray[1].play()
 
     // gsap.set('.ui-space #sound-button', { display: 'block', autoAlpha: 1 })
   }, [soundsArray]);
 
-  function playBridgeVideoAndAudio() {
-    if (!bridgeVideo.current) {
-      console.warn("No bridge video...");
-      return;
-    }
-    bridgeVideo.current.play();
+  // function playBridgeVideoAndAudio() {
+  //   if (!bridgeVideo.current) {
+  //     console.warn("No bridge video...");
+  //     return;
+  //   }
+  //   bridgeVideo.current.play();
 
-    const bridgingAudio = getAudio("audio-bridging");
-    if (bridgingAudio) fadeInAudio(bridgingAudio);
-  }
+  //   const bridgingAudio = getAudio("audio-bridging");
+  //   if (bridgingAudio) fadeInAudio(bridgingAudio);
+  // }
 
   function toGalaxy() {
     const bridgingAudio = getAudio("audio-bridging");
