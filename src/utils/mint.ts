@@ -177,10 +177,8 @@ export async function mint(
       tokensToMint
     )) as [BigNumber, BigNumber];
 
-    // NEED to add a buffer. Adding 10%
-    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.div("10")));
-
-    console.log({ nativeAmount, estimatedFees });
+    // NEED to add a buffer. Adding 30%
+    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.mul("3").div("10")));
 
     const estimatedGas = await delegatorContract.estimateGas.payAndMintTokens(
       Signature,
