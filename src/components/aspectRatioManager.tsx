@@ -25,7 +25,7 @@ export const AspectRatioManager = () => {
     return (
       <div id="aspect-ratio-screen">
         <img
-          src="“https://res.cloudinary.com/dyplx2t1x/image/upload/v1689200558/q2_reveal_reveal-modified_utgn9q.png”"
+          src="https://res.cloudinary.com/dyplx2t1x/image/upload/v1689200558/q2_reveal_reveal-modified_utgn9q.png"
           alt="Switch to desktop icon"
           className="aspect-icon"
         />
