@@ -32,7 +32,7 @@ export const primaryChainId = 137; // Polygon Mainnet, Minter & MintController C
 export const secondaryChainId = 1; // Ethereum Mainnet, Delegator Contract
 
 // Whitelist, Signature API
-export const API_URL = "https://pluto-whitelist-i5isf.ondigitalocean.app";
+export const API_URL = "https://api.pluto.website";
 
 // RPC URLs used for fetching multi-chain balances
 export const rpc_ethereum =
