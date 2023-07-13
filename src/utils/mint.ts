@@ -142,6 +142,8 @@ export async function mint(
     const gasPrice = await signer.getGasPrice();
     const totalGas = estimatedGas.mul(gasPrice);
 
+    console.log({ estimatedGas, gasPrice, totalGas });
+
     if (
       tokenResult.nativeBalance.lt(
         nativeAmount.add(parseUnits(totalGas.toString(), "wei"))
@@ -176,7 +178,9 @@ export async function mint(
     )) as [BigNumber, BigNumber];
 
     // NEED to add a buffer. Adding 30%
-    nativeAmount = nativeAmount.add(estimatedFees.add(estimatedFees.mul("3").div("10")));
+    nativeAmount = nativeAmount.add(
+      estimatedFees.add(estimatedFees.mul("3").div("10"))
+    );
 
     const estimatedGas = await delegatorContract.estimateGas.payAndMintTokens(
       Signature,
