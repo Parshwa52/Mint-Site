@@ -73,8 +73,9 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
             <a href={`https://dew.gg/collection/pluto`} target="_blank">
               View on Dew
             </a>
+            {/* href={`https://magiceden.io/item-details/polygon/0xa131b877B12B0Ae8BB7da7229b8a1095881497A6/${tokenId}`} */}
             <a
-              href={`https://magiceden.io/item-details/polygon/0xa131b877B12B0Ae8BB7da7229b8a1095881497A6/${tokenId}`}
+              href="https://magiceden.io/collections/polygon/pluto"
               target="_blank"
             >
               View on MagicEden
