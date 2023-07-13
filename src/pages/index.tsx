@@ -15,7 +15,7 @@ export default function Home() {
       pageDesc="Pluto Misfits Minting by Plutoverse"
     >
       <ThreeJSBackground />
-      <HomepageHero />
+      {/* <HomepageHero /> */}
       <HomepageCity />
       <UI />
       <AudioManager />

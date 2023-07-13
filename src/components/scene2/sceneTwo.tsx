@@ -211,7 +211,7 @@ export const SceneTwo = () => {
         )
         .to(".canvas-scroll", { autoAlpha: 0 }, 0)
         .set("#ui .ui-space", { display: "none" }, 25)
-        .set("#ui .ui-world", { display: "block" }, 25)
+        // .set("#ui .ui-world", { display: "block" }, 25)
         .to("#ui", { "--color": "black", duration: 25, ease: "none" }, 25)
         .to(
           ".scene-bg",
@@ -222,11 +222,11 @@ export const SceneTwo = () => {
           },
           25
         )
-        .from(
-          "#ui .ui-world",
-          { autoAlpha: 0, duration: 25, ease: "power1.inOut" },
-          50
-        )
+        // .from(
+        //   "#ui .ui-world",
+        //   { autoAlpha: 0, duration: 25, ease: "power1.inOut" },
+        //   50
+        // )
         .to(
           ".scene-bg",
           {
@@ -249,181 +249,181 @@ export const SceneTwo = () => {
 
       // pin section 2 - fade in
       if (q2) {
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: "#home-city",
-              start: "top top",
-              end: "+=4000",
-              onEnter: () => {
-                setTimeline(true);
-              },
-              onEnterBack: () => {
-                setTimeline(true);
-                setEntered(false);
-              },
-              onLeave: () => {
-                setTimeline(false);
-                setEntered(true);
-              },
-              onLeaveBack: () => {
-                setTimeline(false);
-                setEntered(false);
-              },
-              pin: true,
-              scrub: true,
-            },
-            defaults: {
-              duration: 25,
-              stagger: {
-                amount: 15,
-              },
-              ease: "power1",
-            },
-          })
-          .from(
-            q2.position,
-            {
-              y: -8,
-              duration: 100,
-              ease: "power1",
-            },
-            0
-          )
-          .to(
-            "#mouse .border-bottom .border-background",
-            {
-              scaleX: 0.9,
-              ease: "none",
-              duration: 100,
-            },
-            0
-          )
-          .from(
-            ".clouds > *",
-            {
-              autoAlpha: 0,
-              scale: 1.25,
-            },
-            0
-          )
-          .from(
-            ".background > *:first-child",
-            {
-              yPercent: 100,
-              stagger: 0,
-              autoAlpha: 0,
-              scale: 1.25,
-            },
-            7.5
-          )
-          .from(
-            ".city-container .buildings-center > *",
-            {
-              yPercent: 100,
-              stagger: 10,
-              scale: 1.25,
-            },
-            20
-          )
-          .from(
-            ".background > *:last-child",
-            {
-              autoAlpha: 0,
-            },
-            27.5
-          )
-          .from(
-            ".city-container .buildings-center-left > *",
-            {
-              xPercent: -100,
-              stagger: -10,
-              scale: 1.25,
-            },
-            30
-          )
-          .from(
-            ".city-container .buildings-center-right > *",
-            {
-              xPercent: 100,
-              stagger: -10,
-              scale: 1.25,
-            },
-            30
-          )
-          .addLabel("buildingsCenterDone", ">-15")
-          .from(
-            ".city-container .buildings-left > *",
-            {
-              xPercent: -100,
-              stagger: 10,
-              scale: 1.7,
-            },
-            "buildingsCenterDone-=5"
-          )
-          .from(
-            ".city-container .buildings-right > *",
-            {
-              xPercent: 100,
-              stagger: 7.5,
-              scale: 1.7,
-            },
-            "buildingsCenterDone-=5"
-          )
-          .from(
-            ".city-container .buildings-logo > *",
-            {
-              autoAlpha: 0,
-              yPercent: -100,
-              duration: 30,
-              ease: "expo",
-            },
-            "buildingsCenterDone+=10"
-          )
-          .from(
-            ".city-container .buildings-hover-left > *",
-            {
-              xPercent: -100,
-              duration: 50,
-            },
-            "buildingsCenterDone+=30"
-          )
-          .from(
-            ".city-container .buildings-hover-right > *",
-            {
-              xPercent: 100,
-              duration: 50,
-            },
-            "buildingsCenterDone+=30"
-          )
-          .addLabel("buildingsDone", "buildingsCenterDone+=80")
-          .to(
-            ".city-container .buildings-logo > *",
-            {
-              yPercent: -100,
-              autoAlpha: 0,
-              duration: 45,
-              ease: "power1.inOut",
-            },
-            "buildingsDone"
-          )
-          .to(
-            ".city-container",
-            {
-              // willChange: "filter",
-              // filter: "blur(3px)",
-              stagger: 0,
-              duration: 25,
-              ease: "none",
-              onStart(e) {
-                setEnteredBlur(true);
-              },
-              onReverseComplete() {
-                setEnteredBlur(false);
-              },
-            },
-            ">-25%"
-          );
+        // gsap
+        //   .timeline({
+        //     scrollTrigger: {
+        //       trigger: "#home-city",
+        //       start: "top top",
+        //       end: "+=4000",
+        //       onEnter: () => {
+        //         setTimeline(true);
+        //       },
+        //       onEnterBack: () => {
+        //         setTimeline(true);
+        //         setEntered(false);
+        //       },
+        //       onLeave: () => {
+        //         setTimeline(false);
+        //         setEntered(true);
+        //       },
+        //       onLeaveBack: () => {
+        //         setTimeline(false);
+        //         setEntered(false);
+        //       },
+        //       pin: true,
+        //       scrub: true,
+        //     },
+        //     defaults: {
+        //       duration: 25,
+        //       stagger: {
+        //         amount: 15,
+        //       },
+        //       ease: "power1",
+        //     },
+        //   })
+        //   .from(
+        //     q2.position,
+        //     {
+        //       y: -8,
+        //       duration: 100,
+        //       ease: "power1",
+        //     },
+        //     0
+        //   )
+        //   .to(
+        //     "#mouse .border-bottom .border-background",
+        //     {
+        //       scaleX: 0.9,
+        //       ease: "none",
+        //       duration: 100,
+        //     },
+        //     0
+        //   )
+        //   .from(
+        //     ".clouds > *",
+        //     {
+        //       autoAlpha: 0,
+        //       scale: 1.25,
+        //     },
+        //     0
+        //   )
+        //   .from(
+        //     ".background > *:first-child",
+        //     {
+        //       yPercent: 100,
+        //       stagger: 0,
+        //       autoAlpha: 0,
+        //       scale: 1.25,
+        //     },
+        //     7.5
+        //   )
+        //   .from(
+        //     ".city-container .buildings-center > *",
+        //     {
+        //       yPercent: 100,
+        //       stagger: 10,
+        //       scale: 1.25,
+        //     },
+        //     20
+        //   )
+        //   .from(
+        //     ".background > *:last-child",
+        //     {
+        //       autoAlpha: 0,
+        //     },
+        //     27.5
+        //   )
+        //   .from(
+        //     ".city-container .buildings-center-left > *",
+        //     {
+        //       xPercent: -100,
+        //       stagger: -10,
+        //       scale: 1.25,
+        //     },
+        //     30
+        //   )
+        //   .from(
+        //     ".city-container .buildings-center-right > *",
+        //     {
+        //       xPercent: 100,
+        //       stagger: -10,
+        //       scale: 1.25,
+        //     },
+        //     30
+        //   )
+        //   .addLabel("buildingsCenterDone", ">-15")
+        //   .from(
+        //     ".city-container .buildings-left > *",
+        //     {
+        //       xPercent: -100,
+        //       stagger: 10,
+        //       scale: 1.7,
+        //     },
+        //     "buildingsCenterDone-=5"
+        //   )
+        //   .from(
+        //     ".city-container .buildings-right > *",
+        //     {
+        //       xPercent: 100,
+        //       stagger: 7.5,
+        //       scale: 1.7,
+        //     },
+        //     "buildingsCenterDone-=5"
+        //   )
+        //   .from(
+        //     ".city-container .buildings-logo > *",
+        //     {
+        //       autoAlpha: 0,
+        //       yPercent: -100,
+        //       duration: 30,
+        //       ease: "expo",
+        //     },
+        //     "buildingsCenterDone+=10"
+        //   )
+        //   .from(
+        //     ".city-container .buildings-hover-left > *",
+        //     {
+        //       xPercent: -100,
+        //       duration: 50,
+        //     },
+        //     "buildingsCenterDone+=30"
+        //   )
+        //   .from(
+        //     ".city-container .buildings-hover-right > *",
+        //     {
+        //       xPercent: 100,
+        //       duration: 50,
+        //     },
+        //     "buildingsCenterDone+=30"
+        //   )
+        //   .addLabel("buildingsDone", "buildingsCenterDone+=80")
+        //   .to(
+        //     ".city-container .buildings-logo > *",
+        //     {
+        //       yPercent: -100,
+        //       autoAlpha: 0,
+        //       duration: 45,
+        //       ease: "power1.inOut",
+        //     },
+        //     "buildingsDone"
+        //   )
+        //   .to(
+        //     ".city-container",
+        //     {
+        //       // willChange: "filter",
+        //       // filter: "blur(3px)",
+        //       stagger: 0,
+        //       duration: 25,
+        //       ease: "none",
+        //       onStart(e) {
+        //         setEnteredBlur(true);
+        //       },
+        //       onReverseComplete() {
+        //         setEnteredBlur(false);
+        //       },
+        //     },
+        //     ">-25%"
+        //   );
       }
     });
 
@@ -562,7 +562,7 @@ export const SceneTwo = () => {
     failureTl.current && failureTl.current?.restart().pause();
     if (successTl.current && !successTl.current.isActive()) {
       // doFailureAnimation(true);
-      successTl.current.play()
+      successTl.current.play();
     }
   }
 
@@ -873,11 +873,29 @@ const Q2 = (props: any) => {
     }
   }
 
+  useEffect(() => {
+    // Enable HUD
+    gsap.set(["#ui", ".ui-space", ".ui-world"], {
+      display: "block",
+      opacity: 1,
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("isConnected changed", isConnected);
+    if (isConnected) {
+
+      checkWhitelistStatus();
+    }
+  }, [isConnected]);
+
   async function checkWhitelistStatus() {
     if (!address || !chainId || isRunning.current || whitelisted !== null)
       return;
 
     isRunning.current = true;
+
+    hudManager.queueText("Q2 is checking your details...");
 
     // Check total supply first
     if (!maxSupplyReached) {
@@ -894,20 +912,17 @@ const Q2 = (props: any) => {
       return;
     }
 
+    playSuccess();
+
+
     const response = await getSignature(chainId, address.toString());
     const isWhitelisted = response.status === 200;
 
     setWhitelisted(isWhitelisted);
 
-    // const currentPhase = getCurrentPhase();
-    // if (!currentPhase) {
-    //   playFailure("No Sale is Active at the moment");
-    //   return;
-    // }
-
     if (isWhitelisted) {
+      console.log("User is whitelisted");
       checkMintAllocation();
-      playSuccess();
     } else if (response.status === 500)
       playFailure("No Sale is Active at the moment");
     else
@@ -916,8 +931,6 @@ const Q2 = (props: any) => {
       );
 
     isRunning.current = false;
-
-    // onWhitelistChange();
   }
 
   async function checkMintAllocation() {
@@ -953,31 +966,36 @@ const Q2 = (props: any) => {
 
   async function handleClick() {
     if (maxSupplyReached) return;
-    if (isConnected && address && whitelisted) {
-      try {
-        if (isClickRunning.current === true) return;
-        isClickRunning.current = true;
+    if (isConnected && address) {
+      if (whitelisted) {
+        try {
+          if (isClickRunning.current === true) return;
+          isClickRunning.current = true;
 
-        playTransaction();
+          playTransaction();
 
-        const signatureInfo = await (
-          await getSignature(chainId, address)
-        ).json();
+          const signatureInfo = await (
+            await getSignature(chainId, address)
+          ).json();
 
-        const currentPhase = signatureInfo.PhaseType;
-        if (currentPhase <= 3) {
-          // Investor & MBC, Guaranteed
-          await beginMint();
-        } else {
-          // FCFS, Public Mint
-          setModalData({ ...modalData, max: 3 });
-          setModalOpen(true);
+          const currentPhase = signatureInfo.PhaseType;
+          if (currentPhase <= 3) {
+            // Investor & MBC, Guaranteed
+            await beginMint();
+          } else {
+            // FCFS, Public Mint
+            setModalData({ ...modalData, max: 3 });
+            setModalOpen(true);
+          }
+
+          isClickRunning.current = false;
+        } catch (e) {
+          console.error(e);
+          isClickRunning.current = false;
         }
-
-        isClickRunning.current = false;
-      } catch (e) {
-        console.error(e);
-        isClickRunning.current = false;
+      } else if (whitelisted === null) {
+        // Whitelisted not fetched
+        checkWhitelistStatus();
       }
     } else {
       //@ts-ignore
