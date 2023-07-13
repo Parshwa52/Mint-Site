@@ -609,7 +609,8 @@ export const SceneTwo = () => {
     <div className="scene scene-2" ref={scene2}>
       <div className="city-container">
         <div className="clouds">
-          <Clouds src={img0} />
+          {/* <Clouds src={img0} /> */}
+          
           {/* <Clouds src={img1} />
           <Clouds src={img5} /> */}
           {/* <Clouds src={img7} /> */}
@@ -710,24 +711,24 @@ export const SceneTwo = () => {
   );
 };
 
-const Clouds = ({ src }: { src: any }) => {
-  return (
-    <Image
-      src={src}
-      alt="clouds"
-      className="building-container clouds-container"
-      fill
-      unoptimized
-      style={{
-        objectFit: "contain",
-        objectPosition: "center top",
-      }}
-      // sizes='(max-width: 768px) 40vw,
-      //         (max-width: 1200px) 50vw,
-      //         60vw'
-    />
-  );
-};
+// const Clouds = ({ src }: { src: any }) => {
+//   return (
+//     <Image
+//       src={src}
+//       alt="clouds"
+//       className="building-container clouds-container"
+//       fill
+//       unoptimized
+//       style={{
+//         objectFit: "contain",
+//         objectPosition: "center top",
+//       }}
+//       // sizes='(max-width: 768px) 40vw,
+//       //         (max-width: 1200px) 50vw,
+//       //         60vw'
+//     />
+//   );
+// };
 
 const Building = ({ src }: { src: any }) => {
   return (
