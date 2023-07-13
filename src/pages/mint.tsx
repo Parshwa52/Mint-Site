@@ -170,13 +170,13 @@ const Mint = () => {
         <source src="/assets/sounds/Loop_Space_Drone.mp3" type="audio/mp3" />
       </audio>
 
-      {/* Preload Video for VideoScreen */}
-      <video className="hidden" muted preload="true">
+      {/* Preload Video for VideoScreen. Update: might download twice */}
+      {/* <video className="hidden" muted preload="true">
         <source
           src="https://res.cloudinary.com/dyplx2t1x/video/upload/v1689182739/PRWide_irylq3.mp4"
           type="video/mp4"
         />
-      </video>
+      </video> */}
 
       {state0 ? (
         <div className="bridging-video-container opacity-0 invisible">
