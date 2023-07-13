@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <PageLayout
       pageTitle="Pluto Mint Website"
-      pageDesc="Pluto Misfits Minting by Plutoverse"
+      pageDesc="Are you a Misfit? MINTING NOW - The Genesis MISFITS Collection."
     >
       <ThreeJSBackground />
       {/* <HomepageHero /> */}
