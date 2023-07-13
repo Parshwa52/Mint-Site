@@ -86,7 +86,7 @@ const VideoScreen: React.FC<Props> = ({ tokenId }) => {
         )}
         <a
           target="_blank"
-          href="http://twitter.com/share?text=What%27s%20behind%20the%20portal%20%40plutomisfits%3F"
+          href="https://twitter.com/intent/tweet?text=What%27s%20behind%20the%20portal%20@PlutoMisfits%3F%20%23misfitsfollowmisfits"
         >
           Share on Twitter
         </a>
