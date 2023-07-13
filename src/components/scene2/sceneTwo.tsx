@@ -882,7 +882,6 @@ const Q2 = (props: any) => {
   }, []);
 
   useEffect(() => {
-    console.log("isConnected changed", isConnected);
     if (isConnected) {
       checkWhitelistStatus();
     }
@@ -919,7 +918,6 @@ const Q2 = (props: any) => {
     setWhitelisted(isWhitelisted);
 
     if (isWhitelisted) {
-      console.log("User is whitelisted");
       checkMintAllocation();
     } else if (response.status === 500)
       playFailure("No Sale is Active at the moment");
