@@ -147,7 +147,7 @@ export async function preparePayment(
         signer
       );
 
-      return { token, nativeBalance };
+      return { ...token, nativeBalance };
     } else return null;
   }
 }

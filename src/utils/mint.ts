@@ -115,6 +115,8 @@ export async function mint(
   // Fetch token for payment, either native or ERC20
   const tokenResult = await preparePayment(tokensToMint, chainId, signer);
 
+  console.log({tokenResult})
+
   if (tokenResult === null) throw new Error("Insufficient Funds");
 
   if (tokenResult.symbol === "NATIVE")
@@ -148,6 +150,14 @@ export async function mint(
     //   )
     // )
     //   throw new Error("Insufficient Funds");
+
+    console.log("Params", {
+      Signature,
+      a: tokensToMint,
+      b: tokenResult.address,
+      c: ethers.constants.AddressZero,
+      value: nativeAmount,
+    });
 
     return {
       result: await mintControllerContract.payAndMint(
