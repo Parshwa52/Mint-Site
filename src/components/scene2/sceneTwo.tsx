@@ -932,7 +932,7 @@ const Q2 = (props: any) => {
     if (!address) return;
 
     const signatureInfo = await (await getSignature(chainId, address)).json();
-    const result = { free: 1, paid: 2 };
+    const result = { free: 1, paid: 2, mintedAll: false };
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     if (result.paid > 0) {
       hudManager.queueText(
