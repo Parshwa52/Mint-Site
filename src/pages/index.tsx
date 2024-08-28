@@ -15,7 +15,7 @@ export default function Home() {
       pageDesc="Are you a Misfit? MINTING NOW - The Genesis MISFITS Collection."
     >
       <ThreeJSBackground />
-      {/* <HomepageHero /> */}
+      <HomepageHero />
       <HomepageCity />
       <UI />
       <AudioManager />

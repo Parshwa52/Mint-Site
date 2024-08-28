@@ -249,181 +249,181 @@ export const SceneTwo = () => {
 
       // pin section 2 - fade in
       if (q2) {
-        // gsap
-        //   .timeline({
-        //     scrollTrigger: {
-        //       trigger: "#home-city",
-        //       start: "top top",
-        //       end: "+=4000",
-        //       onEnter: () => {
-        //         setTimeline(true);
-        //       },
-        //       onEnterBack: () => {
-        //         setTimeline(true);
-        //         setEntered(false);
-        //       },
-        //       onLeave: () => {
-        //         setTimeline(false);
-        //         setEntered(true);
-        //       },
-        //       onLeaveBack: () => {
-        //         setTimeline(false);
-        //         setEntered(false);
-        //       },
-        //       pin: true,
-        //       scrub: true,
-        //     },
-        //     defaults: {
-        //       duration: 25,
-        //       stagger: {
-        //         amount: 15,
-        //       },
-        //       ease: "power1",
-        //     },
-        //   })
-        //   .from(
-        //     q2.position,
-        //     {
-        //       y: -8,
-        //       duration: 100,
-        //       ease: "power1",
-        //     },
-        //     0
-        //   )
-        //   .to(
-        //     "#mouse .border-bottom .border-background",
-        //     {
-        //       scaleX: 0.9,
-        //       ease: "none",
-        //       duration: 100,
-        //     },
-        //     0
-        //   )
-        //   .from(
-        //     ".clouds > *",
-        //     {
-        //       autoAlpha: 0,
-        //       scale: 1.25,
-        //     },
-        //     0
-        //   )
-        //   .from(
-        //     ".background > *:first-child",
-        //     {
-        //       yPercent: 100,
-        //       stagger: 0,
-        //       autoAlpha: 0,
-        //       scale: 1.25,
-        //     },
-        //     7.5
-        //   )
-        //   .from(
-        //     ".city-container .buildings-center > *",
-        //     {
-        //       yPercent: 100,
-        //       stagger: 10,
-        //       scale: 1.25,
-        //     },
-        //     20
-        //   )
-        //   .from(
-        //     ".background > *:last-child",
-        //     {
-        //       autoAlpha: 0,
-        //     },
-        //     27.5
-        //   )
-        //   .from(
-        //     ".city-container .buildings-center-left > *",
-        //     {
-        //       xPercent: -100,
-        //       stagger: -10,
-        //       scale: 1.25,
-        //     },
-        //     30
-        //   )
-        //   .from(
-        //     ".city-container .buildings-center-right > *",
-        //     {
-        //       xPercent: 100,
-        //       stagger: -10,
-        //       scale: 1.25,
-        //     },
-        //     30
-        //   )
-        //   .addLabel("buildingsCenterDone", ">-15")
-        //   .from(
-        //     ".city-container .buildings-left > *",
-        //     {
-        //       xPercent: -100,
-        //       stagger: 10,
-        //       scale: 1.7,
-        //     },
-        //     "buildingsCenterDone-=5"
-        //   )
-        //   .from(
-        //     ".city-container .buildings-right > *",
-        //     {
-        //       xPercent: 100,
-        //       stagger: 7.5,
-        //       scale: 1.7,
-        //     },
-        //     "buildingsCenterDone-=5"
-        //   )
-        //   .from(
-        //     ".city-container .buildings-logo > *",
-        //     {
-        //       autoAlpha: 0,
-        //       yPercent: -100,
-        //       duration: 30,
-        //       ease: "expo",
-        //     },
-        //     "buildingsCenterDone+=10"
-        //   )
-        //   .from(
-        //     ".city-container .buildings-hover-left > *",
-        //     {
-        //       xPercent: -100,
-        //       duration: 50,
-        //     },
-        //     "buildingsCenterDone+=30"
-        //   )
-        //   .from(
-        //     ".city-container .buildings-hover-right > *",
-        //     {
-        //       xPercent: 100,
-        //       duration: 50,
-        //     },
-        //     "buildingsCenterDone+=30"
-        //   )
-        //   .addLabel("buildingsDone", "buildingsCenterDone+=80")
-        //   .to(
-        //     ".city-container .buildings-logo > *",
-        //     {
-        //       yPercent: -100,
-        //       autoAlpha: 0,
-        //       duration: 45,
-        //       ease: "power1.inOut",
-        //     },
-        //     "buildingsDone"
-        //   )
-        //   .to(
-        //     ".city-container",
-        //     {
-        //       // willChange: "filter",
-        //       // filter: "blur(3px)",
-        //       stagger: 0,
-        //       duration: 25,
-        //       ease: "none",
-        //       onStart(e) {
-        //         setEnteredBlur(true);
-        //       },
-        //       onReverseComplete() {
-        //         setEnteredBlur(false);
-        //       },
-        //     },
-        //     ">-25%"
-        //   );
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: "#home-city",
+              start: "top top",
+              end: "+=4000",
+              onEnter: () => {
+                setTimeline(true);
+              },
+              onEnterBack: () => {
+                setTimeline(true);
+                setEntered(false);
+              },
+              onLeave: () => {
+                setTimeline(false);
+                setEntered(true);
+              },
+              onLeaveBack: () => {
+                setTimeline(false);
+                setEntered(false);
+              },
+              pin: true,
+              scrub: true,
+            },
+            defaults: {
+              duration: 25,
+              stagger: {
+                amount: 15,
+              },
+              ease: "power1",
+            },
+          })
+          .from(
+            q2.position,
+            {
+              y: -8,
+              duration: 100,
+              ease: "power1",
+            },
+            0
+          )
+          .to(
+            "#mouse .border-bottom .border-background",
+            {
+              scaleX: 0.9,
+              ease: "none",
+              duration: 100,
+            },
+            0
+          )
+          .from(
+            ".clouds > *",
+            {
+              autoAlpha: 0,
+              scale: 1.25,
+            },
+            0
+          )
+          .from(
+            ".background > *:first-child",
+            {
+              yPercent: 100,
+              stagger: 0,
+              autoAlpha: 0,
+              scale: 1.25,
+            },
+            7.5
+          )
+          .from(
+            ".city-container .buildings-center > *",
+            {
+              yPercent: 100,
+              stagger: 10,
+              scale: 1.25,
+            },
+            20
+          )
+          .from(
+            ".background > *:last-child",
+            {
+              autoAlpha: 0,
+            },
+            27.5
+          )
+          .from(
+            ".city-container .buildings-center-left > *",
+            {
+              xPercent: -100,
+              stagger: -10,
+              scale: 1.25,
+            },
+            30
+          )
+          .from(
+            ".city-container .buildings-center-right > *",
+            {
+              xPercent: 100,
+              stagger: -10,
+              scale: 1.25,
+            },
+            30
+          )
+          .addLabel("buildingsCenterDone", ">-15")
+          .from(
+            ".city-container .buildings-left > *",
+            {
+              xPercent: -100,
+              stagger: 10,
+              scale: 1.7,
+            },
+            "buildingsCenterDone-=5"
+          )
+          .from(
+            ".city-container .buildings-right > *",
+            {
+              xPercent: 100,
+              stagger: 7.5,
+              scale: 1.7,
+            },
+            "buildingsCenterDone-=5"
+          )
+          .from(
+            ".city-container .buildings-logo > *",
+            {
+              autoAlpha: 0,
+              yPercent: -100,
+              duration: 30,
+              ease: "expo",
+            },
+            "buildingsCenterDone+=10"
+          )
+          .from(
+            ".city-container .buildings-hover-left > *",
+            {
+              xPercent: -100,
+              duration: 50,
+            },
+            "buildingsCenterDone+=30"
+          )
+          .from(
+            ".city-container .buildings-hover-right > *",
+            {
+              xPercent: 100,
+              duration: 50,
+            },
+            "buildingsCenterDone+=30"
+          )
+          .addLabel("buildingsDone", "buildingsCenterDone+=80")
+          .to(
+            ".city-container .buildings-logo > *",
+            {
+              yPercent: -100,
+              autoAlpha: 0,
+              duration: 45,
+              ease: "power1.inOut",
+            },
+            "buildingsDone"
+          )
+          .to(
+            ".city-container",
+            {
+              // willChange: "filter",
+              // filter: "blur(3px)",
+              stagger: 0,
+              duration: 25,
+              ease: "none",
+              onStart(e) {
+                setEnteredBlur(true);
+              },
+              onReverseComplete() {
+                setEnteredBlur(false);
+              },
+            },
+            ">-25%"
+          );
       }
     });
 
@@ -609,63 +609,63 @@ export const SceneTwo = () => {
     <div className="scene scene-2" ref={scene2}>
       <div className="city-container">
         <div className="clouds">
-          {/* <Clouds src={img0} /> */}
+          <Clouds src={img0} />
 
-          {/* <Clouds src={img1} />
-          <Clouds src={img5} /> */}
+          {/* <Clouds src={img1} /> */}
+          {/* <Clouds src={img5} /> */}
           {/* <Clouds src={img7} /> */}
-          {/* <Clouds src={img2} />
-          <Clouds src={img6} />
-          <Clouds src={img3} /> */}
+          {/* <Clouds src={img2} /> */}
+          {/* <Clouds src={img6} /> */}
+          {/* <Clouds src={img3} /> */}
           {/* <Clouds src={img8} /> */}
           {/* <Clouds src={img9} /> */}
         </div>
         <div className="background">
-          {/* <Building src={img4} />
-          <Building src={img4extra} /> */}
+          <Building src={img4} />
+          <Building src={img4extra} />
         </div>
         <div className="buildings buildings-center-right">
-          {/* <Building src={img11} /> */}
-          {/* <Building src={img13} /> */}
+          <Building src={img11} />
+          <Building src={img13} />
         </div>
         <div className="buildings buildings-center-left">
-          {/* <Building src={img10} /> */}
-          {/* <Building src={img12} /> */}
+          <Building src={img10} />
+          <Building src={img12} />
         </div>
         <div className="buildings buildings-left">
-          {/* <Building src={img15} /> */}
+          <Building src={img15} />
         </div>
         <div className="buildings buildings-right">
-          {/* <Building src={img21} /> */}
+          <Building src={img21} />
         </div>
         <div className="buildings buildings-center">
-          {/* <Building src={img14} /> */}
+          <Building src={img14} />
         </div>
         <div className="buildings buildings-center">
-          {/* <Building src={img16} /> */}
+          <Building src={img16} />
         </div>
         <div className="buildings buildings-left">
-          {/* <Building src={img18} /> */}
-          {/* <Building src={img23} />
-          <Building src={img25} /> */}
+          <Building src={img18} />
+          <Building src={img23} />
+          <Building src={img25} />
         </div>
         <div className="buildings buildings-right">
-          {/* <Building src={img17} /> */}
-          {/* <Building src={img19} />
+          <Building src={img17} />
+          <Building src={img19} />
           <Building src={img20} />
           <Building src={img22} />
           <Building src={img24} />
-          <Building src={img26} /> */}
-          {/* <Building src={img27} /> */}
+          <Building src={img26} />
+          <Building src={img27} />
         </div>
         <div className="buildings buildings-center">
-          {/* <Building src={img28} /> */}
+          <Building src={img28} />
         </div>
         <div className="buildings buildings-hover-left">
-          {/* <Building src={img30} /> */}
+          <Building src={img30} />
         </div>
         <div className="buildings buildings-hover-right">
-          {/* <Building src={img29} /> */}
+          <Building src={img29} />
         </div>
         <div className="buildings buildings-logo">
           {/* <h2>pluto</h2> */}
@@ -711,24 +711,24 @@ export const SceneTwo = () => {
   );
 };
 
-// const Clouds = ({ src }: { src: any }) => {
-//   return (
-//     <Image
-//       src={src}
-//       alt="clouds"
-//       className="building-container clouds-container"
-//       fill
-//       unoptimized
-//       style={{
-//         objectFit: "contain",
-//         objectPosition: "center top",
-//       }}
-//       // sizes='(max-width: 768px) 40vw,
-//       //         (max-width: 1200px) 50vw,
-//       //         60vw'
-//     />
-//   );
-// };
+const Clouds = ({ src }: { src: any }) => {
+  return (
+    <Image
+      src={src}
+      alt="clouds"
+      className="building-container clouds-container"
+      fill
+      unoptimized
+      style={{
+        objectFit: "contain",
+        objectPosition: "center top",
+      }}
+      // sizes='(max-width: 768px) 40vw,
+      //         (max-width: 1200px) 50vw,
+      //         60vw'
+    />
+  );
+};
 
 const Building = ({ src }: { src: any }) => {
   return (
@@ -897,7 +897,7 @@ const Q2 = (props: any) => {
 
     // Check total supply first
     if (!maxSupplyReached) {
-      const isSupplyReached = await getMaxSupplyReached();
+      const isSupplyReached = false;
       setMaxSupplyReached(isSupplyReached);
 
       if (isSupplyReached) {
@@ -913,8 +913,7 @@ const Q2 = (props: any) => {
     playSuccess();
 
     const response = await getSignature(chainId, address.toString());
-    const isWhitelisted = response.status === 200;
-
+    const isWhitelisted = true;
     setWhitelisted(isWhitelisted);
 
     if (isWhitelisted) {
@@ -933,8 +932,7 @@ const Q2 = (props: any) => {
     if (!address) return;
 
     const signatureInfo = await (await getSignature(chainId, address)).json();
-    const result = await getMintAllocation(signatureInfo, address);
-
+    const result = { free: 1, paid: 2 };
     // Check Custom Mint Status, add HUD text accodingly and play mint audio
     if (result.paid > 0) {
       hudManager.queueText(
